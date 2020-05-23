@@ -2,7 +2,6 @@
   "name": "pharma-app",
   "version": "1.0.0",
   "description": "MERN Web application for french medical workers to share simple information about common diseases",
-  "main": "index.js",
   "scripts": {
     "dev": "concurrently \"cd backend && npm run dev\" \"cd frontend && npm start\" "
   },
@@ -12,9 +11,10 @@
   },
   "keywords": [],
   "author": "",
-  "license": "ISC",
+  "license": "GNU",
   "bugs": {
     "url": "https://github.com/woccelli/pharma-app/issues"
   },
-  "homepage": "https://github.com/woccelli/pharma-app#readme"
+  "homepage": "https://github.com/woccelli/pharma-app#readme",
+  "dependencies": {}
 }
