@@ -6,9 +6,9 @@ import Navbar from 'react-bootstrap/Navbar'
 class Navigationbar extends Component {
   render() {
     return (
-        <Navbar bg="dark">
+        <Navbar bg="light">
             <Link to="/">
-                <Navbar.Brand>Pharma-app</Navbar.Brand>
+                <Navbar.Brand >Pharma-app</Navbar.Brand>
             </Link>
         </Navbar>
     );

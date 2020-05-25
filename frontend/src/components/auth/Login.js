@@ -3,7 +3,9 @@ import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { loginUser } from "../../actions/authActions";
-import classnames from "classnames";
+
+import Form from 'react-bootstrap/Form'
+import Button from 'react-bootstrap/Button'
 
 class Login extends Component {
   constructor() {
@@ -29,17 +31,24 @@ class Login extends Component {
 
     if (nextProps.errors) {
       this.setState({
-        errors: nextProps.errors
+        errors: nextProps.errors,
       });
     }
   }
 
   onChange = e => {
-    this.setState({ [e.target.id]: e.target.value });
+    this.setState({
+      [e.target.id]: e.target.value,
+    });
   };
 
+
   onSubmit = e => {
-    e.preventDefault();
+    const form = event.currentTarget;
+    event.preventDefault();
+    if (form.checkValidity() === false) {
+      event.stopPropagation();
+    }
 
     const userData = {
       email: this.state.email,
@@ -53,87 +62,67 @@ class Login extends Component {
     const { errors } = this.state;
 
     return (
-      <div className="container">
-        <div style={{ marginTop: "4rem" }} className="row">
-          <div className="col s8 offset-s2">
-            <Link to="/" className="btn-flat waves-effect">
-              <i className="material-icons left">keyboard_backspace</i> Back to
-              home
-            </Link>
-            <div className="col s12" style={{ paddingLeft: "11.250px" }}>
-              <h4>
-                <b>Login</b> below
-              </h4>
-              <p className="grey-text text-darken-1">
-                Don't have an account? <Link to="/register">Register</Link>
-              </p>
-            </div>
-            <form noValidate onSubmit={this.onSubmit}>
-              <div className="input-field col s12">
-                <input
-                  onChange={this.onChange}
-                  value={this.state.email}
-                  error={errors.email}
-                  id="email"
-                  type="email"
-                  className={classnames("", {
-                    invalid: errors.email || errors.emailnotfound
-                  })}
-                />
-                <label htmlFor="email">Email</label>
-                <span className="red-text">
-                  {errors.email}
-                  {errors.emailnotfound}
-                </span>
-              </div>
-              <div className="input-field col s12">
-                <input
-                  onChange={this.onChange}
-                  value={this.state.password}
-                  error={errors.password}
-                  id="password"
-                  type="password"
-                  className={classnames("", {
-                    invalid: errors.password || errors.passwordincorrect
-                  })}
-                />
-                <label htmlFor="password">Password</label>
-                <span className="red-text">
-                  {errors.password}
-                  {errors.passwordincorrect}
-                </span>
-              </div>
-              <div className="col s12" style={{ paddingLeft: "11.250px" }}>
-                <button
-                  style={{
-                    width: "150px",
-                    borderRadius: "3px",
-                    letterSpacing: "1.5px",
-                    marginTop: "1rem"
-                  }}
-                  type="submit"
-                  className="btn btn-large waves-effect waves-light hoverable blue accent-3"
-                >
-                  Login
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
+      <div class="container h-100"> 
+        <Form noValidate onSubmit={this.onSubmit} class="row align-items-center">
+          <Form.Label> <h2>Connexion</h2> </Form.Label>
+          <Form.Group controlId="formGroupEmail">
+            <Form.Label>Adresse e-mail</Form.Label>
+            <Form.Control
+              required
+              onChange={this.onChange}
+              value={this.state.email}
+              error={errors.email}
+              id="email"
+              type="email"
+              isInvalid={errors.email || errors.emailnotfound}
+            />
+            <Form.Control.Feedback type="invalid">
+              {errors.email}
+              {errors.emailnotfound}
+            </Form.Control.Feedback>
+          </Form.Group>
+          <Form.Group controlId="formGroupPassword">
+            <Form.Label>Password</Form.Label>
+            <Form.Control
+              required
+              onChange={this.onChange}
+              value={this.state.password}
+              error={errors.password}
+              id="password"
+              type="password"
+              isInvalid={errors.password || errors.passwordincorrect}
+            />
+            <Form.Control.Feedback type="invalid">
+              {errors.password}
+              {errors.passwordincorrect}
+            </Form.Control.Feedback>
+          </Form.Group>
+          <Form.Group>
+            <Button type="submit">
+              Login
+                </Button>
+          </Form.Group>
+          <p>
+            Pas encore de compte? <Link to="/register">S'inscrire</Link>
+          </p>
+        </Form>
       </div>
     );
   }
 }
 
+
 Login.propTypes = {
   loginUser: PropTypes.func.isRequired,
   auth: PropTypes.object.isRequired,
-  errors: PropTypes.object.isRequired
+  errors: PropTypes.object.isRequired,
+  validated: PropTypes.object.isRequired
 };
 
 const mapStateToProps = state => ({
   auth: state.auth,
-  errors: state.errors
+  errors: state.errors,
+  validated: false
 });
 
 export default connect(
