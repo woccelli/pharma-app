@@ -6,8 +6,7 @@ import { logoutUser } from "../../actions/authActions";
 import Container from 'react-bootstrap/Container'
 import Button from 'react-bootstrap/Button'
 
-import CardGrid from "../modules/CardGrid"
-class Dashboard extends Component {
+class Subscribe extends Component {
   onLogoutClick = e => {
     e.preventDefault();
     this.props.logoutUser();
@@ -18,15 +17,16 @@ class Dashboard extends Component {
 
     return (
       <Container>
-        <CardGrid/>
-        <Button  href="/subscribe"> S'abonner</Button>
+        <br/>
+        C'est ici pour s'abonner !
+        <br/>
         <Button  onClick={this.onLogoutClick}> Se déconnecter</Button>
       </Container>
     );
   }
 }
 
-Dashboard.propTypes = {
+Subscribe.propTypes = {
   logoutUser: PropTypes.func.isRequired,
   auth: PropTypes.object.isRequired
 };
@@ -38,4 +38,4 @@ const mapStateToProps = state => ({
 export default connect(
   mapStateToProps,
   { logoutUser }
-)(Dashboard);
+)(Subscribe);

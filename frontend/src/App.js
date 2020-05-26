@@ -3,18 +3,20 @@ import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import jwt_decode from "jwt-decode";
 import setAuthToken from "./utils/setAuthToken";
 import { setCurrentUser, logoutUser } from "./actions/authActions";
-import "./App.css";
+import "./App.css"
 
 import { Provider } from "react-redux";
 import store from "./store";
+import Container from 'react-bootstrap/Container'
+import Navbar from 'react-bootstrap/Navbar'
 
-
-import Navigationbar from "./components/layout/Navigationbar";
 import Landing from "./components/layout/Landing";
 import Register from "./components/auth/Register";
 import Login from "./components/auth/Login";
+import Subscribe from "./components/auth/Subscribe";
 import PrivateRoute from "./components/private-route/PrivateRoute";
 import Dashboard from "./components/dashboard/Dashboard";
+import Sheet from "./components/dashboard/Sheet";
 
 // Check for token to keep user logged in
 if (localStorage.jwtToken) {
@@ -39,15 +41,19 @@ class App extends Component {
     return (
       <Provider store={store}>
         <Router>
-          <div className="App">
-            <Navigationbar />
+          <Container className="h-100">
+            <Navbar sticky="top" className="border-bottom border-gray bg-white">
+                <Navbar.Brand href="/"> Pharma-app</Navbar.Brand>
+            </Navbar>
             <Route exact path="/" component={Landing} />
             <Route exact path="/register" component={Register} />
             <Route exact path="/login" component={Login} />
             <Switch>
               <PrivateRoute exact path="/dashboard" component={Dashboard} />
+              <PrivateRoute exact path="/sheet" component={Sheet} />
+              <PrivateRoute exact path="/subscribe" component={Subscribe} />
             </Switch>
-          </div>
+          </Container>
         </Router>
       </Provider>
     );
