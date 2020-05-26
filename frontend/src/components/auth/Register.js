@@ -3,7 +3,6 @@ import { Link, withRouter } from "react-router-dom";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { registerUser } from "../../actions/authActions";
-import classnames from "classnames";
 
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
@@ -61,7 +60,7 @@ class Register extends Component {
         <Form noValidate onSubmit={this.onSubmit} class="row align-items-center">
           <Form.Label> <h2>Inscription</h2> </Form.Label>
           <Form.Group controlId="formGroupName">
-            <Form.Label> Nom de la pharmacie </Form.Label>
+            <Form.Label> Nom de l'enseigne </Form.Label>
             <Form.Control
               required
               onChange={this.onChange}
@@ -144,6 +143,7 @@ const mapStateToProps = state => ({
   auth: state.auth,
   errors: state.errors
 });
+
 export default connect(
   mapStateToProps,
   { registerUser }
