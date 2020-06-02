@@ -3,6 +3,9 @@
 # dependencies
 /node_modules
 
+#sheets = content 
+/sheets
+
 # testing
 /coverage
 
