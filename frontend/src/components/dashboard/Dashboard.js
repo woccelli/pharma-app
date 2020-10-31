@@ -17,7 +17,8 @@ class Dashboard extends Component {
     const { user } = this.props.auth;
 
     return (
-      <Container>
+      <Container> 
+        <h4>Bonjour {user.name}</h4>
         <CardGrid/>
         <Button  href="/subscribe"> S'abonner</Button>
         <Button  onClick={this.onLogoutClick}> Se déconnecter</Button>
