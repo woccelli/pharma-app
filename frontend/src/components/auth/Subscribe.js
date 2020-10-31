@@ -17,6 +17,7 @@ class Subscribe extends Component {
 
     return (
       <Container>
+        <h4>Re-bonjour {user.name}</h4>
         <br/>
         C'est ici pour s'abonner !
         <br/>

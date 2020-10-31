@@ -1,25 +1,26 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;// Create Schema
-const UserSchema = new Schema({
+const SheetSchema = new Schema({
     name: {
         type: String,
         required: true
     },
-    email: {
+    shortdescription: {
         type: String,
         required: true
     },
-    password: {
+    synonyms: {
+        type: Array,
+        required: false
+    },
+    description: {
         type: String,
-        required: true
+        default:""
     },
     date: {
         type: Date,
         default: Date.now
-    },
-    role: {
-        type: String,
-        default:"BASIC"
     }
+    
 
-}); module.exports = User = mongoose.model("users", UserSchema);
+}); module.exports = Sheet = mongoose.model("sheets", SheetSchema);

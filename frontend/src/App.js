@@ -15,8 +15,10 @@ import Register from "./components/auth/Register";
 import Login from "./components/auth/Login";
 import Subscribe from "./components/auth/Subscribe";
 import PrivateRoute from "./components/private-route/PrivateRoute";
+import AdminRoute from "./components/private-route/AdminRoute"
 import Dashboard from "./components/dashboard/Dashboard";
 import Sheet from "./components/dashboard/Sheet";
+import AdminPage from "./components/admin/AdminPage";
 
 // Check for token to keep user logged in
 if (localStorage.jwtToken) {
@@ -42,8 +44,8 @@ class App extends Component {
       <Provider store={store}>
         <Router>
           <Container className="h-100">
-            <Navbar sticky="top" className="border-bottom border-gray bg-white">
-                <Navbar.Brand href="/"> Pharma-app</Navbar.Brand>
+            <Navbar bg="dark" sticky="top" className="border-bottom border-gray bg-white">
+              <Navbar.Brand href="/"> Pharma-app</Navbar.Brand>
             </Navbar>
             <Route exact path="/" component={Landing} />
             <Route exact path="/register" component={Register} />
@@ -53,6 +55,7 @@ class App extends Component {
               <PrivateRoute exact path="/sheet" component={Sheet} />
               <PrivateRoute exact path="/subscribe" component={Subscribe} />
             </Switch>
+            <AdminRoute exact path="/adminpage" component={AdminPage} />
           </Container>
         </Router>
       </Provider>
