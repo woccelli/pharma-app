@@ -8,3 +8,20 @@ MERN Web application for french medical workers to share simple information abou
 ## References 
 
 * User authentification : https://blog.bitsrc.io/build-a-login-auth-app-with-mern-stack-part-1-c405048e3669
+
+## Stack
+
+M - MongoDB (MongoAtlas)
+
+E - Express
+
+R - Reactjs
+
+N - Nodejs
+
+## Get Started
+
+```
+npm run dev
+```
+

@@ -3,11 +3,15 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { logoutUser } from "../../actions/authActions";
 
+
 import Container from 'react-bootstrap/Container'
 import Button from 'react-bootstrap/Button'
-import Card from 'react-bootstrap/Card'
+
+//import img from '../../card-image.png'
+//import pdftest from '../../mozilla.pdf'
 
 class Sheet extends Component {
+
   onLogoutClick = e => {
     e.preventDefault();
     this.props.logoutUser();
@@ -19,15 +23,25 @@ class Sheet extends Component {
   // }
   }
 
+  onImageClick = e => {
+    e.preventDefault();
+  }
+
+  onClickprintPdf = e => {
+    e.preventDefault();
+    
+  }
+
   render() {
     const { user } = this.props.auth;
 
     return (
       <Container>
-        <Card>Ceci est une fiche</Card>
-        <Button onClick={() => alert("Je ne fais rien pour le moment")}>Imprimer la fiche</Button>
+        <div class="text-center">
+          <Button onClick={this.onClickprintPdf}> Imprimer la fiche</Button>
           <Button onClick={() => alert("Je ne fais rien pour le moment")}>Envoyer la fiche</Button>
           <Button onClick={this.onLogoutClick}> Se déconnecter</Button>
+        </div>
       </Container>
     );
   }
