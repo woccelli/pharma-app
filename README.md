@@ -5,7 +5,7 @@ MERN Web application for french medical workers to share simple information abou
 
 * **William Occelli** - *Initial work* - (https://github.com/woccelli)
 
-## References 
+## References
 
 * User authentification : https://blog.bitsrc.io/build-a-login-auth-app-with-mern-stack-part-1-c405048e3669
 
@@ -27,6 +27,15 @@ Install npm - Version: 6.14.8
 ```bash
 npm install
 npm run postinstall
+```
+
+Create a file backend/config/keys.js with content : 
+
+```Javascript
+module.exports = {
+    mongoURI:"",
+    secretOrKey: ""
+};
 ```
 
 Add your connection string to your Mongo database in backend/config/keys.js
