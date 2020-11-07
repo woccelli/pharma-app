@@ -28,3 +28,14 @@ export const getSheets = () => dispatch => {
       );
   };
 
+  export const addSheet = (sheetData, history) => dispatch => {
+    axios
+      .post("/api/sheets/add", sheetData)
+      .then(res => history.push("/dashboard")) // re-direct to dashboard on success
+      .catch(err =>
+        dispatch({
+          type: GET_ERRORS,
+          payload: err.response.data
+        })
+      );
+  };
