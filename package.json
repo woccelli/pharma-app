@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "description": "MERN Web application for french medical workers to share simple information about common diseases",
   "scripts": {
-    "dev": "concurrently \"cd backend && npm run dev\" \"cd frontend && npm start\" "
+    "dev": "concurrently \"cd backend && npm run dev\" \"cd frontend && npm start\" ",
+    "postinstall": "concurrently \"cd backend && npm install\" \"cd frontend && npm install\" "
   },
   "repository": {
     "type": "git",
