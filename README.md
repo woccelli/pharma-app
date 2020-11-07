@@ -21,9 +21,12 @@ N - Nodejs
 
 ## Get Started
 
-```
-Install Nodejs (https://nodejs.org/en/download/) - Version: 14.15.0 
+Install Nodejs (https://nodejs.org/en/download/) - Version: 14.15.0
 Install npm - Version: 6.14.8
+
+```bash
+npm install
+npm run postinstall
 npm run dev
 ```
 
