@@ -91,7 +91,7 @@ router.post("/login", (req, res) => {
                         expiresIn: 31556926 // 1 year in seconds
                     },
                     (err, token) => {
-                        res.json({ //TODO try res.cookie => https://medium.com/@faizanv/authentication-for-your-react-and-express-application-w-json-web-tokens-923515826e0
+                        res.json({
                             success: true,
                             token: "Bearer " + token
                         });

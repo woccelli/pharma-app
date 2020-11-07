@@ -38,7 +38,8 @@ module.exports = {
 };
 ```
 
-Add your connection string to your Mongo database in backend/config/keys.js
+Add your mongoURI to your Mongo database in backend/config/keys.js
+Add you secretOrKey for the jwt token signing in backend/config/keys.js (cf. user authentication)
 
 ```bash
 npm run dev

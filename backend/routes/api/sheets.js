@@ -9,42 +9,44 @@ const Sheet = require("../../models/Sheet");
 
 // Load input validation
 const validateAddInput = require("../../validation/sheet");
+const passport = require("passport");
 
 router.get('/', function (req, res) {
-  Sheet.find()
-  .then(sheets => res.json(sheets))
-  .catch(err => res.status(400).json('Error: ' + err));
+    Sheet.find()
+        .then(sheets => res.json(sheets))
+        .catch(err => res.status(400).json('Error: ' + err));
 });
 
 // @route POST api/sheets/add
 // @desc add sheet
-// @access Public
-router.post("/add", (req, res) => {
-  // Form validation
+// @access protected
+router.post("/add", passport.authenticate('jwt', { session: false }), (req, res) => {
+    //verify the JWT token generated for the user
+    // Form validation
 
-  const { errors, isValid } = validateAddInput(req.body);
+    const { errors, isValid } = validateAddInput(req.body);
+    console.log(req)
+    // Check validation
+    if (!isValid) {
+        return res.status(400).json(errors);
+    }
 
-  // Check validation
-  if (!isValid) {
-      return res.status(400).json(errors);
-  }
-
-  Sheet.findOne({ name: req.body.name }).then(sheet => {
-      if (sheet) {
-          return res.status(400).json({ name: "Cette fiche existe déjà" });
-      } else {
-          const newSheet = new Sheet({
-              name: req.body.name,
-              shortdescription: req.body.shortdescription,
-              synonyms: req.body.synonyms,
-              description: req.body.description 
-          });
-          newSheet
-                  .save()
-                  .then(sheet => res.json(sheet))
-                  .catch(err => console.log(err));
-      }
-  });
+    Sheet.findOne({ name: req.body.name }).then(sheet => {
+        if (sheet) {
+            return res.status(400).json({ name: "Cette fiche existe déjà" });
+        } else {
+            const newSheet = new Sheet({
+                name: req.body.name,
+                shortdescription: req.body.shortdescription,
+                synonyms: req.body.synonyms,
+                description: req.body.description
+            });
+            newSheet
+                .save()
+                .then(sheet => res.json(sheet))
+                .catch(err => console.log(err));
+        }
+    });
 });
 
 module.exports = router;
