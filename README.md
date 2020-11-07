@@ -27,6 +27,12 @@ Install npm - Version: 6.14.8
 ```bash
 npm install
 npm run postinstall
+```
+
+Add your connection string to your Mongo database in backend/config/keys.js
+
+```bash
 npm run dev
 ```
 
+Project information (IP, port, status) is available in the node terminal.
