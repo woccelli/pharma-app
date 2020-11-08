@@ -20,12 +20,11 @@ router.get('/', function (req, res) {
 // @route POST api/sheets/add
 // @desc add sheet
 // @access protected
-router.post("/add", passport.authenticate('jwt', { session: false }), (req, res) => {
+router.post("/add", passport.authenticate('admin', { session: false }), (req, res) => {
     //verify the JWT token generated for the user
     // Form validation
 
     const { errors, isValid } = validateAddInput(req.body);
-    console.log(req)
     // Check validation
     if (!isValid) {
         return res.status(400).json(errors);
