@@ -6,16 +6,16 @@ module.exports = function validateAddInput(data) {
 
     // Convert empty fields to an empty string so we can use validator functions
     data.name = !isEmpty(data.name) ? data.name : "";
-    data.shortdescription = !isEmpty(data.shortdescription) ? data.shortdescription : "";
+    data.definition = !isEmpty(data.definition) ? data.definition : "";
 
     // Name checks
     if (Validator.isEmpty(data.name)) {
         errors.name = "Veuillez renseigner un nom de fiche";
     }
 
-    // Shortdescription checks
-    if (Validator.isEmpty(data.shortdescription)) {
-        errors.shortdescription = "Veuillez renseigner une description courte";
+    // Definition checks
+    if (Validator.isEmpty(data.definition)) {
+        errors.definition = "Veuillez renseigner une description courte";
     }
 
     return {

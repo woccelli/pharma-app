@@ -5,7 +5,7 @@ const SheetSchema = new Schema({
         type: String,
         required: true
     },
-    shortdescription: {
+    definition: {
         type: String,
         required: true
     },

@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import Card from 'react-bootstrap/Card'
 import CardColumns from 'react-bootstrap/CardColumns'
 import img from '../../card-image.png'
-
+import Sheet from './Sheet'
 import Modal from 'react-bootstrap/Modal'
 import Button from 'react-bootstrap/Button'
 
@@ -16,7 +16,8 @@ class CardGrid extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      show: false  
+      show: false,
+      selectedSheet: {}
     };
   }
 
@@ -31,17 +32,27 @@ class CardGrid extends Component {
   }
 
   handleClose = () => this.setShow(false)
-  handleShow = () => this.setShow(true)
-
+  handleShow =  sheet  => {
+    console.log(sheet)
+    this.setState({
+      selectedSheet:sheet
+    });
+    this.setShow(true)
+  }
   render() {
     const { loadedsheets } = this.props.sheets;
+    console.log(loadedsheets)
     return (
       <div>
         <Modal show={this.state.show} onHide={this.handleClose}>
           <Modal.Header closeButton>
-            <Modal.Title>Fiche</Modal.Title>
+            <Modal.Title>{this.state.selectedSheet.name}</Modal.Title>
           </Modal.Header>
-          <Modal.Body><img src={img} alt='sheet-img' className="img-fluid" /></Modal.Body>
+          <Modal.Body>
+            <Sheet
+              sheet={this.state.selectedSheet}
+            />
+          </Modal.Body>
           <Modal.Footer>
             <Button variant="secondary" onClick={this.handleClose}>
               Imprimer
@@ -53,13 +64,13 @@ class CardGrid extends Component {
         </Modal>
 
         <CardColumns>
-          {loadedsheets.map(({ _id, name, shortdescription }) => (
-            <Card key={_id} tag="a" style={{ cursor: "pointer" }}>
-              <Card.Img onClick={this.handleShow} variant="top" src={img} />
+          {loadedsheets.map((sheet, _id) => (
+            <Card key={_id} tag="a" style={{ cursor: "pointer" }} onClick={() => this.handleShow(sheet)}>
+              <Card.Img variant="top" src={img} />
               <Card.Body >
-                <Card.Title>{name}</Card.Title>
+                <Card.Title>{sheet.name}</Card.Title>
                 <Card.Text>
-                  {shortdescription}
+                  {sheet.definition}
                 </Card.Text>
               </Card.Body>
             </Card>

@@ -36,7 +36,7 @@ router.post("/add", passport.authenticate('admin', { session: false }), (req, re
         } else {
             const newSheet = new Sheet({
                 name: req.body.name,
-                shortdescription: req.body.shortdescription,
+                definition: req.body.definition,
                 synonyms: req.body.synonyms,
                 description: req.body.description
             });
