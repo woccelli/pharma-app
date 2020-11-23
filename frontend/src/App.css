@@ -7,3 +7,16 @@
 .inactive {
   text-decoration: none;
 }
+
+.h-limit {
+  overflow: 'scroll';
+  max-height: calc(100vh - 50px);
+}
+
+.modal-content {
+  max-height: 90vh;
+}
+
+.modal-body {
+  overflow:auto;
+}

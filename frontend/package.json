@@ -15,6 +15,8 @@
     "react-redux": "^7.2.0",
     "react-router-dom": "^5.2.0",
     "react-scripts": "^4.0.0",
+    "react-scrollbar": "^0.5.6",
+    "react-to-print": "^2.11.0",
     "redux": "^4.0.5",
     "redux-thunk": "^2.3.0"
   },

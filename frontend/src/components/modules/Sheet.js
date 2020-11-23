@@ -3,8 +3,6 @@ import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import Container from "react-bootstrap/Container"
 
-import sheetstyle from './../../style/sheetstyle.module.css'
-
 
 class Sheet extends Component {
 
@@ -15,8 +13,8 @@ class Sheet extends Component {
     render() {
 
         return (
-            <Container fluid>
-                <div className={sheetstyle.head} />
+            <Container fluid className="h-limit">
+                <div />
                 <div id="name">Name: {this.props.sheet.name}</div>
                 <div id="definition">Definition : {this.props.sheet.definition}</div>
                 <div id="causes">

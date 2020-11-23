@@ -7,9 +7,11 @@ import img from '../../card-image.png'
 import Sheet from './Sheet'
 import Modal from 'react-bootstrap/Modal'
 import Button from 'react-bootstrap/Button'
-
+import ScrollArea from 'react-scrollbar'
 import PropTypes from "prop-types";
 import { getSheets } from '../../actions/sheetsActions';
+
+import ReactToPrint, { PrintContextConsumer } from 'react-to-print';
 
 class CardGrid extends Component {
 
@@ -32,10 +34,10 @@ class CardGrid extends Component {
   }
 
   handleClose = () => this.setShow(false)
-  handleShow =  sheet  => {
+  handleShow = sheet => {
     console.log(sheet)
     this.setState({
-      selectedSheet:sheet
+      selectedSheet: sheet
     });
     this.setShow(true)
   }
@@ -44,19 +46,23 @@ class CardGrid extends Component {
     console.log(loadedsheets)
     return (
       <div>
-        <Modal show={this.state.show} onHide={this.handleClose}>
+        <Modal show={this.state.show} onHide={this.handleClose} dialogClassName="h-limit" contentClassName="modal-content">
           <Modal.Header closeButton>
             <Modal.Title>{this.state.selectedSheet.name}</Modal.Title>
           </Modal.Header>
-          <Modal.Body>
-            <Sheet
-              sheet={this.state.selectedSheet}
-            />
+          <Modal.Body ref={el => (this.componentRef = el)} >
+            <Sheet sheet={this.state.selectedSheet} />
           </Modal.Body>
           <Modal.Footer>
-            <Button variant="secondary" onClick={this.handleClose}>
-              Imprimer
-            </Button>
+
+           <ReactToPrint content={() => this.componentRef}>
+              <PrintContextConsumer>
+                {({ handlePrint }) => (
+                  <Button variant="secondary" onClick={handlePrint}>Imprimer</Button>
+                )}
+              </PrintContextConsumer>
+            </ReactToPrint>
+
             <Button variant="primary" onClick={this.handleClose}>
               Envoyer
             </Button>
