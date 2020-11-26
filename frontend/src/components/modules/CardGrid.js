@@ -10,13 +10,13 @@ import Button from 'react-bootstrap/Button'
 import ScrollArea from 'react-scrollbar'
 import PropTypes from "prop-types";
 import { getSheets } from '../../actions/sheetsActions';
-
-import ReactToPrint, { PrintContextConsumer } from 'react-to-print';
+import PDF from "./Doc-test-pdf.pdf";
 
 class CardGrid extends Component {
 
   constructor(props) {
     super(props);
+    this.componentRef = React.createRef();
     this.state = {
       show: false,
       selectedSheet: {}
@@ -46,27 +46,10 @@ class CardGrid extends Component {
     console.log(loadedsheets)
     return (
       <div>
-        <Modal show={this.state.show} onHide={this.handleClose} dialogClassName="h-limit" contentClassName="modal-content">
-          <Modal.Header closeButton>
-            <Modal.Title>{this.state.selectedSheet.name}</Modal.Title>
-          </Modal.Header>
-          <Modal.Body ref={el => (this.componentRef = el)} >
-            <Sheet sheet={this.state.selectedSheet} />
-          </Modal.Body>
-          <Modal.Footer>
-
-           <ReactToPrint content={() => this.componentRef}>
-              <PrintContextConsumer>
-                {({ handlePrint }) => (
-                  <Button variant="secondary" onClick={handlePrint}>Imprimer</Button>
-                )}
-              </PrintContextConsumer>
-            </ReactToPrint>
-
-            <Button variant="primary" onClick={this.handleClose}>
-              Envoyer
-            </Button>
-          </Modal.Footer>
+        <Modal show={this.state.show} onHide={this.handleClose} contentClassName="modal-content">
+              <embed src={PDF} type="application/pdf" height={500} />
+              <Button variant="secondary" >Imprimer</Button>
+              <Button variant="primary" onClick={this.handleClose}>Envoyer</Button>
         </Modal>
 
         <CardColumns>

@@ -1,0 +1,9 @@
+.page {
+    flex-direction: 'row';
+    background: '#E4E4E4';
+}
+.section {
+    margin: 10;
+    padding: 10;
+    flex-grow: 1;
+}

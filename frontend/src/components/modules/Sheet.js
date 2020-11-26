@@ -1,10 +1,9 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import Container from "react-bootstrap/Container"
+import Container from "react-bootstrap/Container";
 
-
-class Sheet extends Component {
+export class Sheet extends Component {
 
     constructor(props) {
         super(props);
@@ -13,9 +12,8 @@ class Sheet extends Component {
     render() {
 
         return (
-            <Container fluid className="h-limit">
-                <div />
-                <div id="name">Name: {this.props.sheet.name}</div>
+            <div >
+                <div className="page" id="name">Name: {this.props.sheet.name}</div>
                 <div id="definition">Definition : {this.props.sheet.definition}</div>
                 <div id="causes">
                     Causes :
@@ -74,7 +72,7 @@ class Sheet extends Component {
                         </li>
                     </ul>
                 </div>
-            </Container>
+            </div>
         )
     }
 }
