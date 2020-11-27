@@ -17,7 +17,6 @@ import Subscribe from "./components/auth/Subscribe";
 import PrivateRoute from "./components/private-route/PrivateRoute";
 import AdminRoute from "./components/private-route/AdminRoute"
 import Dashboard from "./components/dashboard/Dashboard";
-import Sheet from "./components/dashboard/Sheet";
 import AddSheet from "./components/admin/AddSheet";
 
 // Check for token to keep user logged in
@@ -52,7 +51,6 @@ class App extends Component {
             <Route exact path="/login" component={Login} />
             <Switch>
               <PrivateRoute exact path="/dashboard" component={Dashboard} />
-              <PrivateRoute exact path="/sheet" component={Sheet} />
               <PrivateRoute exact path="/subscribe" component={Subscribe} />
             </Switch>
             <AdminRoute exact path="/admin/addsheet" component={AddSheet} />

@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, useState } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { logoutUser } from "../../actions/authActions";
@@ -10,6 +10,9 @@ import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
+
+import PDF from "../modules/Doc-test-pdf.pdf";
+import { BlobProvider, pdf, Document, Page, Text } from '@react-pdf/renderer';
 
 class AdminPage extends Component {
 
@@ -55,6 +58,8 @@ class AdminPage extends Component {
 
   };
 
+
+
   onLogoutClick = e => {
     e.preventDefault();
     this.props.logoutUser();
@@ -63,6 +68,20 @@ class AdminPage extends Component {
   render() {
     const { user } = this.props.auth;
     const { errors } = this.state;
+
+
+    const MyDoc = (
+      <Document>
+        <Page>
+          <Text>
+            Hallo das ist ein Twst
+          </Text>
+        </Page>
+      </Document>
+    );
+
+    const blob = pdf(MyDoc).toBlob();
+
 
     return (
       <Container>
@@ -128,12 +147,15 @@ class AdminPage extends Component {
             <Button onClick={this.onLogoutClick}> Se déconnecter</Button>
           </Col>
           <Col>
-                <Sheet 
-                  sheet={this.state.sheet}
-                />
+            <BlobProvider document={MyDoc}>
+              {({ blob, url, loading, error }) => {
+                // Do whatever you need with blob here
+                return <embed src={url} type="application/pdf" height={500} />
+              }}
+            </BlobProvider>
           </Col>
         </Row>
-      </Container>
+      </Container >
     );
   }
 }

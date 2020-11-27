@@ -5,9 +5,9 @@ import { logoutUser } from "../../actions/authActions";
 
 import Container from 'react-bootstrap/Container'
 import Button from 'react-bootstrap/Button'
-
 import CardGrid from "../modules/CardGrid"
 class Dashboard extends Component {
+  
   onLogoutClick = e => {
     e.preventDefault();
     this.props.logoutUser();
