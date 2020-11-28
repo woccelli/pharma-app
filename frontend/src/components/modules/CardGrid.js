@@ -11,6 +11,7 @@ import ScrollArea from 'react-scrollbar'
 import PropTypes from "prop-types";
 import { getSheets } from '../../actions/sheetsActions';
 import PDF from "./Doc-test-pdf.pdf";
+import { BlobProvider, pdf, Document, Page, Text } from '@react-pdf/renderer';
 
 class CardGrid extends Component {
 
@@ -33,6 +34,10 @@ class CardGrid extends Component {
     });
   }
 
+  getSelectedSheet = () => { 
+    return <Sheet sheet={this.state.selectedSheet}></Sheet> 
+  }
+
   handleClose = () => this.setShow(false)
   handleShow = sheet => {
     console.log(sheet)
@@ -43,13 +48,22 @@ class CardGrid extends Component {
   }
   render() {
     const { loadedsheets } = this.props.sheets;
+    const MyDoc = (
+      <Sheet />
+    );
+
     console.log(loadedsheets)
     return (
       <div>
         <Modal show={this.state.show} onHide={this.handleClose} contentClassName="modal-content">
-              <embed src={PDF} type="application/pdf" height={500} />
-              <Button variant="secondary" >Imprimer</Button>
-              <Button variant="primary" onClick={this.handleClose}>Envoyer</Button>
+          <BlobProvider document={this.getSelectedSheet()}>
+            {({ blob, url, loading, error }) => {
+              // Do whatever you need with blob here
+              return <embed src={url} type="application/pdf" height={500} />
+            }}
+          </BlobProvider>
+          <Button variant="secondary" >Imprimer</Button>
+          <Button variant="primary" onClick={this.handleClose}>Envoyer</Button>
         </Modal>
 
         <CardColumns>

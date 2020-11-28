@@ -51,9 +51,7 @@ class AdminPage extends Component {
 
   onSubmit = e => {
     e.preventDefault();
-
     const { sheet } = this.state;
-
     this.props.addSheet(sheet, this.props.history);
 
   };
@@ -71,13 +69,7 @@ class AdminPage extends Component {
 
 
     const MyDoc = (
-      <Document>
-        <Page>
-          <Text>
-            Hallo das ist ein Twst
-          </Text>
-        </Page>
-      </Document>
+      <Sheet sheet={this.state.sheet}/>
     );
 
     const blob = pdf(MyDoc).toBlob();
@@ -150,7 +142,7 @@ class AdminPage extends Component {
             <BlobProvider document={MyDoc}>
               {({ blob, url, loading, error }) => {
                 // Do whatever you need with blob here
-                return <embed src={url} type="application/pdf" height={500} />
+                return <embed src={url} type="application/pdf" height={500} width={400} />
               }}
             </BlobProvider>
           </Col>

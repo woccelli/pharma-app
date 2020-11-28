@@ -10,21 +10,15 @@ export class Sheet extends Component {
     }
 
     render() {
-        const styles = StyleSheet.create({
-           
-        });
-
-        const mySheet = () => (
-            <Document>
-                <Page>
-                    // My document data
-            </Page>
-            </Document>
-        );
-
 
         return (
-            <mySheet />
+            <Document>
+                <Page>
+                    <Text>
+                        {this.props.sheet.name}
+                    </Text>
+                </Page>
+            </Document>
         )
     }
 }
