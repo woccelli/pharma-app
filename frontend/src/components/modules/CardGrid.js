@@ -7,6 +7,9 @@ import img from '../../card-image.png'
 import Sheet from './Sheet'
 import Modal from 'react-bootstrap/Modal'
 import Button from 'react-bootstrap/Button'
+import OverlayTrigger from 'react-bootstrap/OverlayTrigger'
+import Form from 'react-bootstrap/Form'
+import Popover from 'react-bootstrap/Popover'
 import ScrollArea from 'react-scrollbar'
 import PropTypes from "prop-types";
 import { getSheets } from '../../actions/sheetsActions';
@@ -17,10 +20,12 @@ class CardGrid extends Component {
 
   constructor(props) {
     super(props);
-    this.componentRef = React.createRef();
     this.state = {
       show: false,
-      selectedSheet: {}
+      selectedSheet: {},
+      sendtoemail: "",
+      popup: false,
+      errors: {}
     };
   }
 
@@ -34,36 +39,99 @@ class CardGrid extends Component {
     });
   }
 
-  getSelectedSheet = () => { 
-    return <Sheet sheet={this.state.selectedSheet}></Sheet> 
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.errors) {
+      this.setState({
+        errors: nextProps.errors
+      });
+    }
+  }
+
+  getSelectedSheet = () => {
+    return <Sheet sheet={this.state.selectedSheet}></Sheet>
   }
 
   handleClose = () => this.setShow(false)
   handleShow = sheet => {
-    console.log(sheet)
     this.setState({
       selectedSheet: sheet
     });
     this.setShow(true)
   }
+
+  handlePopup = () => {
+    this.setState(prevState => ({
+      popup: !prevState.popup
+    }))
+  }
+
+  onChange = e => {
+    this.setState({ [e.target.id]: e.target.value });
+  };
+
+  onSubmit = e => {
+    e.preventDefault();
+  }
+
   render() {
     const { loadedsheets } = this.props.sheets;
-    const MyDoc = (
-      <Sheet />
-    );
+    const { errors } = this.state;
 
     console.log(loadedsheets)
     return (
       <div>
-        <Modal show={this.state.show} onHide={this.handleClose} contentClassName="modal-content">
+        <Modal enforceFocus={false} show={this.state.show} onHide={this.handleClose} contentClassName="modal-content">
           <BlobProvider document={this.getSelectedSheet()}>
             {({ blob, url, loading, error }) => {
               // Do whatever you need with blob here
               return <embed src={url} type="application/pdf" height={500} />
             }}
           </BlobProvider>
-          <Button variant="secondary" >Imprimer</Button>
-          <Button variant="primary" onClick={this.handleClose}>Envoyer</Button>
+
+          <OverlayTrigger
+            trigger="click"
+            key="top"
+            placement="top"
+            overlay={
+              <Popover id="popover-positioned-top">
+                <Popover.Content>
+                  <Form noValidate onSubmit={this.onSubmit}>
+                    <Form.Group controlId="formBasicEmail">
+                      <Form.Label>Envoyer à l'adresse mail :</Form.Label>
+                      <Form.Control
+                        required
+                        placeholder="exemple@mail.com"
+                        onChange={this.onChange}
+                        value={this.state.sendtoemail}
+                        error={errors.sendtoemail}
+                        id="sendtoemail"
+                        type="email"
+                        isInvalid={errors.sendtoemail}
+                      />
+                      <Form.Text className="text-muted">
+                        Cet email n'est pas conservé
+                      </Form.Text>
+                      <Form.Control.Feedback type="invalid">
+                        {errors.sendtoemail}
+                      </Form.Control.Feedback>
+                    </Form.Group>
+                    <Form.Group className="float-right">
+                      <Button
+                        type="submit"
+                        variant="success"
+                        disabled={!/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(this.state.sendtoemail)}
+                      >
+                        Envoyer
+                      </Button>
+                    </Form.Group>
+                  </Form>
+                </Popover.Content>
+              </Popover>
+            }
+          >
+            <Button variant="primary">Envoi de la fiche</Button>
+          </OverlayTrigger>
+
         </Modal>
 
         <CardColumns>

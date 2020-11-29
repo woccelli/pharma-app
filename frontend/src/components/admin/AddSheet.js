@@ -63,6 +63,7 @@ class AdminPage extends Component {
     this.props.logoutUser();
   };
 
+
   render() {
     const { user } = this.props.auth;
     const { errors } = this.state;
@@ -72,7 +73,6 @@ class AdminPage extends Component {
       <Sheet sheet={this.state.sheet}/>
     );
 
-    const blob = pdf(MyDoc).toBlob();
 
 
     return (
