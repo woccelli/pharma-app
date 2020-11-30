@@ -9,6 +9,7 @@ const Sheet = require("../../models/Sheet");
 
 // Load input validation
 const validateAddInput = require("../../validation/sheet");
+const validateSendInput = require("../../validation/sheet");
 const passport = require("passport");
 
 router.get('/', function (req, res) {
@@ -44,6 +45,30 @@ router.post("/add", passport.authenticate('admin', { session: false }), (req, re
                 .save()
                 .then(sheet => res.json(sheet))
                 .catch(err => console.log(err));
+        }
+    });
+});
+
+// @route POST api/sheets/send
+// @desc send sheet
+// @access protected
+router.post("/send", passport.authenticate('user', { session: false }), (req, res) => {
+    //verify the JWT token generated for the user
+    // Form validation
+    const { errors, isValid } = validateSendInput(req.body);
+    // Check validation
+    if (!isValid) {
+        return res.status(400).json(errors);
+    }
+
+    Sheet.findOne({ name: req.body.name }).then(sheet => {
+        if (sheet) {
+            //send sheet to email
+            return res.json({
+                emailsent: true
+            })
+        } else {
+            return res.status(400).json({ name: "La fiche demandée n'existe pas", emailsent: false });
         }
     });
 });

@@ -8,13 +8,12 @@ import Sheet from './Sheet'
 import Modal from 'react-bootstrap/Modal'
 import Button from 'react-bootstrap/Button'
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger'
+import Alert from 'react-bootstrap/Alert'
 import Form from 'react-bootstrap/Form'
 import Popover from 'react-bootstrap/Popover'
-import ScrollArea from 'react-scrollbar'
 import PropTypes from "prop-types";
-import { getSheets } from '../../actions/sheetsActions';
-import PDF from "./Doc-test-pdf.pdf";
-import { BlobProvider, pdf, Document, Page, Text } from '@react-pdf/renderer';
+import { getSheets, sendSheet, setEmailSent, clearErrors } from '../../actions/sheetsActions';
+import { BlobProvider } from '@react-pdf/renderer';
 
 class CardGrid extends Component {
 
@@ -24,7 +23,7 @@ class CardGrid extends Component {
       show: false,
       selectedSheet: {},
       sendtoemail: "",
-      popup: false,
+      emailsent: false,
       errors: {}
     };
   }
@@ -33,13 +32,8 @@ class CardGrid extends Component {
     this.props.getSheets();
   }
 
-  setShow(e) {
-    this.setState({
-      show: e
-    });
-  }
-
   componentWillReceiveProps(nextProps) {
+    console.log("nzxrProps", nextProps)
     if (nextProps.errors) {
       this.setState({
         errors: nextProps.errors
@@ -51,12 +45,23 @@ class CardGrid extends Component {
     return <Sheet sheet={this.state.selectedSheet}></Sheet>
   }
 
-  handleClose = () => this.setShow(false)
+  handleClose = () => {
+    this.setState({
+      selectedSheet: {},
+      sendtoemail: "",
+      emailsent: false,
+      errors: {},
+      show: false
+    });
+    this.props.setEmailSent({emailsent: false})
+    this.props.clearErrors();
+  }
+
   handleShow = sheet => {
     this.setState({
-      selectedSheet: sheet
+      selectedSheet: sheet,
+      show: true
     });
-    this.setShow(true)
   }
 
   handlePopup = () => {
@@ -71,19 +76,22 @@ class CardGrid extends Component {
 
   onSubmit = e => {
     e.preventDefault();
+    const emailData = {
+      name: this.state.selectedSheet.name,
+      sendtoemail: this.state.sendtoemail
+    };
+    this.props.sendSheet(emailData, this.props.history)
   }
 
   render() {
     const { loadedsheets } = this.props.sheets;
     const { errors } = this.state;
 
-    console.log(loadedsheets)
     return (
       <div>
         <Modal enforceFocus={false} show={this.state.show} onHide={this.handleClose} contentClassName="modal-content">
           <BlobProvider document={this.getSelectedSheet()}>
             {({ blob, url, loading, error }) => {
-              // Do whatever you need with blob here
               return <embed src={url} type="application/pdf" height={500} />
             }}
           </BlobProvider>
@@ -96,7 +104,7 @@ class CardGrid extends Component {
               <Popover id="popover-positioned-top">
                 <Popover.Content>
                   <Form noValidate onSubmit={this.onSubmit}>
-                    <Form.Group controlId="formBasicEmail">
+                    <Form.Group>
                       <Form.Label>Envoyer à l'adresse mail :</Form.Label>
                       <Form.Control
                         required
@@ -115,6 +123,9 @@ class CardGrid extends Component {
                         {errors.sendtoemail}
                       </Form.Control.Feedback>
                     </Form.Group>
+                    <Alert show={this.props.sheets.emailsent} key="emailsuccess" variant="success">
+                      La fiche a été envoyée.
+                      </Alert>
                     <Form.Group className="float-right">
                       <Button
                         type="submit"
@@ -154,18 +165,21 @@ class CardGrid extends Component {
 
 CardGrid.propTypes = {
   getSheets: PropTypes.func.isRequired,
+  sendSheet: PropTypes.func.isRequired,
+  setEmailSent: PropTypes.func.Required,
+  clearErrors: PropTypes.func.isRequired,
   errors: PropTypes.object.isRequired,
-  sheets: PropTypes.object.isRequired
+  sheets: PropTypes.object.isRequired,
 }
 
 const mapStateToProps = state => {
   return {
     sheets: state.sheets,
-    errors: state.errors
+    errors: state.errors,
   }
 }
 
 export default connect(
   mapStateToProps,
-  { getSheets }
+  { getSheets, sendSheet, setEmailSent, clearErrors }
 )(CardGrid);

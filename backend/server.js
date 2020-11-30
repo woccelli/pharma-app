@@ -6,7 +6,6 @@ const passport = require("passport");
 
 const users = require("./routes/api/users");
 const sheets = require("./routes/api/sheets");
-const sheetpdf = require("./routes/api/sheetpdf")
 require('dotenv').config();
 
 //App setup
@@ -38,7 +37,6 @@ require("./config/passport")(passport);
 // Routes
 app.use("/api/users", users);
 app.use("/api/sheets", sheets)
-app.use("/api/sheetpdf", sheetpdf)
 
 //Port configuration
 const port = process.env.PORT || 5000;

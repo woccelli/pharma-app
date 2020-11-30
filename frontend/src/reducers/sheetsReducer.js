@@ -1,7 +1,8 @@
-import { GET_SHEETS } from "../actions/types";
+import { GET_SHEETS, SET_EMAILSENT } from "../actions/types";
 
   const initialState = {
-    loadedsheets: []
+    loadedsheets: [],
+    emailsent: false
   };
 
   export default function(state = initialState, action) {
@@ -11,6 +12,11 @@ import { GET_SHEETS } from "../actions/types";
             ...state,
             loadedsheets: action.payload
         };
+      case SET_EMAILSENT:
+        return {
+          ...state,
+          emailsent: action.payload.emailsent
+        }
       default:
         return state;
     }
