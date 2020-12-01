@@ -12,6 +12,9 @@ const validateAddInput = require("../../validation/sheet");
 const validateSendInput = require("../../validation/sheet");
 const passport = require("passport");
 
+//Email sending
+const sendEmail = require("../../email/mailer");
+
 router.get('/', function (req, res) {
     Sheet.find()
         .then(sheets => res.json(sheets))
@@ -63,10 +66,20 @@ router.post("/send", passport.authenticate('user', { session: false }), (req, re
 
     Sheet.findOne({ name: req.body.name }).then(sheet => {
         if (sheet) {
-            //send sheet to email
-            return res.json({
-                emailsent: true
-            })
+            sendEmail(req.body)
+                .then(() => {
+                    return res.json({
+                        emailsent: true
+                    })
+                })
+                .catch(() => {
+                    return res.status(400).json(
+                        {
+                            sendtoemail: "Une erreur s'est produite lors de l'envoi",
+                            emailsent: false
+                        }
+                    )
+                })
         } else {
             return res.status(400).json({ name: "La fiche demandée n'existe pas", emailsent: false });
         }

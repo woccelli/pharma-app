@@ -11,7 +11,6 @@ import Col from 'react-bootstrap/Col'
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
 
-import PDF from "../modules/Doc-test-pdf.pdf";
 import { BlobProvider, pdf, Document, Page, Text } from '@react-pdf/renderer';
 
 class AdminPage extends Component {
