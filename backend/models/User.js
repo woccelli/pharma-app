@@ -20,6 +20,10 @@ const UserSchema = new Schema({
     role: {
         type: String,
         default:"BASIC"
+    },
+    suscriber: {
+        type: Boolean,
+        default: false
     }
 
 }); module.exports = User = mongoose.model("users", UserSchema);

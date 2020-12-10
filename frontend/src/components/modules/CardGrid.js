@@ -55,17 +55,24 @@ class CardGrid extends Component {
       emailsent: false,
       errors: {},
       show: false,
-      pdfurl: ""
+      pdfurl: "",
+      showSubAlert: false
     });
     this.props.setEmailSent({ emailsent: false })
     this.props.clearErrors();
   }
 
   handleShow = sheet => {
-    this.setState({
-      selectedSheet: sheet,
-      show: true
-    });
+    if (this.props.auth.user.suscriber) {
+      this.setState({
+        selectedSheet: sheet,
+        show: true
+      });
+    } else {
+      this.setState({
+        showSubAlert: true
+      })
+    }
   }
 
   handlePopup = () => {
@@ -82,8 +89,6 @@ class CardGrid extends Component {
     e.preventDefault();
     pdf(this.getSelectedSheet()).toBlob().then(sheetblob => {
       var reader = new FileReader();
-      var name = this.state.selectedSheet.name;
-      var sendtoemail = this.state.sendtoemail;
       reader.readAsDataURL(sheetblob);
       reader.onloadend = () => {
         var base64data = reader.result;
@@ -110,6 +115,13 @@ class CardGrid extends Component {
 
     return (
       <div>
+        <Modal show={!this.state.show && this.state.showSubAlert} onHide={this.handleClose}>
+          <Alert>
+            Vous n'êtes pas abonné(e)... Veuillez vous abonner pour accéder à l'intégralité du contenu.
+            <Button>S'abonner</Button>
+          </Alert>
+        </Modal>
+
         <Modal enforceFocus={false} show={this.state.show} onHide={this.handleClose} contentClassName="modal-content">
           <BlobProvider document={this.getSelectedSheet()}>
             {({ blob, url, loading, error }) => {
@@ -191,10 +203,12 @@ CardGrid.propTypes = {
   clearErrors: PropTypes.func.isRequired,
   errors: PropTypes.object.isRequired,
   sheets: PropTypes.object.isRequired,
+  auth: PropTypes.object.isRequired
 }
 
 const mapStateToProps = state => {
   return {
+    auth: state.auth,
     sheets: state.sheets,
     errors: state.errors,
   }

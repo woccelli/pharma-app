@@ -41,5 +41,22 @@ module.exports = passport => {
                 .catch(err => console.log(err));
         })
     );
+
+    passport.use(
+        'subscriber',
+        new JwtStrategy(opts, (jwt_payload, done) => {
+            User.findById(jwt_payload.id)
+                .then(user => {
+                    if (user) {
+                        if(user.subscriber) {
+                            return done(null, user);
+                        }
+                        return done(null, false);
+                    }
+                    return done(null, false);
+                })
+                .catch(err => console.log(err));
+        })
+    );
 };
 

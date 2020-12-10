@@ -55,7 +55,7 @@ router.post("/add", passport.authenticate('admin', { session: false }), (req, re
 // @route POST api/sheets/send
 // @desc send sheet
 // @access protected
-router.post("/send", passport.authenticate('user', { session: false }), (req, res) => {
+router.post("/send", passport.authenticate('subscriber', { session: false }), (req, res) => {
     console.log('recu : ', req.body)
     //verify the JWT token generated for the user
     // Form validation

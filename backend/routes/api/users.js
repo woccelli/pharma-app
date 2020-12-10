@@ -3,7 +3,7 @@ const router = express.Router();
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const keys = require("../../config/keys");
-
+const passport = require("passport");
 // Load input validation
 const validateRegisterInput = require("../../validation/register");
 const validateLoginInput = require("../../validation/login");
@@ -104,6 +104,14 @@ router.post("/login", (req, res) => {
             }
         });
     });
+});
+
+// @route GET api/users/subscriptionvalidation
+// @desc Checks if the user is a subscriber 
+// @access Protected
+router.get("/subscriptionvalidation", passport.authenticate('subscriber', { session: false }),
+    (req, res) => {
+    return true
 });
 
 module.exports = router;
