@@ -5,8 +5,7 @@ import jwt_decode from "jwt-decode";
 import {
   GET_ERRORS,
   SET_CURRENT_USER,
-  USER_LOADING,
-  CHECK_SUB
+  USER_LOADING
 } from "./types";
 
 // Register User
@@ -44,6 +43,7 @@ export const loginUser = userData => dispatch => {
       // Decode token to get user data
       const decoded = jwt_decode(token);
       // Set current user
+      console.log(decoded)
       dispatch(setCurrentUser(decoded));
     })
     .catch(err =>

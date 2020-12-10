@@ -18,6 +18,7 @@ import PrivateRoute from "./components/private-route/PrivateRoute";
 import AdminRoute from "./components/private-route/AdminRoute"
 import Dashboard from "./components/dashboard/Dashboard";
 import AddSheet from "./components/admin/AddSheet";
+import AdminDashboard from "./components/admin/Dashboard";
 
 // Check for token to keep user logged in
 if (localStorage.jwtToken) {
@@ -54,6 +55,7 @@ class App extends Component {
               <PrivateRoute exact path="/subscribe" component={Subscribe} />
             </Switch>
             <AdminRoute exact path="/admin/addsheet" component={AddSheet} />
+            <AdminRoute exact path="/admin/dashboard" component={AdminDashboard} />
           </Container>
         </Router>
       </Provider>

@@ -1,7 +1,7 @@
 import { GET_SHEETS, SET_EMAILSENT } from "../actions/types";
 
   const initialState = {
-    loadedsheets: [],
+    sheets: [],
     emailsent: false
   };
 
@@ -10,7 +10,7 @@ import { GET_SHEETS, SET_EMAILSENT } from "../actions/types";
       case GET_SHEETS:
         return {
             ...state,
-            loadedsheets: action.payload
+            sheets: action.payload
         };
       case SET_EMAILSENT:
         return {

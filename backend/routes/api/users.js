@@ -11,6 +11,16 @@ const validateLoginInput = require("../../validation/login");
 // Load User model
 const User = require("../../models/User");
 
+// @route GET api/users/all
+// @desc 
+// @access Public
+router.get('/all', passport.authenticate('admin', { session: false }), (req, res) => {
+    User.find()
+        .then(users => res.json(users))
+        .catch(err => res.status(400).json('Error: ' + err));
+});
+
+
 // @route POST api/users/register
 // @desc Register user
 // @access Public
@@ -80,7 +90,8 @@ router.post("/login", (req, res) => {
                 const payload = {
                     id: user.id,
                     name: user.name,
-                    role: user.role
+                    role: user.role,
+                    subscriber: user.subscriber
                 };
 
                 // Sign token
@@ -104,14 +115,6 @@ router.post("/login", (req, res) => {
             }
         });
     });
-});
-
-// @route GET api/users/subscriptionvalidation
-// @desc Checks if the user is a subscriber 
-// @access Protected
-router.get("/subscriptionvalidation", passport.authenticate('subscriber', { session: false }),
-    (req, res) => {
-    return true
 });
 
 module.exports = router;

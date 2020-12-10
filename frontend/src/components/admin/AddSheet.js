@@ -1,8 +1,8 @@
-import React, { Component, useState } from "react";
+import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { logoutUser } from "../../actions/authActions";
-import { addSheet } from "../../actions/sheetsActions"
+import { addSheet } from "../../actions/adminActions"
 import Sheet from "../modules/Sheet"
 
 import Container from 'react-bootstrap/Container'
@@ -11,7 +11,7 @@ import Col from 'react-bootstrap/Col'
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
 
-import { BlobProvider, pdf, Document, Page, Text } from '@react-pdf/renderer';
+import { BlobProvider } from '@react-pdf/renderer';
 
 class AdminPage extends Component {
 
@@ -30,6 +30,7 @@ class AdminPage extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
+    console.log('la', nextProps.errors)
     if (nextProps.errors) {
       this.setState({
         errors: nextProps.errors
@@ -47,32 +48,24 @@ class AdminPage extends Component {
     }));
   };
 
-
   onSubmit = e => {
     e.preventDefault();
     const { sheet } = this.state;
     this.props.addSheet(sheet, this.props.history);
-
   };
-
-
 
   onLogoutClick = e => {
     e.preventDefault();
     this.props.logoutUser();
   };
 
-
   render() {
     const { user } = this.props.auth;
     const { errors } = this.state;
 
-
     const MyDoc = (
       <Sheet sheet={this.state.sheet}/>
     );
-
-
 
     return (
       <Container>
@@ -153,13 +146,14 @@ class AdminPage extends Component {
 
 AdminPage.propTypes = {
   logoutUser: PropTypes.func.isRequired,
+  addSheet: PropTypes.func.isRequired,
   auth: PropTypes.object.isRequired,
   errors: PropTypes.object.isRequired
 };
 
 const mapStateToProps = state => ({
   auth: state.auth,
-  errors: state.errors
+  errors: state.errors,
 });
 
 const mapDispatchToProps = {

@@ -21,7 +21,7 @@ const UserSchema = new Schema({
         type: String,
         default:"BASIC"
     },
-    suscriber: {
+    subscriber: {
         type: Boolean,
         default: false
     }

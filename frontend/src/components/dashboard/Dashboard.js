@@ -7,6 +7,13 @@ import Container from 'react-bootstrap/Container'
 import Button from 'react-bootstrap/Button'
 import CardGrid from "../modules/CardGrid"
 class Dashboard extends Component {
+
+  componentDidMount() {
+    console.log(this.props.auth)
+    if (this.props.auth.user.role === 'ADMIN') {
+      this.props.history.push("/admin/dashboard");
+    }
+  }
   
   onLogoutClick = e => {
     e.preventDefault();

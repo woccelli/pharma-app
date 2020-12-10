@@ -8,13 +8,15 @@ const path = require("path");
 const Sheet = require("../../models/Sheet");
 
 // Load input validation
-const validateAddInput = require("../../validation/sheet");
-const validateSendInput = require("../../validation/sheet");
+const {validateAddInput, validateSendInput} = require("../../validation/sheet");
 const passport = require("passport");
 
 //Email sending
 const sendEmail = require("../../email/mailer");
 
+// @route GET api/sheets/
+// @desc get all existing sheets
+// @access public
 router.get('/', function (req, res) {
     Sheet.find()
         .then(sheets => res.json(sheets))
@@ -27,10 +29,12 @@ router.get('/', function (req, res) {
 router.post("/add", passport.authenticate('admin', { session: false }), (req, res) => {
     //verify the JWT token generated for the user
     // Form validation
-
+    console.log('backend add called')
     const { errors, isValid } = validateAddInput(req.body);
+    console.log('erreurs' , errors)
     // Check validation
     if (!isValid) {
+        console.log(errors)
         return res.status(400).json(errors);
     }
 

@@ -14,21 +14,19 @@ import Popover from 'react-bootstrap/Popover'
 import PropTypes from "prop-types";
 import { getSheets, sendSheet, setEmailSent, clearErrors } from '../../actions/sheetsActions';
 import { BlobProvider, pdf } from '@react-pdf/renderer';
-import FormData from 'form-data'
-import pdf2base64 from 'pdf-to-base64'
 
 class CardGrid extends Component {
 
   constructor(props) {
-    super(props);
-    this.state = {
-      show: false,
-      selectedSheet: {},
-      sendtoemail: "",
-      emailsent: false,
-      pdfurl: "",
-      errors: {}
-    };
+      super(props);
+      this.state = {
+        show: false,
+        selectedSheet: {},
+        sendtoemail: "",
+        emailsent: false,
+        pdfurl: "",
+        errors: {}
+      };
   }
 
   componentDidMount = () => {
@@ -63,7 +61,8 @@ class CardGrid extends Component {
   }
 
   handleShow = sheet => {
-    if (this.props.auth.user.suscriber) {
+    console.log('sub', this.props.auth.user)
+    if (this.props.auth.user.subscriber) {
       this.setState({
         selectedSheet: sheet,
         show: true
@@ -110,7 +109,7 @@ class CardGrid extends Component {
   }
 
   render() {
-    const { loadedsheets } = this.props.sheets;
+    const { sheets } = this.props.sheets;
     const { errors } = this.state;
 
     return (
@@ -179,7 +178,7 @@ class CardGrid extends Component {
         </Modal>
 
         <CardColumns>
-          {loadedsheets.map((sheet, _id) => (
+          {sheets.map((sheet, _id) => (
             <Card key={_id} tag="a" style={{ cursor: "pointer" }} onClick={() => this.handleShow(sheet)}>
               <Card.Img variant="top" src={img} />
               <Card.Body >
