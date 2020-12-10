@@ -56,6 +56,7 @@ router.post("/add", passport.authenticate('admin', { session: false }), (req, re
 // @desc send sheet
 // @access protected
 router.post("/send", passport.authenticate('user', { session: false }), (req, res) => {
+    console.log('recu : ', req.body)
     //verify the JWT token generated for the user
     // Form validation
     const { errors, isValid } = validateSendInput(req.body);
@@ -63,7 +64,6 @@ router.post("/send", passport.authenticate('user', { session: false }), (req, re
     if (!isValid) {
         return res.status(400).json(errors);
     }
-
     Sheet.findOne({ name: req.body.name }).then(sheet => {
         if (sheet) {
             sendEmail(req.body)

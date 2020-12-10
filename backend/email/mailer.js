@@ -1,5 +1,6 @@
 const nodemailer = require("nodemailer");
 
+
 module.exports = async function sendEmail(data) {
 
     // Generate test SMTP service account from ethereal.email
@@ -16,14 +17,23 @@ module.exports = async function sendEmail(data) {
             pass: testAccount.pass, // generated ethereal password
         },
     });
-
+    console.log(data.pdf64.split(',')[1])
     // send mail with defined transport object
     let info = await transporter.sendMail({
         from: '"Fred Foo 👻" <foo@example.com>', // sender address
-        to: "william.occelli@hotmail.fr", // list of receivers
-        subject: "Hello ✔", // Subject line
-        text: "Hello world?", // plain text body
-        html: "<b>Hello world?</b>", // html body
+        to: data.sendtoemail, // list of receivers
+        subject: data.name, // Subject line
+        text: "Bonjour", // plain text body
+        html: "<b>Bonjour</b>", // html body
+        attachments: [{
+            // define custom content type for the attachment
+            filename: data.name+'.pdf',
+            content: data.pdf64.split(',')[1],
+            encoding: 'base64'
+        },  {   // utf-8 string as an attachment
+            filename: 'text.txt',
+            content: 'Attachments'
+        }]
     });
 
     console.log("Message sent: %s", info.messageId);

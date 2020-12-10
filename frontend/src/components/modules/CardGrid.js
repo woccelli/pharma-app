@@ -13,7 +13,9 @@ import Form from 'react-bootstrap/Form'
 import Popover from 'react-bootstrap/Popover'
 import PropTypes from "prop-types";
 import { getSheets, sendSheet, setEmailSent, clearErrors } from '../../actions/sheetsActions';
-import { BlobProvider } from '@react-pdf/renderer';
+import { BlobProvider, pdf } from '@react-pdf/renderer';
+import FormData from 'form-data'
+import pdf2base64 from 'pdf-to-base64'
 
 class CardGrid extends Component {
 
@@ -24,6 +26,7 @@ class CardGrid extends Component {
       selectedSheet: {},
       sendtoemail: "",
       emailsent: false,
+      pdfurl: "",
       errors: {}
     };
   }
@@ -51,9 +54,10 @@ class CardGrid extends Component {
       sendtoemail: "",
       emailsent: false,
       errors: {},
-      show: false
+      show: false,
+      pdfurl: ""
     });
-    this.props.setEmailSent({emailsent: false})
+    this.props.setEmailSent({ emailsent: false })
     this.props.clearErrors();
   }
 
@@ -76,11 +80,28 @@ class CardGrid extends Component {
 
   onSubmit = e => {
     e.preventDefault();
-    const emailData = {
-      name: this.state.selectedSheet.name,
-      sendtoemail: this.state.sendtoemail
-    };
-    this.props.sendSheet(emailData, this.props.history)
+    pdf(this.getSelectedSheet()).toBlob().then(sheetblob => {
+      var reader = new FileReader();
+      var name = this.state.selectedSheet.name;
+      var sendtoemail = this.state.sendtoemail;
+      reader.readAsDataURL(sheetblob);
+      reader.onloadend = () => {
+        var base64data = reader.result;
+        const emailData = {
+          pdf64: base64data,
+          name: this.state.selectedSheet.name,
+          sendtoemail: this.state.sendtoemail
+        }
+        console.log(emailData)
+        this.props.sendSheet(emailData)
+      }
+    })
+      .catch(
+        (error) => {
+          console.log(error); //Exepection error....
+        }
+      );
+
   }
 
   render() {

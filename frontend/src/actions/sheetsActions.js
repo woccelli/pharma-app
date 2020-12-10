@@ -65,7 +65,7 @@ export const sendSheet = (emailData) => dispatch => {
         type: GET_ERRORS,
         payload: err.response.data
       })
-      dispatch(setEmailSent({emailsent: false}))
+      dispatch(setEmailSent({ emailsent: false }))
     }
     );
 };
