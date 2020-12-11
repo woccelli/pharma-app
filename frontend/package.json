@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@material-ui/core": "^4.11.2",
     "@react-pdf/renderer": "^1.6.12",
     "axios": "^0.19.2",
     "bootstrap": "^4.5.0",
@@ -11,9 +12,11 @@
     "is-empty": "^1.2.0",
     "jquery": "^3.5.1",
     "jwt-decode": "^2.2.0",
+    "material-table": "^1.69.2",
     "pdf-to-base64": "^1.0.3",
     "react": "^16.13.1",
     "react-bootstrap": "^1.0.1",
+    "react-data-table-component": "^6.11.6",
     "react-dom": "^16.13.1",
     "react-pdf": "^5.0.0",
     "react-redux": "^7.2.0",
@@ -22,7 +25,8 @@
     "react-scrollbar": "^0.5.6",
     "react-to-print": "^2.11.0",
     "redux": "^4.0.5",
-    "redux-thunk": "^2.3.0"
+    "redux-thunk": "^2.3.0",
+    "styled-components": "^5.2.1"
   },
   "devDependencies": {},
   "scripts": {

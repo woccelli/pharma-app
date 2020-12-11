@@ -2,7 +2,8 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { getSheets } from "../../../actions/sheetsActions";
-import Table from 'react-bootstrap/Table';
+import MaterialTable from 'material-table'
+
 class SheetsTab extends Component {
 
     constructor(props) {
@@ -18,26 +19,35 @@ class SheetsTab extends Component {
         console.log(this.props)
         const { sheets } = this.props.sheets
 
+        const columns = [
+            {
+                title: 'Nom',
+                field: 'name',
+            },
+            {
+                title: 'Date',
+                field: 'date',
+            },
+        ];
+
+        const ExpandableComponent = ({ data }) => <div>{data._id}</div>;
         return (
 
-            <Table striped bordered hover>
-                <thead>
-                    <tr>
-                        <th>#</th>
-                        <th>Nom</th>
-                        <th>Date</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {sheets.map((sheet, _id) => (
-                        <tr key={_id}>
-                            <td>{_id}</td>
-                            <td>{sheet.name}</td>
-                            <td>{sheet.date}</td>
-                        </tr>
-                    ))}
-                </tbody>
-            </Table>
+
+            <MaterialTable
+                columns={columns}
+                data={sheets}
+                title="Fiches"
+                options={{
+                    sorting: true,
+                    filtering: true
+                  }}
+                detailPanel={rowData => {
+                    return (
+                        <div>{rowData._id}</div>
+                    )
+                }}
+            />
         )
     }
 

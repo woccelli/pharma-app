@@ -2,7 +2,8 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { getUsers } from "../../../actions/adminActions";
-import Table from 'react-bootstrap/Table';
+import MaterialTable from 'material-table'
+
 class UserTab extends Component {
 
     constructor(props) {
@@ -14,35 +15,50 @@ class UserTab extends Component {
     }
 
 
+
     render() {
         const { users } = this.props.admin
 
+        const columns = [
+            {
+                title: 'Nom',
+                field: 'name',
+            },
+            {
+                title: 'E-mail',
+                field: 'email',
+            },
+            {
+                title: 'Role',
+                field: 'role',
+            },
+            {
+                title: 'Abonné',
+                field: 'subscriber',
+                render: row => row.subscriber?'Oui':'Non'
+            },
+            {
+                title: 'Date de création',
+                field: 'date'
+            },
+        ];
+
         return (
 
-            <Table striped bordered hover>
-                <thead>
-                    <tr>
-                        <th>#</th>
-                        <th>Nom</th>
-                        <th>E-mail</th>
-                        <th>Role</th>
-                        <th>Abonné</th>
-                        <th>Création</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {users.map((user, _id) => (
-                        <tr key={_id}>
-                            <td>{_id}</td>
-                            <td>{user.name}</td>
-                            <td>{user.email}</td>
-                            <td>{user.role}</td>
-                            <td>{(user.subscriber)?'Oui':'Non'}</td>
-                            <td>{user.date}</td>
-                        </tr>
-                    ))}
-                </tbody>
-            </Table>
+            <MaterialTable
+                columns={columns}
+                data={users}
+                title="Utilisateurs"
+                options={{
+                    sorting: true,
+                    filtering: true
+                  }}
+                detailPanel={rowData => {
+                    return (
+                        <div>{rowData._id}</div>
+                    )
+                }}
+            />
         )
     }
 
