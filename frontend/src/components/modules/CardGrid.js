@@ -18,15 +18,16 @@ import { BlobProvider, pdf } from '@react-pdf/renderer';
 class CardGrid extends Component {
 
   constructor(props) {
-      super(props);
-      this.state = {
-        show: false,
-        selectedSheet: {},
-        sendtoemail: "",
-        emailsent: false,
-        pdfurl: "",
-        errors: {}
-      };
+    super(props);
+    this.state = {
+      show: false,
+      selectedSheet: {},
+      sendtoemail: "",
+      emailsent: false,
+      pdfurl: "",
+      errors: {},
+      search: ""
+    };
   }
 
   componentDidMount = () => {
@@ -177,8 +178,20 @@ class CardGrid extends Component {
 
         </Modal>
 
+        <Form>
+          <Form.Group controlId="formSearch">
+            <Form.Control
+              id="search"
+              type="text"
+              placeholder="Rechercher..."
+              onChange={this.onChange}
+              value={this.state.search} />
+          </Form.Group>
+        </Form>
+
         <CardColumns>
-          {sheets.map((sheet, _id) => (
+          {sheets.map((sheet, _id) => 
+            {if(sheet.name.includes(this.state.search) ) { return (
             <Card key={_id} tag="a" style={{ cursor: "pointer" }} onClick={() => this.handleShow(sheet)}>
               <Card.Img variant="top" src={img} />
               <Card.Body >
@@ -188,7 +201,8 @@ class CardGrid extends Component {
                 </Card.Text>
               </Card.Body>
             </Card>
-          ))}
+            )}}
+          )}
         </CardColumns>
       </div>
     );

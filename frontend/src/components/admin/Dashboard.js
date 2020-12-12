@@ -1,12 +1,10 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { logoutUser } from "../../actions/authActions";
 
 import Container from 'react-bootstrap/Container'
 import Tabs from 'react-bootstrap/Tabs'
 import Tab from 'react-bootstrap/Tabs'
-import Button from 'react-bootstrap/Button'
 import CardGrid from "../modules/CardGrid"
 import UsersTab from "./users/UsersTab"
 import SheetsTab from "./sheets/SheetsTab";
@@ -33,14 +31,12 @@ class Dashboard extends Component {
                        <SheetsTab />
                     </Tab>
                 </Tabs>
-                <Button  onClick={this.onLogoutClick}> Se déconnecter</Button>
             </Container>
         );
     }
 }
 
 Dashboard.propTypes = {
-    logoutUser: PropTypes.func.isRequired,
     auth: PropTypes.object.isRequired
 };
 
@@ -50,5 +46,5 @@ const mapStateToProps = state => ({
 
 export default connect(
     mapStateToProps,
-    { logoutUser }
+    null
 )(Dashboard);

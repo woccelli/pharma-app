@@ -13,12 +13,14 @@ import Navbar from 'react-bootstrap/Navbar'
 import Landing from "./components/layout/Landing";
 import Register from "./components/auth/Register";
 import Login from "./components/auth/Login";
+import Account from "./components/auth/Account";
 import Subscribe from "./components/auth/Subscribe";
 import PrivateRoute from "./components/private-route/PrivateRoute";
 import AdminRoute from "./components/private-route/AdminRoute"
-import Dashboard from "./components/dashboard/Dashboard";
+import Dashboard from "./components/layout/Dashboard";
 import AddSheet from "./components/admin/AddSheet";
 import AdminDashboard from "./components/admin/Dashboard";
+import Header from "./components/layout/Header"
 
 // Check for token to keep user logged in
 if (localStorage.jwtToken) {
@@ -44,15 +46,14 @@ class App extends Component {
       <Provider store={store}>
         <Router>
           <Container className="h-100">
-            <Navbar bg="dark" sticky="top" className="border-bottom border-gray bg-white">
-              <Navbar.Brand href="/"> Pharma-app</Navbar.Brand>
-            </Navbar>
+            <Header/>
             <Route exact path="/" component={Landing} />
             <Route exact path="/register" component={Register} />
             <Route exact path="/login" component={Login} />
             <Switch>
               <PrivateRoute exact path="/dashboard" component={Dashboard} />
               <PrivateRoute exact path="/subscribe" component={Subscribe} />
+              <PrivateRoute exact path="/account" component={Account} />
             </Switch>
             <AdminRoute exact path="/admin/addsheet" component={AddSheet} />
             <AdminRoute exact path="/admin/dashboard" component={AdminDashboard} />
