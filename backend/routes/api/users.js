@@ -7,6 +7,7 @@ const passport = require("passport");
 // Load input validation
 const validateRegisterInput = require("../../validation/register");
 const validateLoginInput = require("../../validation/login");
+const { validateUpdateInput, validateUpdateEmailInput } = require("../../validation/update");
 
 // Load User model
 const User = require("../../models/User");
@@ -116,6 +117,68 @@ router.post("/login", (req, res) => {
             }
         });
     });
+});
+
+// @route POST api/users/update
+// @desc Update user 
+// @access Protected
+router.post("/update", passport.authenticate('user', { session: false }), (req, res) => {
+    // Form validation
+
+    const { errors, isValid } = validateUpdateInput(req.body);
+
+    // Check validation
+    if (!isValid) {
+        return res.status(400).json(errors);
+    }
+
+    console.log(req.user)
+    const _id = req.body._id; // change to token id
+    const name = req.body.name;
+
+
+    User.findByIdAndUpdate({ _id }, { name: name }, { useFindAndModify: false, new: true }, (err, result) => {
+        if (result) {
+            return res.json(result);
+        }
+        if (err) {
+            return res.status(400).json(err);
+        }
+    })
+});
+
+// @route POST api/users/update
+// @desc Update user email - Error if email already exists in DB
+// @access Protected
+router.post("/update-email", passport.authenticate('user', { session: false }), (req, res) => {
+    // Form validation
+
+    const { errors, isValid } = validateUpdateEmailInput(req.body);
+
+    // Check validation
+    if (!isValid) {
+        return res.status(400).json(errors);
+    }
+
+    const _id = req.body._id; //change to token id
+    const email = req.body.email;
+
+    User.findOne({ email })
+        .then(existinguser => {
+            if (existinguser) {
+                return res.status(400).json({ email: "Cet e-mail n'est pas disponible" })
+            }
+            else {
+                User.findByIdAndUpdate({ _id }, { email: email }, { useFindAndModify: false, new: true }, (err, result) => {
+                    if (result) {
+                        return res.json(result);
+                    }
+                    if (err) {
+                        return res.status(400).json(err);
+                    }
+                })
+            }
+        })
 });
 
 module.exports = router;

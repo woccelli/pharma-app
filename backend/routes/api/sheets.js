@@ -29,12 +29,9 @@ router.get('/', function (req, res) {
 router.post("/add", passport.authenticate('admin', { session: false }), (req, res) => {
     //verify the JWT token generated for the user
     // Form validation
-    console.log('backend add called')
     const { errors, isValid } = validateAddInput(req.body);
-    console.log('erreurs' , errors)
     // Check validation
     if (!isValid) {
-        console.log(errors)
         return res.status(400).json(errors);
     }
 
