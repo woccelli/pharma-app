@@ -179,7 +179,7 @@ class CardGrid extends Component {
         </Modal>
 
         <Form>
-          <Form.Group controlId="formSearch">
+          <Form.Group>
             <Form.Control
               id="search"
               type="text"

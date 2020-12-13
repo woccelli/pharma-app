@@ -6,6 +6,7 @@ import { loginUser } from "../../actions/authActions";
 
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
+import Container from 'react-bootstrap/Container'
 
 class Login extends Component {
   constructor() {
@@ -62,10 +63,10 @@ class Login extends Component {
     const { errors } = this.state;
 
     return (
-      <div class="container h-100"> 
+      <Container fluid> 
         <Form noValidate onSubmit={this.onSubmit} class="row align-items-center">
           <Form.Label> <h2>Connexion</h2> </Form.Label>
-          <Form.Group controlId="formGroupEmail">
+          <Form.Group>
             <Form.Label>Adresse e-mail</Form.Label>
             <Form.Control
               required
@@ -81,7 +82,7 @@ class Login extends Component {
               {errors.emailnotfound}
             </Form.Control.Feedback>
           </Form.Group>
-          <Form.Group controlId="formGroupPassword">
+          <Form.Group>
             <Form.Label>Password</Form.Label>
             <Form.Control
               required
@@ -106,7 +107,7 @@ class Login extends Component {
             Pas encore de compte? <Link to="/register">S'inscrire</Link>
           </p>
         </Form>
-      </div>
+      </Container>
     );
   }
 }

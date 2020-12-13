@@ -16,28 +16,31 @@ class Account extends Component {
         super(props);
         this.state = {
             name: this.props.auth.user.name,
+            initialname: this.props.auth.user.name,
             email: this.props.auth.user.email,
             modify: false,
             errors: {}
         }
     }
 
-    componentWillReceiveProps(nextProps) {
-        console.log(nextProps)
-        if (nextProps.errors) {
-          this.setState({
-            errors: nextProps.errors
-          });
+    static getDerivedStateFromProps(nextProps, prevState){
+        if (nextProps.errors !== prevState.errors) {
+            console.log(nextProps.errors, prevState.errors)
+            return { errors: nextProps.errors };
         }
-        if (nextProps.auth.user) {
-            this.setState({
-              name: nextProps.auth.user.name
-            });
-          }
-      }
+        if (nextProps.auth.user.name != prevState.initialname){
+            return { 
+                name: nextProps.auth.user.name, 
+                initialname: nextProps.auth.user.name, 
+                modify: false 
+            };
+        }
+        else return null; // Triggers no change in the state
+    }
 
     handleModify = () => {
         this.setState(prevState => ({
+            errors: {},
             name: this.props.auth.user.name,
             email: this.props.auth.user.email,
             modify: !prevState.modify
@@ -48,14 +51,17 @@ class Account extends Component {
         this.setState({ [e.target.id]: e.target.value });
     };
 
-    onSubmit =  e => {
+    clearErrors = () => {
+        this.setState({ errors: {} });
+    }
+
+    onSubmit = e => {
         e.preventDefault();
         const updatedUser = {
             name: this.state.name
-          };
-          this.props.updateUser(updatedUser);
-          this.handleModify();
-      };
+        };
+        this.props.updateUser(updatedUser);
+    };
 
     render() {
         const { errors } = this.state;
@@ -75,7 +81,7 @@ class Account extends Component {
                     </Col>
                     <Col>
                         <Form noValidate onSubmit={this.onSubmit}>
-                            <Form.Group as={Row} controlId="formName">
+                            <Form.Group as={Row}>
                                 <Form.Label column sm="2">
                                     Nom
                                 </Form.Label>
@@ -90,12 +96,12 @@ class Account extends Component {
                                         isInvalid={errors.name}
                                     />
                                     <Form.Control.Feedback type="invalid">
-                                        {errors.email}
+                                        {errors.name}
                                     </Form.Control.Feedback>
                                 </Col>
                             </Form.Group>
 
-                            <Form.Group as={Row} controlId="formEmail">
+                            <Form.Group as={Row}>
                                 <Form.Label column sm="2">
                                     Email
                                 </Form.Label>
@@ -104,7 +110,7 @@ class Account extends Component {
                                 </Col>
                             </Form.Group>
                             <Button hidden={this.state.modify} onClick={this.handleModify}>Modifier</Button>
-                            <Button hidden={!this.state.modify} type="submit">Valider la modification</Button>
+                            <Button hidden={!this.state.modify} disabled={!this.state.modify} type="submit">Valider la modification</Button>
                             <Button hidden={!this.state.modify} onClick={this.handleModify} variant='secondary'>Annuler</Button>
                         </Form>
                     </Col>

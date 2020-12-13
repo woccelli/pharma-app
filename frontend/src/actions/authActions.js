@@ -57,6 +57,10 @@ export const updateUser = userData => dispatch => {
   axios
     .post("/api/users/update", userData)
     .then(res => {
+      dispatch({
+        type: GET_ERRORS,
+        payload: {}
+      })
       // Save to localStorage
       // Set token to localStorage
       const { token } = res.data;
