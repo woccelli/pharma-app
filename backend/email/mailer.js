@@ -17,7 +17,6 @@ module.exports = async function sendEmail(data) {
             pass: testAccount.pass, // generated ethereal password
         },
     });
-    console.log(data.pdf64.split(',')[1])
     // send mail with defined transport object
     let info = await transporter.sendMail({
         from: '"Fred Foo 👻" <foo@example.com>', // sender address

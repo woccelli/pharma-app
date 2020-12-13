@@ -29,7 +29,6 @@ export const getUsers = () => dispatch => {
 };
 
 export const addSheet = (sheetData, history) => dispatch => {
-    console.log('addSheet called')
     axios
         .post("/api/sheets/add", sheetData)
         .then(res => history.push('/admin/dashboard'))

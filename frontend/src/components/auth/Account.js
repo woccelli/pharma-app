@@ -23,16 +23,16 @@ class Account extends Component {
         }
     }
 
-    static getDerivedStateFromProps(nextProps, prevState){
+    static getDerivedStateFromProps(nextProps, prevState) {
         if (nextProps.errors !== prevState.errors) {
-            console.log(nextProps.errors, prevState.errors)
             return { errors: nextProps.errors };
         }
-        if (nextProps.auth.user.name != prevState.initialname){
-            return { 
-                name: nextProps.auth.user.name, 
-                initialname: nextProps.auth.user.name, 
-                modify: false 
+        if (nextProps.auth.user.name != prevState.initialname) {
+            return {
+                name: nextProps.auth.user.name,
+                initialname: nextProps.auth.user.name,
+                nameSuccess: "Le nom a bien été modifié !",
+                modify: false
             };
         }
         else return null; // Triggers no change in the state
@@ -43,6 +43,7 @@ class Account extends Component {
             errors: {},
             name: this.props.auth.user.name,
             email: this.props.auth.user.email,
+            nameSuccess: "",
             modify: !prevState.modify
         }));
     }
@@ -98,6 +99,9 @@ class Account extends Component {
                                     <Form.Control.Feedback type="invalid">
                                         {errors.name}
                                     </Form.Control.Feedback>
+                                    <Form.Text className="text-success">
+                                        {this.state.nameSuccess}
+                                    </Form.Text>
                                 </Col>
                             </Form.Group>
 

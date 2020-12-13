@@ -27,7 +27,6 @@ module.exports = {
     },
 
     validateSendInput: function (data) {
-        console.log('send validation appelé');
         let errors = {};
 
         // Convert empty fields to an empty string so we can use validator functions

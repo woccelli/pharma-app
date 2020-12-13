@@ -34,13 +34,11 @@ class CardGrid extends Component {
     this.props.getSheets();
   }
 
-  componentWillReceiveProps(nextProps) {
-    console.log("nzxrProps", nextProps)
-    if (nextProps.errors) {
-      this.setState({
-        errors: nextProps.errors
-      });
+  static getDerivedStateFromProps(nextProps, prevState) {
+    if (nextProps.errors !== prevState.errors) {
+      return { errors: nextProps.errors };
     }
+    else return null; // Triggers no change in the state
   }
 
   getSelectedSheet = () => {
@@ -62,7 +60,6 @@ class CardGrid extends Component {
   }
 
   handleShow = sheet => {
-    console.log('sub', this.props.auth.user)
     if (this.props.auth.user.subscriber) {
       this.setState({
         selectedSheet: sheet,
@@ -97,7 +94,6 @@ class CardGrid extends Component {
           name: this.state.selectedSheet.name,
           sendtoemail: this.state.sendtoemail
         }
-        console.log(emailData)
         this.props.sendSheet(emailData)
       }
     })

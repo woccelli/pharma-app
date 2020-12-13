@@ -14,8 +14,6 @@ class UserTab extends Component {
         this.props.getUsers();
     }
 
-
-
     render() {
         const { users } = this.props.admin
 

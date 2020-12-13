@@ -16,7 +16,6 @@ class SheetsTab extends Component {
 
 
     render() {
-        console.log(this.props)
         const { sheets } = this.props.sheets
 
         const columns = [
