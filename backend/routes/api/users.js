@@ -124,7 +124,7 @@ router.post("/login", (req, res) => {
 // @access Protected
 router.post("/update", passport.authenticate('user', { session: false }), (req, res) => {
     // Form validation
-
+    const user = req.user;
     const { errors, isValid } = validateUpdateInput(req.body);
 
     // Check validation
@@ -132,14 +132,33 @@ router.post("/update", passport.authenticate('user', { session: false }), (req, 
         return res.status(400).json(errors);
     }
 
-    console.log(req.user)
-    const _id = req.body._id; // change to token id
     const name = req.body.name;
 
+    User.findByIdAndUpdate(user._id, { name: name }, { useFindAndModify: false, new: true }, (err, result) => {
 
-    User.findByIdAndUpdate({ _id }, { name: name }, { useFindAndModify: false, new: true }, (err, result) => {
+        const payload = {
+            id: result.id,
+            name: result.name,
+            email: result.email,
+            role: result.role,
+            subscriber: result.subscriber
+        };
+
         if (result) {
-            return res.json(result);
+            // Sign token
+            jwt.sign(
+                payload,
+                keys.secretOrKey,
+                {
+                    expiresIn: 31556926 // 1 year in seconds
+                },
+                (err, token) => {
+                    res.json({
+                        success: true,
+                        token: "Bearer " + token
+                    });
+                }
+            );
         }
         if (err) {
             return res.status(400).json(err);
@@ -152,7 +171,7 @@ router.post("/update", passport.authenticate('user', { session: false }), (req, 
 // @access Protected
 router.post("/update-email", passport.authenticate('user', { session: false }), (req, res) => {
     // Form validation
-
+    const user = req.user;
     const { errors, isValid } = validateUpdateEmailInput(req.body);
 
     // Check validation
@@ -160,7 +179,6 @@ router.post("/update-email", passport.authenticate('user', { session: false }), 
         return res.status(400).json(errors);
     }
 
-    const _id = req.body._id; //change to token id
     const email = req.body.email;
 
     User.findOne({ email })
@@ -169,7 +187,7 @@ router.post("/update-email", passport.authenticate('user', { session: false }), 
                 return res.status(400).json({ email: "Cet e-mail n'est pas disponible" })
             }
             else {
-                User.findByIdAndUpdate({ _id }, { email: email }, { useFindAndModify: false, new: true }, (err, result) => {
+                User.findByIdAndUpdate(user._id, { email: email }, { useFindAndModify: false, new: true }, (err, result) => {
                     if (result) {
                         return res.json(result);
                     }

@@ -7,14 +7,58 @@ import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Form from 'react-bootstrap/Form'
+import Button from 'react-bootstrap/Button'
+import { updateUser } from "../../actions/authActions";
+
 class Account extends Component {
 
     constructor(props) {
         super(props);
+        this.state = {
+            name: this.props.auth.user.name,
+            email: this.props.auth.user.email,
+            modify: false,
+            errors: {}
+        }
     }
 
+    componentWillReceiveProps(nextProps) {
+        console.log(nextProps)
+        if (nextProps.errors) {
+          this.setState({
+            errors: nextProps.errors
+          });
+        }
+        if (nextProps.auth.user) {
+            this.setState({
+              name: nextProps.auth.user.name
+            });
+          }
+      }
+
+    handleModify = () => {
+        this.setState(prevState => ({
+            name: this.props.auth.user.name,
+            email: this.props.auth.user.email,
+            modify: !prevState.modify
+        }));
+    }
+
+    onChange = e => {
+        this.setState({ [e.target.id]: e.target.value });
+    };
+
+    onSubmit =  e => {
+        e.preventDefault();
+        const updatedUser = {
+            name: this.state.name
+          };
+          this.props.updateUser(updatedUser);
+          this.handleModify();
+      };
+
     render() {
-        const { user } = this.props.auth;
+        const { errors } = this.state;
 
         return (
             <Container>
@@ -30,24 +74,38 @@ class Account extends Component {
                         </Nav>
                     </Col>
                     <Col>
-                        <Form>
-                            <Form.Group as={Row} controlId="formPlaintextName">
+                        <Form noValidate onSubmit={this.onSubmit}>
+                            <Form.Group as={Row} controlId="formName">
                                 <Form.Label column sm="2">
                                     Nom
                                 </Form.Label>
                                 <Col sm="10">
-                                    <Form.Control plaintext readOnly defaultValue={user.name} />
+                                    <Form.Control
+                                        id="name"
+                                        plaintext={!this.state.modify}
+                                        readOnly={!this.state.modify}
+                                        value={this.state.name}
+                                        onChange={this.onChange}
+                                        error={errors.name}
+                                        isInvalid={errors.name}
+                                    />
+                                    <Form.Control.Feedback type="invalid">
+                                        {errors.email}
+                                    </Form.Control.Feedback>
                                 </Col>
                             </Form.Group>
-                            <Form.Group as={Row} controlId="formPlaintextEmail">
+
+                            <Form.Group as={Row} controlId="formEmail">
                                 <Form.Label column sm="2">
                                     Email
                                 </Form.Label>
                                 <Col sm="10">
-                                    <Form.Control plaintext readOnly defaultValue={user.email} />
+                                    <Form.Control plaintext readOnly value={this.state.email} />
                                 </Col>
                             </Form.Group>
-
+                            <Button hidden={this.state.modify} onClick={this.handleModify}>Modifier</Button>
+                            <Button hidden={!this.state.modify} type="submit">Valider la modification</Button>
+                            <Button hidden={!this.state.modify} onClick={this.handleModify} variant='secondary'>Annuler</Button>
                         </Form>
                     </Col>
                 </Row>
@@ -58,6 +116,7 @@ class Account extends Component {
 }
 
 Account.propTypes = {
+    updateUser: PropTypes.func.isRequired,
     errors: PropTypes.object.isRequired,
     auth: PropTypes.object.isRequired
 }
@@ -71,5 +130,5 @@ const mapStateToProps = state => {
 
 export default connect(
     mapStateToProps,
-    null
+    { updateUser }
 )(Account);
