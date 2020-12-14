@@ -59,7 +59,7 @@ class Register extends Component {
         <Form noValidate onSubmit={this.onSubmit} class="row align-items-center">
           <Form.Label> <h2>Inscription</h2> </Form.Label>
           <Form.Group>
-            <Form.Label> Nom de l'enseigne </Form.Label>
+            <Form.Label> Dénomination sociale </Form.Label>
             <Form.Control
               required
               onChange={this.onChange}
@@ -73,6 +73,7 @@ class Register extends Component {
               {errors.name}
             </Form.Control.Feedback>
           </Form.Group>
+
           <Form.Group>
             <Form.Label>Adresse e-mail</Form.Label>
             <Form.Control
@@ -88,6 +89,7 @@ class Register extends Component {
               {errors.email}
             </Form.Control.Feedback>
           </Form.Group>
+
           <Form.Group>
             <Form.Label>Mot de passe</Form.Label>
             <Form.Control
@@ -103,6 +105,7 @@ class Register extends Component {
               {errors.password}
             </Form.Control.Feedback>
           </Form.Group>
+          
           <Form.Group>
             <Form.Label>Confirmez le mot de passe</Form.Label>
             <Form.Control

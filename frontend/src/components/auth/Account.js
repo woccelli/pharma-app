@@ -84,7 +84,7 @@ class Account extends Component {
                         <Form noValidate onSubmit={this.onSubmit}>
                             <Form.Group as={Row}>
                                 <Form.Label column sm="2">
-                                    Nom
+                                    Dénomination sociale
                                 </Form.Label>
                                 <Col sm="10">
                                     <Form.Control
