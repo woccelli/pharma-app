@@ -9,7 +9,8 @@ import Col from "react-bootstrap/Col";
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
 import { updateUser } from "../../actions/authActions";
-import AddressForm from "./AddressForm";
+import CardDeck from 'react-bootstrap/CardDeck'
+import Card from 'react-bootstrap/Card'
 
 class Account extends Component {
 
@@ -67,9 +68,11 @@ class Account extends Component {
 
     render() {
         const { errors } = this.state;
-
+        const { addresses } = this.props.auth.user
+        console.log(this.props.auth.user)
+        console.log(addresses)
         return (
-            <Container>
+            <Container fluid>
                 <Row>
                     <Col xs="auto">
                         <Nav defaultActiveKey="/home" className="flex-column">
@@ -81,47 +84,84 @@ class Account extends Component {
                             </Nav.Link>
                         </Nav>
                     </Col>
-                    <Col>
-                        <Form noValidate onSubmit={this.onSubmit}>
-                            <Form.Group as={Row}>
-                                <Form.Label column sm="2">
-                                    Dénomination sociale
-                                </Form.Label>
-                                <Col sm="10">
-                                    <Form.Control
-                                        id="name"
-                                        plaintext={!this.state.modify}
-                                        readOnly={!this.state.modify}
-                                        value={this.state.name}
-                                        onChange={this.onChange}
-                                        error={errors.name}
-                                        isInvalid={errors.name}
-                                    />
-                                    <Form.Control.Feedback type="invalid">
-                                        {errors.name}
-                                    </Form.Control.Feedback>
-                                    <Form.Text className="text-success">
-                                        {this.state.nameSuccess}
-                                    </Form.Text>
-                                </Col>
-                            </Form.Group>
+                    <Col xs="auto">
+                        <Row>
+                            <h4>Mes informations</h4>
+                        </Row>
+                        <Row>
+                            <Form noValidate onSubmit={this.onSubmit}>
+                                <Form.Group as={Row}>
+                                    <Col sm="5">
+                                        <Form.Label column>
+                                            Dénomination sociale
+                                        </Form.Label>
+                                    </Col>
+                                    <Col >
+                                        <Form.Control
+                                            id="name"
+                                            plaintext={!this.state.modify}
+                                            readOnly={!this.state.modify}
+                                            value={this.state.name}
+                                            onChange={this.onChange}
+                                            error={errors.name}
+                                            isInvalid={errors.name}
+                                        />
+                                        <Form.Control.Feedback type="invalid">
+                                            {errors.name}
+                                        </Form.Control.Feedback>
+                                        <Form.Text className="text-success">
+                                            {this.state.nameSuccess}
+                                        </Form.Text>
+                                    </Col>
+                                </Form.Group>
 
-                            <Form.Group as={Row}>
-                                <Form.Label column sm="2">
-                                    Email
-                                </Form.Label>
-                                <Col sm="10">
-                                    <Form.Control plaintext readOnly value={this.state.email} />
-                                </Col>
-                            </Form.Group>
-                            <Button hidden={this.state.modify} onClick={this.handleModify}>Modifier</Button>
-                            <Button hidden={!this.state.modify} disabled={!this.state.modify} type="submit">Valider la modification</Button>
-                            <Button hidden={!this.state.modify} onClick={this.handleModify} variant='secondary'>Annuler</Button>
-                        </Form>
+                                <Form.Group as={Row}>
+                                    <Col sm="5">
+                                        <Form.Label column>
+                                            Email
+                                    </Form.Label>
+                                    </Col>
+                                    <Col>
+                                        <Form.Control plaintext readOnly value={this.state.email} />
+                                    </Col>
+                                </Form.Group>
+                                <Button hidden={this.state.modify} onClick={this.handleModify}>Modifier</Button>
+                                <Button hidden={!this.state.modify} disabled={!this.state.modify} type="submit">Valider la modification</Button>
+                                <Button hidden={!this.state.modify} onClick={this.handleModify} variant='secondary'>Annuler</Button>
+                            </Form>
+                        </Row>
+                        <Row>
+                            <h4>Mes adresses</h4>
+                        </Row>
+                        <Row>
+                            {
+                                addresses.map((address, _id) => { return (console.log(address.dest)) }
+                                )}
+
+                            <CardDeck>
+                                {addresses.map((address, _id) => {
+                                    return (
+                                        <Card key={_id} tag="a">
+                                            <Card.Body >
+                                                <Card.Text>
+                                                    <Container fluid>
+                                                    <Row>{address.dest}</Row>
+                                                    <Row>{address.addr_comp}</Row>
+                                                    <Row>{address.addr_1}</Row>
+                                                    <Row>{address.addr_2}</Row>
+                                                    <Row>{address.postcode} {address.city}</Row>
+                                                    <Row>{address.country}</Row>
+                                                    </Container>
+                                                </Card.Text>
+                                            </Card.Body>
+                                        </Card>
+                                    )
+                                }
+                                )}
+                            </CardDeck>
+
+                        </Row>
                     </Col>
-                </Row>
-                <Row>
-                    <AddressForm/>
                 </Row>
             </Container>
 

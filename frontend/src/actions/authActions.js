@@ -106,6 +106,11 @@ export const addAddress = userData => dispatch => {
     );
 };
 
+// add an address to the user's addresses list - get updated user token
+export const forgottenPwd = userData => {
+
+}
+
 
 // User loading
 export const setUserLoading = () => {

@@ -7,6 +7,9 @@ import { loginUser } from "../../actions/authActions";
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
 import Container from 'react-bootstrap/Container'
+import Modal from 'react-bootstrap/Modal'
+
+import ForgottenPwd from './modules/ForgottenPwd'
 
 class Login extends Component {
   constructor() {
@@ -14,6 +17,7 @@ class Login extends Component {
     this.state = {
       email: "",
       password: "",
+      showForgottenPwd: false,
       errors: {}
     };
   }
@@ -43,6 +47,11 @@ class Login extends Component {
     });
   };
 
+  showForgottenPwd = () => {
+    this.setState(prevState => ({
+      showForgottenPwd: !prevState.showForgottenPwd
+    }))
+  }
 
   onSubmit = e => {
     const form = event.currentTarget;
@@ -63,7 +72,16 @@ class Login extends Component {
     const { errors } = this.state;
 
     return (
-      <Container fluid> 
+      <Container fluid>
+
+        <Modal show={this.state.showForgottenPwd} onHide={this.showForgottenPwd}>
+          <Modal.Header>Mot de passe oublié</Modal.Header>
+          <Modal.Body>
+            <ForgottenPwd />
+          </Modal.Body>
+
+        </Modal>
+
         <Form noValidate onSubmit={this.onSubmit} class="row align-items-center">
           <Form.Label> <h2>Connexion</h2> </Form.Label>
           <Form.Group>
@@ -105,6 +123,9 @@ class Login extends Component {
           </Form.Group>
           <p>
             Pas encore de compte? <Link to="/register">S'inscrire</Link>
+          </p>
+          <p>
+            <Link onClick={this.showForgottenPwd}>Mot de passe oublié?</Link>
           </p>
         </Form>
       </Container>
