@@ -52,10 +52,37 @@ export const loginUser = userData => dispatch => {
     );
 };
 
-// Login - get user token
+// update user - get updated user token
 export const updateUser = userData => dispatch => {
   axios
     .post("/api/users/update", userData)
+    .then(res => {
+      dispatch({
+        type: GET_ERRORS,
+        payload: {}
+      })
+      // Save to localStorage
+      // Set token to localStorage
+      const { token } = res.data;
+      localStorage.setItem("jwtToken", token);
+      // Set token to Auth header
+      setAuthToken(token);
+      // Decode token to get user data
+      const decoded = jwt_decode(token);
+      dispatch(setCurrentUser(decoded));
+    })
+    .catch(err =>
+      dispatch({
+        type: GET_ERRORS,
+        payload: err.response.data
+      })
+    );
+};
+
+// add an address to the user's addresses list - get updated user token
+export const addAddress = userData => dispatch => {
+  axios
+    .post("/api/users/add-address", userData)
     .then(res => {
       dispatch({
         type: GET_ERRORS,

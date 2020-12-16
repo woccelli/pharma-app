@@ -7,7 +7,7 @@ const passport = require("passport");
 // Load input validation
 const validateRegisterInput = require("../../validation/register");
 const validateLoginInput = require("../../validation/login");
-const { validateUpdateInput, validateUpdateEmailInput } = require("../../validation/update");
+const { validateUpdateInput, validateUpdateEmailInput, validateAddAddressInput } = require("../../validation/update");
 
 // Load User model
 const User = require("../../models/User");
@@ -92,6 +92,7 @@ router.post("/login", (req, res) => {
                     id: user.id,
                     name: user.name,
                     email: user.email,
+                    addresses: user.addresses,
                     role: user.role,
                     subscriber: user.subscriber
                 };
@@ -140,6 +141,7 @@ router.post("/update", passport.authenticate('user', { session: false }), (req, 
             id: result.id,
             name: result.name,
             email: result.email,
+            addresses: result.addresses,
             role: result.role,
             subscriber: result.subscriber
         };
@@ -188,8 +190,30 @@ router.post("/update-email", passport.authenticate('user', { session: false }), 
             }
             else {
                 User.findByIdAndUpdate(user._id, { email: email }, { useFindAndModify: false, new: true }, (err, result) => {
+                    const payload = {
+                        id: result.id,
+                        name: result.name,
+                        email: result.email,
+                        addresses: result.addresses,
+                        role: result.role,
+                        subscriber: result.subscriber
+                    };
+                    
                     if (result) {
-                        return res.json(result);
+                        // Sign token
+                        jwt.sign(
+                            payload,
+                            keys.secretOrKey,
+                            {
+                                expiresIn: 31556926 // 1 year in seconds
+                            },
+                            (err, token) => {
+                                res.json({
+                                    success: true,
+                                    token: "Bearer " + token
+                                });
+                            }
+                        );
                     }
                     if (err) {
                         return res.status(400).json(err);
@@ -197,6 +221,55 @@ router.post("/update-email", passport.authenticate('user', { session: false }), 
                 })
             }
         })
+});
+
+// @route POST api/users/add-address
+// @desc Add an address to the user's addresses list
+// @access Protected
+router.post("/add-address", passport.authenticate('user', { session: false }), (req, res) => {
+    // Form validation
+    const user = req.user;
+    const { errors, isValid } = validateAddAddressInput(req.body.address);
+
+    // Check validation
+    if (!isValid) {
+        return res.status(400).json(errors);
+    }
+
+    const newAddress = req.body.address;
+
+
+    User.findByIdAndUpdate(user._id, { $push: {addresses: newAddress} }, { useFindAndModify: false, new: true }, (err, result) => {
+        const payload = {
+            id: result.id,
+            name: result.name,
+            email: result.email,
+            addresses: result.addresses,
+            role: result.role,
+            subscriber: result.subscriber
+        };
+        
+        if (result) {
+            // Sign token
+            console.log(result)
+            jwt.sign(
+                payload,
+                keys.secretOrKey,
+                {
+                    expiresIn: 31556926 // 1 year in seconds
+                },
+                (err, token) => {
+                    res.json({
+                        success: true,
+                        token: "Bearer " + token
+                    });
+                }
+            );
+        }
+        if (err) {
+            return res.status(400).json(err);
+        }
+    })
 });
 
 module.exports = router;

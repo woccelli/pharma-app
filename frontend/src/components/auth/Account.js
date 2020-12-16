@@ -9,6 +9,7 @@ import Col from "react-bootstrap/Col";
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
 import { updateUser } from "../../actions/authActions";
+import AddressForm from "./AddressForm";
 
 class Account extends Component {
 
@@ -118,6 +119,9 @@ class Account extends Component {
                             <Button hidden={!this.state.modify} onClick={this.handleModify} variant='secondary'>Annuler</Button>
                         </Form>
                     </Col>
+                </Row>
+                <Row>
+                    <AddressForm/>
                 </Row>
             </Container>
 
