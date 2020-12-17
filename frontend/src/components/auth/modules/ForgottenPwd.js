@@ -1,10 +1,14 @@
+// General
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
+// Local
+import { forgottenPwd } from "../../../actions/authActions";
+// Components
 import Container from "react-bootstrap/Container";
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
-import { forgottenPwd } from "../../../actions/authActions";
+
 
 class ForgottenPwd extends Component {
 

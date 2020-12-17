@@ -1,12 +1,13 @@
+// General
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-
+// Local
+import CardGrid from "../modules/CardGrid"
+// Components
 import Container from 'react-bootstrap/Container'
 import Button from 'react-bootstrap/Button'
 import Navbar from 'react-bootstrap/Navbar'
-
-import CardGrid from "../modules/CardGrid"
 
 
 class Landing extends Component {

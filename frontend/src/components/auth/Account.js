@@ -1,14 +1,16 @@
+// General
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-
+// Local
+import { updateUser } from "../../actions/authActions";
+// Components
 import Nav from 'react-bootstrap/Nav'
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
-import { updateUser } from "../../actions/authActions";
 import CardDeck from 'react-bootstrap/CardDeck'
 import Card from 'react-bootstrap/Card'
 
@@ -164,7 +166,6 @@ class Account extends Component {
                     </Col>
                 </Row>
             </Container>
-
         )
     }
 }

@@ -1,10 +1,14 @@
+// General
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
+// Local
+import { addAddress } from "../../../actions/authActions";
+// Components
 import Container from "react-bootstrap/Container";
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
-import { addAddress } from "../../../actions/authActions";
+
 
 class AddressForm extends Component {
 
@@ -35,15 +39,15 @@ class AddressForm extends Component {
     onSubmit = e => {
         e.preventDefault();
         const newAddress = {
-                dest: this.state.dest,
-                addr_comp: this.state.addr_comp,
-                addr_1: this.state.addr_1,
-                addr_2: this.state.addr_2,
-                postcode: this.state.postcode,
-                city: this.state.city,
-                country: this.state.country
+            dest: this.state.dest,
+            addr_comp: this.state.addr_comp,
+            addr_1: this.state.addr_1,
+            addr_2: this.state.addr_2,
+            postcode: this.state.postcode,
+            city: this.state.city,
+            country: this.state.country
         };
-        this.props.addAddress({address: newAddress});
+        this.props.addAddress({ address: newAddress });
     };
 
     render() {

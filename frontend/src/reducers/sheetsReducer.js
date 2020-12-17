@@ -1,4 +1,4 @@
-import { GET_SHEETS, SET_EMAILSENT } from "../actions/types";
+import { SET_SHEETS, SET_EMAILSENT } from "../actions/types";
 
   const initialState = {
     sheets: [],
@@ -7,7 +7,7 @@ import { GET_SHEETS, SET_EMAILSENT } from "../actions/types";
 
   export default function(state = initialState, action) {
     switch(action.type) {
-      case GET_SHEETS:
+      case SET_SHEETS:
         return {
             ...state,
             sheets: action.payload

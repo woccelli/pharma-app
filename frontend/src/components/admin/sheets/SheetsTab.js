@@ -1,7 +1,10 @@
+// General
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
+// Local
 import { getSheets } from "../../../actions/sheetsActions";
+// Components
 import MaterialTable from 'material-table'
 
 class SheetsTab extends Component {
@@ -13,7 +16,6 @@ class SheetsTab extends Component {
     componentDidMount = () => {
         this.props.getSheets();
     }
-
 
     render() {
         const { sheets } = this.props.sheets
@@ -29,10 +31,7 @@ class SheetsTab extends Component {
             },
         ];
 
-        const ExpandableComponent = ({ data }) => <div>{data._id}</div>;
         return (
-
-
             <MaterialTable
                 columns={columns}
                 data={sheets}
@@ -49,7 +48,6 @@ class SheetsTab extends Component {
             />
         )
     }
-
 }
 
 SheetsTab.propTypes = {

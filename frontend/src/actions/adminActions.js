@@ -1,14 +1,13 @@
 import axios from "axios";
 
 import {
-    GET_USERS,
+    SET_USERS,
     GET_ERRORS
 } from "./types";
 
-// Set logged in user
 export const setUsers = data => {
     return {
-        type: GET_USERS,
+        type: SET_USERS,
         payload: data
     };
 };
@@ -18,6 +17,7 @@ export const getUsers = () => dispatch => {
     axios
         .get("/api/users/all")
         .then(res => {
+            // Dispatch returned users in store
             dispatch(setUsers(res.data))
         })
         .catch(err =>
@@ -28,6 +28,7 @@ export const getUsers = () => dispatch => {
         );
 };
 
+// Add a new sheet to the sheets DB
 export const addSheet = (sheetData, history) => dispatch => {
     axios
         .post("/api/sheets/add", sheetData)

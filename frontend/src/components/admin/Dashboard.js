@@ -1,13 +1,16 @@
+// General
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-
-import Container from 'react-bootstrap/Container'
-import Tabs from 'react-bootstrap/Tabs'
-import Tab from 'react-bootstrap/Tabs'
+// Local
 import CardGrid from "../modules/CardGrid"
 import UsersTab from "./users/UsersTab"
 import SheetsTab from "./sheets/SheetsTab";
+// Components
+import Container from 'react-bootstrap/Container'
+import Tabs from 'react-bootstrap/Tabs'
+import Tab from 'react-bootstrap/Tabs'
+
 class Dashboard extends Component {
 
     onLogoutClick = e => {

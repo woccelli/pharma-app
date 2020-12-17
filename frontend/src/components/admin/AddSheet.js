@@ -1,16 +1,17 @@
+// General
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
+// Local
 import { logoutUser } from "../../actions/authActions";
 import { addSheet } from "../../actions/adminActions"
 import Sheet from "../modules/Sheet"
-
+// Components
 import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
-
 import { BlobProvider } from '@react-pdf/renderer';
 
 class AdminPage extends Component {
@@ -60,7 +61,6 @@ class AdminPage extends Component {
   render() {
     const { user } = this.props.auth;
     const { errors } = this.state;
-
     const MyDoc = (
       <Sheet sheet={this.state.sheet}/>
     );

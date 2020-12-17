@@ -1,8 +1,10 @@
+// General
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
+// Local
 import { logoutUser } from "../../actions/authActions";
-
+// Components
 import Navbar from 'react-bootstrap/Navbar'
 import Nav from 'react-bootstrap/Nav'
 
@@ -11,15 +13,15 @@ class Header extends Component {
     onLogoutClick = e => {
         e.preventDefault();
         this.props.logoutUser();
-      };
+    };
 
     userBoard = () => {
-        if(this.props.auth.isAuthenticated) {
-            return (    
-            <Nav>
-                <Nav.Link href="/account">Mon compte</Nav.Link>
-                <Nav.Link onClick={this.onLogoutClick}>Se déconnecter</Nav.Link>
-            </Nav>)
+        if (this.props.auth.isAuthenticated) {
+            return (
+                <Nav>
+                    <Nav.Link href="/account">Mon compte</Nav.Link>
+                    <Nav.Link onClick={this.onLogoutClick}>Se déconnecter</Nav.Link>
+                </Nav>)
         } else {
             return (<div></div>)
         }
@@ -39,13 +41,13 @@ class Header extends Component {
 Header.propTypes = {
     logoutUser: PropTypes.func.isRequired,
     auth: PropTypes.object.isRequired
-  };
-  
-  const mapStateToProps = state => ({
+};
+
+const mapStateToProps = state => ({
     auth: state.auth
-  });
+});
 
 export default connect(
     mapStateToProps,
     { logoutUser }
-  )(Header);
+)(Header);

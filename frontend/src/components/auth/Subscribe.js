@@ -1,10 +1,13 @@
+// General
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
+// Local
 import { logoutUser } from "../../actions/authActions";
-
+// Components
 import Container from 'react-bootstrap/Container'
 import Button from 'react-bootstrap/Button'
+
 
 class Subscribe extends Component {
   onLogoutClick = e => {

@@ -1,15 +1,18 @@
+// General
 import React, { Component } from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import jwt_decode from "jwt-decode";
+// Local
 import setAuthToken from "./utils/setAuthToken";
 import { setCurrentUser, logoutUser } from "./actions/authActions";
 import "./App.css"
-
+// Redux
 import { Provider } from "react-redux";
 import store from "./store";
+// Components
 import Container from 'react-bootstrap/Container'
 import Navbar from 'react-bootstrap/Navbar'
-
+// Pages
 import Landing from "./components/layout/Landing";
 import Register from "./components/auth/Register";
 import Login from "./components/auth/Login";

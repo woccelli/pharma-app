@@ -1,7 +1,10 @@
+// General
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
+// Local
 import { getUsers } from "../../../actions/adminActions";
+// Components
 import MaterialTable from 'material-table'
 
 class UserTab extends Component {
@@ -16,7 +19,6 @@ class UserTab extends Component {
 
     render() {
         const { users } = this.props.admin
-
         const columns = [
             {
                 title: 'Nom',
@@ -42,7 +44,6 @@ class UserTab extends Component {
         ];
 
         return (
-
             <MaterialTable
                 columns={columns}
                 data={users}
@@ -59,7 +60,6 @@ class UserTab extends Component {
             />
         )
     }
-
 }
 
 UserTab.propTypes = {

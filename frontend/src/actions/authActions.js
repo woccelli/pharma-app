@@ -34,6 +34,11 @@ export const loginUser = userData => dispatch => {
   axios
     .post("/api/users/login", userData)
     .then(res => {
+      // Clear errors
+      dispatch({
+        type: GET_ERRORS,
+        payload: {}
+      })
       // Save to localStorage
       // Set token to localStorage
       const { token } = res.data;
@@ -52,11 +57,12 @@ export const loginUser = userData => dispatch => {
     );
 };
 
-// update user - get updated user token
+// Update user - get updated user token
 export const updateUser = userData => dispatch => {
   axios
     .post("/api/users/update", userData)
     .then(res => {
+      // Clear errors
       dispatch({
         type: GET_ERRORS,
         payload: {}
@@ -84,6 +90,7 @@ export const addAddress = userData => dispatch => {
   axios
     .post("/api/users/add-address", userData)
     .then(res => {
+      // Clear errors
       dispatch({
         type: GET_ERRORS,
         payload: {}
@@ -106,7 +113,7 @@ export const addAddress = userData => dispatch => {
     );
 };
 
-// add an address to the user's addresses list - get updated user token
+// Send an email with forgotten password link
 export const forgottenPwd = userData => {
 
 }

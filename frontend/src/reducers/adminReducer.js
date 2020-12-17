@@ -1,5 +1,5 @@
 import {
-    GET_USERS
+    SET_USERS
   } from "../actions/types";
 
   const initialState = {
@@ -8,7 +8,7 @@ import {
   
   export default function(state = initialState, action) {
     switch (action.type) {
-      case GET_USERS:
+      case SET_USERS:
         return {
           ...state,
           users: action.payload

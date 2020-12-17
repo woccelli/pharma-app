@@ -1,9 +1,13 @@
+// General
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-
-import Container from 'react-bootstrap/Container'
+// Local
 import CardGrid from "../modules/CardGrid"
+// Components
+import Container from 'react-bootstrap/Container'
+
+
 class Dashboard extends Component {
 
   componentDidMount() {

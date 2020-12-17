@@ -1,9 +1,11 @@
+// General
 import React, { Component } from "react";
 import { Link, withRouter } from "react-router-dom";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
+// Local
 import { registerUser } from "../../actions/authActions";
-
+// Components
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
 

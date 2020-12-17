@@ -1,19 +1,22 @@
+// General
 import React, { Component } from "react";
 import { connect } from "react-redux";
-
-import Card from 'react-bootstrap/Card'
-import CardColumns from 'react-bootstrap/CardColumns'
+import PropTypes from "prop-types";
+// Local
 import img from '../../card-image.png'
 import Sheet from './Sheet'
+import { getSheets, sendSheet, setEmailSent, clearErrors } from '../../actions/sheetsActions';
+// Components
+import Card from 'react-bootstrap/Card'
+import CardColumns from 'react-bootstrap/CardColumns'
 import Modal from 'react-bootstrap/Modal'
 import Button from 'react-bootstrap/Button'
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger'
 import Alert from 'react-bootstrap/Alert'
 import Form from 'react-bootstrap/Form'
 import Popover from 'react-bootstrap/Popover'
-import PropTypes from "prop-types";
-import { getSheets, sendSheet, setEmailSent, clearErrors } from '../../actions/sheetsActions';
 import { BlobProvider, pdf } from '@react-pdf/renderer';
+
 
 class CardGrid extends Component {
 
@@ -171,7 +174,6 @@ class CardGrid extends Component {
           >
             <Button variant="primary">Envoi de la fiche</Button>
           </OverlayTrigger>
-
         </Modal>
 
         <Form>

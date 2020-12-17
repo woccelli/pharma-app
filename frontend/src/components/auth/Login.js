@@ -1,15 +1,17 @@
+// General
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
+// Local
 import { loginUser } from "../../actions/authActions";
-
+import ForgottenPwd from './modules/ForgottenPwd'
+// Components
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
 import Container from 'react-bootstrap/Container'
 import Modal from 'react-bootstrap/Modal'
 
-import ForgottenPwd from './modules/ForgottenPwd'
 
 class Login extends Component {
   constructor() {
@@ -39,7 +41,6 @@ class Login extends Component {
     }
     else return null; // Triggers no change in the state
   }
-
 
   onChange = e => {
     this.setState({
@@ -132,7 +133,6 @@ class Login extends Component {
     );
   }
 }
-
 
 Login.propTypes = {
   loginUser: PropTypes.func.isRequired,
