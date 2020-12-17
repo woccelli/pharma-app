@@ -1,17 +1,16 @@
 const express = require("express");
 const router = express.Router();
-const keys = require("../../config/keys");
-
-const path = require("path");
 
 // Load Sheet model
 const Sheet = require("../../models/Sheet");
 
 // Load input validation
-const {validateAddInput, validateSendInput} = require("../../validation/sheet");
+const { validateAddInput, validateSendInput } = require("../../validation/sheet");
+
+// Authentication and authorization 
 const passport = require("passport");
 
-//Email sending
+// Email sending
 const sendEmail = require("../../email/mailer");
 
 // @route GET api/sheets/
@@ -25,9 +24,8 @@ router.get('/', function (req, res) {
 
 // @route POST api/sheets/add
 // @desc add sheet
-// @access protected
+// @access protected - admin only
 router.post("/add", passport.authenticate('admin', { session: false }), (req, res) => {
-    //verify the JWT token generated for the user
     // Form validation
     const { errors, isValid } = validateAddInput(req.body);
     // Check validation
@@ -37,6 +35,7 @@ router.post("/add", passport.authenticate('admin', { session: false }), (req, re
 
     Sheet.findOne({ name: req.body.name }).then(sheet => {
         if (sheet) {
+            // Sheet already exists
             return res.status(400).json({ name: "Cette fiche existe déjà" });
         } else {
             const newSheet = new Sheet({
@@ -47,7 +46,7 @@ router.post("/add", passport.authenticate('admin', { session: false }), (req, re
             });
             newSheet
                 .save()
-                .then(sheet => res.json(sheet))
+                .then(sheet => res.json(sheet)) // return added sheet
                 .catch(err => console.log(err));
         }
     });
@@ -55,15 +54,15 @@ router.post("/add", passport.authenticate('admin', { session: false }), (req, re
 
 // @route POST api/sheets/send
 // @desc send sheet
-// @access protected
+// @access protected - subscribed users only
 router.post("/send", passport.authenticate('subscriber', { session: false }), (req, res) => {
-    //verify the JWT token generated for the user
     // Form validation
     const { errors, isValid } = validateSendInput(req.body);
     // Check validation
     if (!isValid) {
         return res.status(400).json(errors);
     }
+
     Sheet.findOne({ name: req.body.name }).then(sheet => {
         if (sheet) {
             sendEmail(req.body)

@@ -1,11 +1,16 @@
+// Server
 const express = require('express');
 const cors = require('cors');
-const mongoose = require('mongoose');
 const bodyParser = require('body-parser')
+// DB
+const mongoose = require('mongoose');
+const db = require("./config/keys").mongoURI;
+// Authentication and authorization
 const passport = require("passport");
-
+// route handlers
 const users = require("./routes/api/users");
 const sheets = require("./routes/api/sheets");
+//Config
 require('dotenv').config();
 
 //App setup
@@ -13,12 +18,11 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// DB Config
-const db = require("./config/keys").mongoURI;// Connect to MongoDB
+// DB Config - Connect to MongoDB
 mongoose
-  .connect(db,{ useNewUrlParser: true })
-  .then(() => console.log("MongoDB successfully connected"))
-  .catch(err => console.log(err));
+    .connect(db, { useNewUrlParser: true })
+    .then(() => console.log("MongoDB successfully connected"))
+    .catch(err => console.log(err));
 
 //Bodyparser middleware
 app.use(
@@ -30,7 +34,6 @@ app.use(bodyParser.json());
 
 // Passport middleware
 app.use(passport.initialize());
-
 // Passport config
 require("./config/passport")(passport);
 

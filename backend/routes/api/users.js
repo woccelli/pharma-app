@@ -3,7 +3,10 @@ const router = express.Router();
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const keys = require("../../config/keys");
+
+//Authentication and authorization
 const passport = require("passport");
+
 // Load input validation
 const validateRegisterInput = require("../../validation/register");
 const validateLoginInput = require("../../validation/login");
@@ -13,23 +16,20 @@ const { validateUpdateInput, validateUpdateEmailInput, validateAddAddressInput }
 const User = require("../../models/User");
 
 // @route GET api/users/all
-// @desc 
-// @access Public
+// @desc get all existing users
+// @access Protected - admin only
 router.get('/all', passport.authenticate('admin', { session: false }), (req, res) => {
     User.find()
         .then(users => res.json(users))
         .catch(err => res.status(400).json('Error: ' + err));
 });
 
-
 // @route POST api/users/register
 // @desc Register user
 // @access Public
 router.post("/register", (req, res) => {
     // Form validation
-
     const { errors, isValid } = validateRegisterInput(req.body);
-
     // Check validation
     if (!isValid) {
         return res.status(400).json(errors);
@@ -37,6 +37,7 @@ router.post("/register", (req, res) => {
 
     User.findOne({ email: req.body.email }).then(user => {
         if (user) {
+            // User already exists
             return res.status(400).json({ email: "Cette adresse e-mail existe déjà" });
         } else {
             const newUser = new User({
@@ -52,7 +53,7 @@ router.post("/register", (req, res) => {
                     newUser.password = hash;
                     newUser
                         .save()
-                        .then(user => res.json(user))
+                        .then(user => res.json(user)) // Return added user
                         .catch(err => console.log(err));
                 });
             });
@@ -65,9 +66,7 @@ router.post("/register", (req, res) => {
 // @access Public
 router.post("/login", (req, res) => {
     // Form validation
-
     const { errors, isValid } = validateLoginInput(req.body);
-
     // Check validation
     if (!isValid) {
         return res.status(400).json(errors);
@@ -121,22 +120,21 @@ router.post("/login", (req, res) => {
 });
 
 // @route POST api/users/update
-// @desc Update user 
-// @access Protected
+// @desc Update user - Send new token
+// @access Protected - user only
 router.post("/update", passport.authenticate('user', { session: false }), (req, res) => {
     // Form validation
-    const user = req.user;
     const { errors, isValid } = validateUpdateInput(req.body);
-
     // Check validation
     if (!isValid) {
         return res.status(400).json(errors);
     }
 
+    const user = req.user;
     const name = req.body.name;
 
     User.findByIdAndUpdate(user._id, { name: name }, { useFindAndModify: false, new: true }, (err, result) => {
-
+        // result = updated user
         const payload = {
             id: result.id,
             name: result.name,
@@ -168,28 +166,30 @@ router.post("/update", passport.authenticate('user', { session: false }), (req, 
     })
 });
 
-// @route POST api/users/update
-// @desc Update user email - Error if email already exists in DB
-// @access Protected
+// @route POST api/users/update-email
+// @desc Update user email - Send new token - Error if email already exists in DB
+// @access Protected - user only
 router.post("/update-email", passport.authenticate('user', { session: false }), (req, res) => {
     // Form validation
-    const user = req.user;
     const { errors, isValid } = validateUpdateEmailInput(req.body);
-
     // Check validation
     if (!isValid) {
         return res.status(400).json(errors);
     }
 
+    const user = req.user;
     const email = req.body.email;
 
     User.findOne({ email })
         .then(existinguser => {
             if (existinguser) {
+                // Another user exists with the same email address
                 return res.status(400).json({ email: "Cet e-mail n'est pas disponible" })
             }
             else {
+                // The email address is free
                 User.findByIdAndUpdate(user._id, { email: email }, { useFindAndModify: false, new: true }, (err, result) => {
+                    // result = updated user
                     const payload = {
                         id: result.id,
                         name: result.name,
@@ -224,22 +224,21 @@ router.post("/update-email", passport.authenticate('user', { session: false }), 
 });
 
 // @route POST api/users/add-address
-// @desc Add an address to the user's addresses list
+// @desc Add an address to the user's addresses list - Send new token
 // @access Protected
 router.post("/add-address", passport.authenticate('user', { session: false }), (req, res) => {
     // Form validation
-    const user = req.user;
     const { errors, isValid } = validateAddAddressInput(req.body.address);
-
     // Check validation
     if (!isValid) {
         return res.status(400).json(errors);
     }
 
+    const user = req.user;
     const newAddress = req.body.address;
 
-
     User.findByIdAndUpdate(user._id, { $push: {addresses: newAddress} }, { useFindAndModify: false, new: true }, (err, result) => {
+        // result = updated user
         const payload = {
             id: result.id,
             name: result.name,

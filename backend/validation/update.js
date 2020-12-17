@@ -39,7 +39,7 @@ module.exports = {
         };
     },
 
-    validateAddAddressInput: function(data) {
+    validateAddAddressInput: function (data) {
         let errors = {};
 
         // Convert empty fields to an empty string so we can use validator functions
@@ -52,20 +52,23 @@ module.exports = {
         // Dest checks
         if (Validator.isEmpty(data.dest)) {
             errors.dest = "Veuillez renseigner un destinataire";
-        } 
+        }
+        // Address_1 checks
         if (Validator.isEmpty(data.addr_1)) {
             errors.addr_1 = "Veuillez renseigner une adresse";
-        } 
+        }
+        // Postcode checks
         if (Validator.isEmpty(data.postcode)) {
             errors.postcode = "Veuillez renseigner un code postal ou CEDEX";
-        } 
+        }
+        // City checks
         if (Validator.isEmpty(data.city)) {
             errors.city = "Veuillez renseigner une ville";
-        } 
+        }
+        // Country checks
         if (Validator.isEmpty(data.country)) {
             errors.country = "Veuillez renseigner un pays";
-        } 
-
+        }
 
         return {
             errors,

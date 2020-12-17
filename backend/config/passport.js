@@ -11,6 +11,7 @@ opts.jwtFromRequest = ExtractJwt.fromAuthHeaderAsBearerToken();
 opts.secretOrKey = keys.secretOrKey;
 
 module.exports = passport => {
+    //authorization for users routes
     passport.use(
         'user',
         new JwtStrategy(opts, (jwt_payload, done) => {
@@ -25,6 +26,7 @@ module.exports = passport => {
         })
     );
 
+    //authorization for admin routes
     passport.use(
         'admin',
         new JwtStrategy(opts, (jwt_payload, done) => {
@@ -42,6 +44,7 @@ module.exports = passport => {
         })
     );
 
+    //authorization for subscribed users routes
     passport.use(
         'subscriber',
         new JwtStrategy(opts, (jwt_payload, done) => {
