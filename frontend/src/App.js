@@ -16,14 +16,14 @@ import Navbar from 'react-bootstrap/Navbar'
 import Landing from "./components/layout/Landing";
 import Register from "./components/auth/Register";
 import Login from "./components/auth/Login";
-import Account from "./components/auth/Account";
+import Account from "./components/user/Account";
 import Subscribe from "./components/auth/Subscribe";
 import PrivateRoute from "./components/private-route/PrivateRoute";
 import AdminRoute from "./components/private-route/AdminRoute"
 import Dashboard from "./components/layout/Dashboard";
 import AddSheet from "./components/admin/AddSheet";
 import AdminDashboard from "./components/admin/Dashboard";
-import Header from "./components/layout/Header"
+import Header from "./components/layout/modules/Header"
 
 // Check for token to keep user logged in
 if (localStorage.jwtToken) {

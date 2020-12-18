@@ -5,7 +5,7 @@ import { connect } from "react-redux";
 // Local
 import { logoutUser } from "../../actions/authActions";
 import { addSheet } from "../../actions/adminActions"
-import Sheet from "../modules/Sheet"
+import Sheet from "../layout/modules/Sheet"
 // Components
 import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row'

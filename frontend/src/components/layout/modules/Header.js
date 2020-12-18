@@ -3,7 +3,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 // Local
-import { logoutUser } from "../../actions/authActions";
+import { logoutUser } from "../../../actions/authActions";
 // Components
 import Navbar from 'react-bootstrap/Navbar'
 import Nav from 'react-bootstrap/Nav'

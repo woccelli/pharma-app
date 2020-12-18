@@ -3,7 +3,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 // Local
-import { addAddress } from "../../../actions/authActions";
+import { addAddress } from "../../../actions/userActions";
 // Components
 import Container from "react-bootstrap/Container";
 import Form from 'react-bootstrap/Form'

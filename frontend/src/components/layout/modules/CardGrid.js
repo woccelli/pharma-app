@@ -3,9 +3,9 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 // Local
-import img from '../../card-image.png'
+import img from '../../../card-image.png'
 import Sheet from './Sheet'
-import { getSheets, sendSheet, setEmailSent, clearErrors } from '../../actions/sheetsActions';
+import { getSheets, sendSheet, setEmailSent, clearErrors } from '../../../actions/sheetsActions';
 // Components
 import Card from 'react-bootstrap/Card'
 import CardColumns from 'react-bootstrap/CardColumns'

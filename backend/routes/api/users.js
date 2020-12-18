@@ -86,30 +86,7 @@ router.post("/login", (req, res) => {
         bcrypt.compare(password, user.password).then(isMatch => {
             if (isMatch) {
                 // User matched
-                // Create JWT Payload
-                const payload = {
-                    id: user.id,
-                    name: user.name,
-                    email: user.email,
-                    addresses: user.addresses,
-                    role: user.role,
-                    subscriber: user.subscriber
-                };
-
-                // Sign token
-                jwt.sign(
-                    payload,
-                    keys.secretOrKey,
-                    {
-                        expiresIn: 31556926 // 1 year in seconds
-                    },
-                    (err, token) => {
-                        res.json({
-                            success: true,
-                            token: "Bearer " + token
-                        });
-                    }
-                );
+                signUserJwtToken(user, res)
             } else {
                 return res
                     .status(400)
@@ -134,31 +111,9 @@ router.post("/update", passport.authenticate('user', { session: false }), (req, 
     const name = req.body.name;
 
     User.findByIdAndUpdate(user._id, { name: name }, { useFindAndModify: false, new: true }, (err, result) => {
-        // result = updated user
-        const payload = {
-            id: result.id,
-            name: result.name,
-            email: result.email,
-            addresses: result.addresses,
-            role: result.role,
-            subscriber: result.subscriber
-        };
-
         if (result) {
-            // Sign token
-            jwt.sign(
-                payload,
-                keys.secretOrKey,
-                {
-                    expiresIn: 31556926 // 1 year in seconds
-                },
-                (err, token) => {
-                    res.json({
-                        success: true,
-                        token: "Bearer " + token
-                    });
-                }
-            );
+            // result = updated user
+            signUserJwtToken(result, res)
         }
         if (err) {
             return res.status(400).json(err);
@@ -190,30 +145,8 @@ router.post("/update-email", passport.authenticate('user', { session: false }), 
                 // The email address is free
                 User.findByIdAndUpdate(user._id, { email: email }, { useFindAndModify: false, new: true }, (err, result) => {
                     // result = updated user
-                    const payload = {
-                        id: result.id,
-                        name: result.name,
-                        email: result.email,
-                        addresses: result.addresses,
-                        role: result.role,
-                        subscriber: result.subscriber
-                    };
-                    
                     if (result) {
-                        // Sign token
-                        jwt.sign(
-                            payload,
-                            keys.secretOrKey,
-                            {
-                                expiresIn: 31556926 // 1 year in seconds
-                            },
-                            (err, token) => {
-                                res.json({
-                                    success: true,
-                                    token: "Bearer " + token
-                                });
-                            }
-                        );
+                        signUserJwtToken(result, res)
                     }
                     if (err) {
                         return res.status(400).json(err);
@@ -237,38 +170,42 @@ router.post("/add-address", passport.authenticate('user', { session: false }), (
     const user = req.user;
     const newAddress = req.body.address;
 
-    User.findByIdAndUpdate(user._id, { $push: {addresses: newAddress} }, { useFindAndModify: false, new: true }, (err, result) => {
+    User.findByIdAndUpdate(user._id, { $push: { addresses: newAddress } }, { useFindAndModify: false, new: true }, (err, result) => {
         // result = updated user
-        const payload = {
-            id: result.id,
-            name: result.name,
-            email: result.email,
-            addresses: result.addresses,
-            role: result.role,
-            subscriber: result.subscriber
-        };
-        
         if (result) {
-            // Sign token
-            console.log(result)
-            jwt.sign(
-                payload,
-                keys.secretOrKey,
-                {
-                    expiresIn: 31556926 // 1 year in seconds
-                },
-                (err, token) => {
-                    res.json({
-                        success: true,
-                        token: "Bearer " + token
-                    });
-                }
-            );
+            signUserJwtToken(result, res)
         }
         if (err) {
             return res.status(400).json(err);
         }
     })
 });
+
+const signUserJwtToken = (user, res) => {
+    // Create JWT Payload
+    const payload = {
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        addresses: user.addresses,
+        role: user.role,
+        subscriber: user.subscriber
+    };
+
+    // Sign token
+    jwt.sign(
+        payload,
+        keys.secretOrKey,
+        {
+            expiresIn: 31556926 // 1 year in seconds
+        },
+        (err, token) => {
+            res.json({
+                success: true,
+                token: "Bearer " + token
+            });
+        }
+    );
+};
 
 module.exports = router;

@@ -29,25 +29,30 @@ export const setCurrentUser = decoded => {
   };
 };
 
+// Get auth token and set current user
+export const updateAuthToken = data => dispatch => {
+  // Clear errors
+  dispatch({
+    type: GET_ERRORS,
+    payload: {}
+  })
+  // Save to localStorage
+  // Set token to localStorage
+  const { token } = data;
+  localStorage.setItem("jwtToken", token);
+  // Set token to Auth header
+  setAuthToken(token);
+  // Decode token to get user data
+  const decoded = jwt_decode(token);
+  dispatch(setCurrentUser(decoded));
+}
+
 // Login - get user token
 export const loginUser = userData => dispatch => {
   axios
     .post("/api/users/login", userData)
     .then(res => {
-      // Clear errors
-      dispatch({
-        type: GET_ERRORS,
-        payload: {}
-      })
-      // Save to localStorage
-      // Set token to localStorage
-      const { token } = res.data;
-      localStorage.setItem("jwtToken", token);
-      // Set token to Auth header
-      setAuthToken(token);
-      // Decode token to get user data
-      const decoded = jwt_decode(token);
-      dispatch(setCurrentUser(decoded));
+      dispatch(updateAuthToken(res.data))
     })
     .catch(err =>
       dispatch({
@@ -56,68 +61,6 @@ export const loginUser = userData => dispatch => {
       })
     );
 };
-
-// Update user - get updated user token
-export const updateUser = userData => dispatch => {
-  axios
-    .post("/api/users/update", userData)
-    .then(res => {
-      // Clear errors
-      dispatch({
-        type: GET_ERRORS,
-        payload: {}
-      })
-      // Save to localStorage
-      // Set token to localStorage
-      const { token } = res.data;
-      localStorage.setItem("jwtToken", token);
-      // Set token to Auth header
-      setAuthToken(token);
-      // Decode token to get user data
-      const decoded = jwt_decode(token);
-      dispatch(setCurrentUser(decoded));
-    })
-    .catch(err =>
-      dispatch({
-        type: GET_ERRORS,
-        payload: err.response.data
-      })
-    );
-};
-
-// add an address to the user's addresses list - get updated user token
-export const addAddress = userData => dispatch => {
-  axios
-    .post("/api/users/add-address", userData)
-    .then(res => {
-      // Clear errors
-      dispatch({
-        type: GET_ERRORS,
-        payload: {}
-      })
-      // Save to localStorage
-      // Set token to localStorage
-      const { token } = res.data;
-      localStorage.setItem("jwtToken", token);
-      // Set token to Auth header
-      setAuthToken(token);
-      // Decode token to get user data
-      const decoded = jwt_decode(token);
-      dispatch(setCurrentUser(decoded));
-    })
-    .catch(err =>
-      dispatch({
-        type: GET_ERRORS,
-        payload: err.response.data
-      })
-    );
-};
-
-// Send an email with forgotten password link
-export const forgottenPwd = userData => {
-
-}
-
 
 // User loading
 export const setUserLoading = () => {
@@ -135,3 +78,8 @@ export const logoutUser = () => dispatch => {
   // Set current user to empty object {} which will set isAuthenticated to false
   dispatch(setCurrentUser({}));
 };
+
+// Send an email with forgotten password link
+export const forgottenPwd = userData => {
+
+}

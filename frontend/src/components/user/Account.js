@@ -3,7 +3,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 // Local
-import { updateUser } from "../../actions/authActions";
+import { updateUser } from "../../actions/userActions";
 // Components
 import Nav from 'react-bootstrap/Nav'
 import Container from "react-bootstrap/Container";

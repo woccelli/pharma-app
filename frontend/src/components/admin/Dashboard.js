@@ -3,9 +3,9 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 // Local
-import CardGrid from "../modules/CardGrid"
-import UsersTab from "./users/UsersTab"
-import SheetsTab from "./sheets/SheetsTab";
+import CardGrid from "../layout/modules/CardGrid"
+import UsersTab from "./modules/UsersTab"
+import SheetsTab from "./modules/SheetsTab";
 // Components
 import Container from 'react-bootstrap/Container'
 import Tabs from 'react-bootstrap/Tabs'
