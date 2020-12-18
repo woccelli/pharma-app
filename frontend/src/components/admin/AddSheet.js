@@ -13,6 +13,7 @@ import Col from 'react-bootstrap/Col'
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
 import { BlobProvider } from '@react-pdf/renderer';
+import { Link } from "react-router-dom";
 
 class AdminPage extends Component {
 
@@ -51,11 +52,6 @@ class AdminPage extends Component {
     e.preventDefault();
     const { sheet } = this.state;
     this.props.addSheet(sheet, this.props.history);
-  };
-
-  onLogoutClick = e => {
-    e.preventDefault();
-    this.props.logoutUser();
   };
 
   render() {
@@ -121,18 +117,17 @@ class AdminPage extends Component {
                 <li>{module.title}</li>
               )}
               <Form.Group>
-                <Button type="submit">
+                <Button className="float-right" type="submit">
                   Ajouter
                 </Button>
               </Form.Group>
             </Form>
-            <Button onClick={this.onLogoutClick}> Se déconnecter</Button>
           </Col>
           <Col>
             <BlobProvider document={MyDoc}>
               {({ blob, url, loading, error }) => {
                 // Do whatever you need with blob here
-                return <embed src={url} type="application/pdf" height={500} width={400} />
+                return <embed src={url} type="application/pdf" height={550} width={400} />
               }}
             </BlobProvider>
           </Col>
@@ -143,7 +138,6 @@ class AdminPage extends Component {
 }
 
 AdminPage.propTypes = {
-  logoutUser: PropTypes.func.isRequired,
   addSheet: PropTypes.func.isRequired,
   auth: PropTypes.object.isRequired,
   errors: PropTypes.object.isRequired
@@ -155,8 +149,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = {
-  addSheet,
-  logoutUser
+  addSheet
 }
 
 export default connect(

@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import PropTypes from "prop-types";
 // Local
 import { updateUser } from "../../actions/userActions";
+import editpen from '../../edit-pen.svg'
 // Components
 import Nav from 'react-bootstrap/Nav'
 import Container from "react-bootstrap/Container";
@@ -13,6 +14,7 @@ import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
 import CardDeck from 'react-bootstrap/CardDeck'
 import Card from 'react-bootstrap/Card'
+import Figure from 'react-bootstrap/Figure'
 
 class Account extends Component {
 
@@ -78,17 +80,23 @@ class Account extends Component {
                 <Row>
                     <Col xs="auto">
                         <Nav defaultActiveKey="/home" className="flex-column">
-                            <Nav.Link href="/home">Active</Nav.Link>
-                            <Nav.Link eventKey="link-1">Link</Nav.Link>
-                            <Nav.Link eventKey="link-2">Link</Nav.Link>
-                            <Nav.Link eventKey="disabled" disabled>
-                                Disabled
-                            </Nav.Link>
+                            <Nav.Link>Compte</Nav.Link>
+                            <Nav.Link eventKey="link-1">Abonnements</Nav.Link>
+                            <Nav.Link eventKey="link-2">Réglages</Nav.Link>
                         </Nav>
                     </Col>
                     <Col xs="auto">
                         <Row>
-                            <h4>Mes informations</h4>
+                            <h4>Mes informations</h4>  
+                            <Button variant="link" onClick={this.handleModify} style={{'height':'35px'}}>
+                                <Figure>
+                                    <Figure.Image
+                                        width={10}
+                                        alt="editpen"
+                                        src={editpen}
+                                    />
+                                </Figure>
+                            </Button>
                         </Row>
                         <Row>
                             <Form noValidate onSubmit={this.onSubmit}>
@@ -127,9 +135,8 @@ class Account extends Component {
                                         <Form.Control plaintext readOnly value={this.state.email} />
                                     </Col>
                                 </Form.Group>
-                                <Button hidden={this.state.modify} onClick={this.handleModify}>Modifier</Button>
-                                <Button hidden={!this.state.modify} disabled={!this.state.modify} type="submit">Valider la modification</Button>
-                                <Button hidden={!this.state.modify} onClick={this.handleModify} variant='secondary'>Annuler</Button>
+                                <Button className="float-right" hidden={!this.state.modify} disabled={!this.state.modify} type="submit">Valider la modification</Button>
+                                <Button className="float-right" hidden={!this.state.modify} onClick={this.handleModify} variant='secondary'>Annuler</Button>
                             </Form>
                         </Row>
                         <Row>
@@ -147,12 +154,12 @@ class Account extends Component {
                                             <Card.Body >
                                                 <Card.Text>
                                                     <Container fluid>
-                                                    <Row>{address.dest}</Row>
-                                                    <Row>{address.addr_comp}</Row>
-                                                    <Row>{address.addr_1}</Row>
-                                                    <Row>{address.addr_2}</Row>
-                                                    <Row>{address.postcode} {address.city}</Row>
-                                                    <Row>{address.country}</Row>
+                                                        <Row>{address.dest}</Row>
+                                                        <Row>{address.addr_comp}</Row>
+                                                        <Row>{address.addr_1}</Row>
+                                                        <Row>{address.addr_2}</Row>
+                                                        <Row>{address.postcode} {address.city}</Row>
+                                                        <Row>{address.country}</Row>
                                                     </Container>
                                                 </Card.Text>
                                             </Card.Body>
@@ -160,12 +167,15 @@ class Account extends Component {
                                     )
                                 }
                                 )}
+                                <Card>
+                                    <Card.Body ><h1>+</h1></Card.Body>
+                                </Card>
                             </CardDeck>
 
                         </Row>
                     </Col>
                 </Row>
-            </Container>
+            </Container >
         )
     }
 }

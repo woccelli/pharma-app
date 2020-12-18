@@ -6,6 +6,9 @@ import PropTypes from "prop-types";
 import { getSheets } from "../../../actions/sheetsActions";
 // Components
 import MaterialTable from 'material-table'
+import Container from 'react-bootstrap/Container'
+import Button from 'react-bootstrap/Button'
+import Navbar from "react-bootstrap/Navbar";
 
 class SheetsTab extends Component {
 
@@ -32,6 +35,7 @@ class SheetsTab extends Component {
         ];
 
         return (
+            <Container>
             <MaterialTable
                 columns={columns}
                 data={sheets}
@@ -46,6 +50,10 @@ class SheetsTab extends Component {
                     )
                 }}
             />
+            <Navbar className="float-right">
+                <Button className="btn-lg navbar-btn text-center" style={{'border-radius': '50%'}} href='/admin/addsheet'><h4>+</h4></Button>
+            </Navbar>
+            </Container>
         )
     }
 }

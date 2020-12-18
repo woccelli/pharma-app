@@ -14,6 +14,8 @@ import Button from 'react-bootstrap/Button'
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger'
 import Alert from 'react-bootstrap/Alert'
 import Form from 'react-bootstrap/Form'
+import Container from 'react-bootstrap/Container'
+import Row from 'react-bootstrap/Row'
 import Popover from 'react-bootstrap/Popover'
 import { BlobProvider, pdf } from '@react-pdf/renderer';
 
@@ -124,7 +126,7 @@ class CardGrid extends Component {
         <Modal enforceFocus={false} show={this.state.show} onHide={this.handleClose} contentClassName="modal-content">
           <BlobProvider document={this.getSelectedSheet()}>
             {({ blob, url, loading, error }) => {
-              return <embed src={url} type="application/pdf" height={500} />
+              return <embed src={url} type="application/pdf" height={670} />
             }}
           </BlobProvider>
 
@@ -176,32 +178,39 @@ class CardGrid extends Component {
           </OverlayTrigger>
         </Modal>
 
-        <Form>
-          <Form.Group>
-            <Form.Control
-              id="search"
-              type="text"
-              placeholder="Rechercher..."
-              onChange={this.onChange}
-              value={this.state.search} />
-          </Form.Group>
-        </Form>
+        <Container>
+          <Row className="flex-row-reverse">
+            <Form >
+              <Form.Group >
+                <Form.Control
+                  id="search"
+                  type="text"
+                  placeholder="Rechercher..."
+                  onChange={this.onChange}
+                  value={this.state.search} />
+              </Form.Group>
+            </Form>
+            </Row>
+        </Container>
+            <CardColumns>
+              {sheets.map((sheet, _id) => {
+                if (sheet.name.toLowerCase().includes(this.state.search.toLowerCase())) {
+                  return (
+                    <Card key={_id} tag="a" style={{ cursor: "pointer" }} onClick={() => this.handleShow(sheet)}>
+                      <Card.Img variant="top" src={img} />
+                      <Card.Body >
+                        <Card.Title>{sheet.name}</Card.Title>
+                        <Card.Text>
+                          {sheet.definition}
+                        </Card.Text>
+                      </Card.Body>
+                    </Card>
+                  )
+                }
+              }
+              )}
+            </CardColumns>
 
-        <CardColumns>
-          {sheets.map((sheet, _id) => 
-            {if(sheet.name.includes(this.state.search) ) { return (
-            <Card key={_id} tag="a" style={{ cursor: "pointer" }} onClick={() => this.handleShow(sheet)}>
-              <Card.Img variant="top" src={img} />
-              <Card.Body >
-                <Card.Title>{sheet.name}</Card.Title>
-                <Card.Text>
-                  {sheet.definition}
-                </Card.Text>
-              </Card.Body>
-            </Card>
-            )}}
-          )}
-        </CardColumns>
       </div>
     );
   }

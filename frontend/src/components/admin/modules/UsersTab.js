@@ -6,6 +6,9 @@ import PropTypes from "prop-types";
 import { getUsers } from "../../../actions/adminActions";
 // Components
 import MaterialTable from 'material-table'
+import Container from 'react-bootstrap/Container'
+import Button from 'react-bootstrap/Button'
+import Navbar from "react-bootstrap/Navbar";
 
 class UserTab extends Component {
 
@@ -35,7 +38,7 @@ class UserTab extends Component {
             {
                 title: 'Abonné',
                 field: 'subscriber',
-                render: row => row.subscriber?'Oui':'Non'
+                render: row => row.subscriber ? 'Oui' : 'Non'
             },
             {
                 title: 'Date de création',
@@ -44,20 +47,25 @@ class UserTab extends Component {
         ];
 
         return (
-            <MaterialTable
-                columns={columns}
-                data={users}
-                title="Utilisateurs"
-                options={{
-                    sorting: true,
-                    filtering: true
-                  }}
-                detailPanel={rowData => {
-                    return (
-                        <div>{rowData._id}</div>
-                    )
-                }}
-            />
+            <Container>
+                <MaterialTable
+                    columns={columns}
+                    data={users}
+                    title="Utilisateurs"
+                    options={{
+                        sorting: true,
+                        filtering: true
+                    }}
+                    detailPanel={rowData => {
+                        return (
+                            <div>{rowData._id}</div>
+                        )
+                    }}
+                />
+                <Navbar className="float-right">
+                    <Button className="btn-lg navbar-btn text-center" style={{ 'border-radius': '50%' }} href='/admin/addsheet'><h4>+</h4></Button>
+                </Navbar>
+            </Container>
         )
     }
 }
