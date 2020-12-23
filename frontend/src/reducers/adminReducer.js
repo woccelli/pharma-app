@@ -1,9 +1,11 @@
 import {
-    SET_USERS
+    SET_USERS,
+    SET_ADDED_USER
   } from "../actions/types";
 
   const initialState = {
-    users: []
+    users: [],
+    added_user: false
   };
   
   export default function(state = initialState, action) {
@@ -12,6 +14,11 @@ import {
         return {
           ...state,
           users: action.payload
+        };
+      case SET_ADDED_USER:
+        return {
+          ...state,
+          added_user: action.payload
         };
       default:
         return state;

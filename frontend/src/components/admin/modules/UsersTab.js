@@ -3,21 +3,47 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 // Local
-import { getUsers } from "../../../actions/adminActions";
+import { getUsers, clearAddedUser } from "../../../actions/adminActions";
+import AddUser from "../AddUser"
 // Components
 import MaterialTable from 'material-table'
 import Container from 'react-bootstrap/Container'
 import Button from 'react-bootstrap/Button'
 import Navbar from "react-bootstrap/Navbar";
+import Modal from "react-bootstrap/Modal";
+import Alert from 'react-bootstrap/Alert'
 
 class UserTab extends Component {
 
     constructor(props) {
         super(props);
+        this.state = {
+            showAddUser: false
+        }
     }
 
     componentDidMount = () => {
         this.props.getUsers();
+    }
+
+    static getDerivedStateFromProps(nextProps, prevState) {
+        if (nextProps.admin !== prevState.admin) {
+            return { admin: nextProps.admin };
+        }
+        else return null; // Triggers no change in the state
+    }
+
+    showAddUser = () => {
+        this.props.clearAddedUser()
+        this.setState({
+            showAddUser: true,
+        })
+    }
+
+    hideAddUser =() => {
+        this.setState({
+            showAddUser: false
+        })
     }
 
     render() {
@@ -48,6 +74,16 @@ class UserTab extends Component {
 
         return (
             <Container>
+                {console.log(this.state)}
+                {console.log(this.state.admin.added_user)}
+                <Modal show={this.state.showAddUser && !this.state.admin.added_user} onHide={this.hideAddUser}>
+                    <Modal.Body>
+                        <AddUser />
+                    </Modal.Body>
+                </Modal>
+                <Alert show={this.state.admin.added_user} variant="success">
+                    L'utilisateur a bien été créé, un email a été envoyé à l'adresse indiquée pour l'informer.
+                </Alert>
                 <MaterialTable
                     columns={columns}
                     data={users}
@@ -63,7 +99,11 @@ class UserTab extends Component {
                     }}
                 />
                 <Navbar className="float-right">
-                    <Button className="btn-lg navbar-btn text-center" style={{ 'border-radius': '50%' }} href='/admin/addsheet'><h4>+</h4></Button>
+                    <Button
+                        className="btn-lg navbar-btn text-center"
+                        style={{ 'border-radius': '50%' }}
+                        onClick={this.showAddUser}
+                    ><h4>+</h4></Button>
                 </Navbar>
             </Container>
         )
@@ -72,6 +112,7 @@ class UserTab extends Component {
 
 UserTab.propTypes = {
     getUsers: PropTypes.func.isRequired,
+    clearAddedUser: PropTypes.func.isRequired,
     admin: PropTypes.object.isRequired,
     auth: PropTypes.object.isRequired
 }
@@ -85,5 +126,5 @@ const mapStateToProps = state => {
 
 export default connect(
     mapStateToProps,
-    { getUsers }
+    { getUsers, clearAddedUser }
 )(UserTab);

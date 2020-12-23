@@ -2,7 +2,8 @@ import axios from "axios";
 
 import {
     SET_USERS,
-    GET_ERRORS
+    GET_ERRORS,
+    SET_ADDED_USER
 } from "./types";
 
 export const setUsers = data => {
@@ -40,3 +41,31 @@ export const addSheet = (sheetData, history) => dispatch => {
             })
         );
 };
+
+export const addUser = (userData, history) => dispatch => {
+    axios
+        .post("/api/users/add", userData)
+        .then(res => {
+            dispatch({
+                type: GET_ERRORS,
+                payload: {}
+            })
+            dispatch({
+                type: SET_ADDED_USER,
+                payload: true
+            })
+        })
+        .catch(err =>
+            dispatch({
+                type: GET_ERRORS,
+                payload: err.response.data
+            })
+        );
+}
+
+export const clearAddedUser = () => dispatch => {
+    dispatch({
+        type: SET_ADDED_USER,
+        payload: false
+    })
+}

@@ -10,6 +10,7 @@ const passport = require("passport");
 // Load input validation
 const validateRegisterInput = require("../../validation/register");
 const validateLoginInput = require("../../validation/login");
+const validateAddInput = require("../../validation/add")
 const { validateUpdateInput, validateUpdateEmailInput, validateAddAddressInput } = require("../../validation/update");
 
 // Load User model
@@ -95,6 +96,24 @@ router.post("/login", (req, res) => {
         });
     });
 });
+
+router.post("/add", passport.authenticate('admin', { session: false }), (req, res) => {
+    // Form validation
+    const { errors, isValid } = validateAddInput(req.body);
+    // Check validation
+    if (!isValid) {
+        return res.status(400).json(errors);
+    }
+
+    User.findOne({ email: req.body.email }).then(user => {
+        if (user) {
+            // User already exists
+            return res.status(400).json({ email: "Cette adresse e-mail existe déjà" });
+        } else {
+            return res.status(200).json({ success: true })
+        }
+    })
+})
 
 // @route POST api/users/update
 // @desc Update user - Send new token
