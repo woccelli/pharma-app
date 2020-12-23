@@ -11,7 +11,6 @@ import { Provider } from "react-redux";
 import store from "./store";
 // Components
 import Container from 'react-bootstrap/Container'
-import Navbar from 'react-bootstrap/Navbar'
 // Pages
 import Landing from "./components/layout/Landing";
 import Register from "./components/auth/Register";

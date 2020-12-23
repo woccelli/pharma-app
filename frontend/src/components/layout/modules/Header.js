@@ -7,6 +7,7 @@ import { logoutUser } from "../../../actions/authActions";
 // Components
 import Navbar from 'react-bootstrap/Navbar'
 import Nav from 'react-bootstrap/Nav'
+import { Link } from 'react-router-dom'
 
 class Header extends Component {
 
@@ -19,7 +20,7 @@ class Header extends Component {
         if (this.props.auth.isAuthenticated) {
             return (
                 <Nav>
-                    <Nav.Link href="/account">Mon compte</Nav.Link>
+                    <Nav.Link as={Link} to="/account">Mon compte</Nav.Link>
                     <Nav.Link onClick={this.onLogoutClick}>Se déconnecter</Nav.Link>
                 </Nav>)
         } else {
@@ -30,7 +31,7 @@ class Header extends Component {
     render() {
         return (
             <Navbar bg="dark" sticky="top" className="border-bottom border-gray bg-white">
-                <Navbar.Brand  href="/"> Pharma-app</Navbar.Brand>
+                <Navbar.Brand as={Link} to="/"> Pharma-app</Navbar.Brand>
                 <Nav className="mr-auto"></Nav>
                 <this.userBoard></this.userBoard>
             </Navbar>

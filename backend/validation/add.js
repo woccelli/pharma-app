@@ -13,14 +13,12 @@ module.exports = function validateAddInput(data) {
         errors.name = "Veuillez saisir une dénomination sociale";
     }
 
-
     // Email checks
     if (Validator.isEmpty(data.email)) {
         errors.email = "Veuillez renseigner une adresse e-mail";
     } else if (!Validator.isEmail(data.email)) {
         errors.email = "L'adresse e-mail renseignée est invalide";
     }
-
 
     return {
         errors,

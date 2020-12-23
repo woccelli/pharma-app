@@ -9,7 +9,7 @@ import MaterialTable from 'material-table'
 import Container from 'react-bootstrap/Container'
 import Button from 'react-bootstrap/Button'
 import Navbar from "react-bootstrap/Navbar";
-
+import { Link } from 'react-router-dom'
 class SheetsTab extends Component {
 
     constructor(props) {
@@ -51,7 +51,7 @@ class SheetsTab extends Component {
                 }}
             />
             <Navbar className="float-right">
-                <Button className="btn-lg navbar-btn text-center" style={{'border-radius': '50%'}} href='/admin/addsheet'><h4>+</h4></Button>
+                <Link to="/admin/addsheet"><Button className="btn-lg navbar-btn text-center" style={{'border-radius': '50%'}} href='/admin/addsheet'><h4>+</h4></Button></Link>
             </Navbar>
             </Container>
         )
