@@ -3,14 +3,15 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 // Local
-import { getUsers, clearAddedUser } from "../../../actions/adminActions";
+import { getUsers } from "../../../actions/adminActions";
+import { clearSuccess } from "../../../actions/utilActions"
 import AddUser from "../AddUser"
 // Components
 import MaterialTable from 'material-table'
 import Container from 'react-bootstrap/Container'
 import Button from 'react-bootstrap/Button'
-import Navbar from "react-bootstrap/Navbar";
-import Modal from "react-bootstrap/Modal";
+import Navbar from 'react-bootstrap/Navbar'
+import Modal from 'react-bootstrap/Modal'
 import Alert from 'react-bootstrap/Alert'
 
 class UserTab extends Component {
@@ -26,15 +27,8 @@ class UserTab extends Component {
         this.props.getUsers();
     }
 
-    static getDerivedStateFromProps(nextProps, prevState) {
-        if (nextProps.admin !== prevState.admin) {
-            return { admin: nextProps.admin };
-        }
-        else return null; // Triggers no change in the state
-    }
-
     showAddUser = () => {
-        this.props.clearAddedUser()
+        this.props.clearSuccess()
         this.setState({
             showAddUser: true,
         })
@@ -74,14 +68,12 @@ class UserTab extends Component {
 
         return (
             <Container>
-                {console.log(this.state)}
-                {console.log(this.state.admin.added_user)}
-                <Modal show={this.state.showAddUser && !this.state.admin.added_user} onHide={this.hideAddUser}>
+                <Modal show={this.state.showAddUser && !this.props.success.addedUser} onHide={this.hideAddUser}>
                     <Modal.Body>
                         <AddUser />
                     </Modal.Body>
                 </Modal>
-                <Alert show={this.state.admin.added_user} variant="success">
+                <Alert show={this.props.success.addedUser || false } variant="success">
                     L'utilisateur a bien été créé, un email a été envoyé à l'adresse indiquée pour l'informer.
                 </Alert>
                 <MaterialTable
@@ -112,7 +104,7 @@ class UserTab extends Component {
 
 UserTab.propTypes = {
     getUsers: PropTypes.func.isRequired,
-    clearAddedUser: PropTypes.func.isRequired,
+    clearSuccess: PropTypes.func.isRequired,
     admin: PropTypes.object.isRequired,
     auth: PropTypes.object.isRequired
 }
@@ -120,11 +112,12 @@ UserTab.propTypes = {
 const mapStateToProps = state => {
     return {
         auth: state.auth,
-        admin: state.admin
+        admin: state.admin,
+        success: state.success
     }
 }
 
 export default connect(
     mapStateToProps,
-    { getUsers, clearAddedUser }
+    { getUsers, clearSuccess }
 )(UserTab);

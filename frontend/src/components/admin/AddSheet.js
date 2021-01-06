@@ -3,7 +3,6 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 // Local
-import { logoutUser } from "../../actions/authActions";
 import { addSheet } from "../../actions/adminActions"
 import Sheet from "../layout/modules/Sheet"
 // Components
@@ -13,7 +12,6 @@ import Col from 'react-bootstrap/Col'
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
 import { BlobProvider } from '@react-pdf/renderer';
-import { Link } from "react-router-dom";
 
 class AdminPage extends Component {
 
@@ -26,18 +24,10 @@ class AdminPage extends Component {
         synonyms: {},
         description: "",
         modules: []
-      },
-      errors: {}
+      }
     };
   }
 
-  static getDerivedStateFromProps(nextProps, prevState) {
-    if (nextProps.errors !== prevState.errors) {
-      return { errors: nextProps.errors };
-    }
-    else return null; // Triggers no change in the state
-  }
-  
   onChange = e => {
     e.persist()
     this.setState(prevState => ({
@@ -55,8 +45,7 @@ class AdminPage extends Component {
   };
 
   render() {
-    const { user } = this.props.auth;
-    const { errors } = this.state;
+    const { errors } = this.props;
     const MyDoc = (
       <Sheet sheet={this.state.sheet}/>
     );
@@ -67,7 +56,7 @@ class AdminPage extends Component {
           <Col>
             <Form noValidate onSubmit={this.onSubmit} class="row align-items-center">
               <Form.Label> <h2>Ajouter une nouvelle fiche</h2> </Form.Label>
-              <Form.Group controlId="formGroupName">
+              <Form.Group>
                 <Form.Label> Nom de la fiche </Form.Label>
                 <Form.Control
                   required
@@ -82,7 +71,7 @@ class AdminPage extends Component {
                   {errors.name}
                 </Form.Control.Feedback>
               </Form.Group>
-              <Form.Group controlId="formGroupDefinition">
+              <Form.Group>
                 <Form.Label>Définition</Form.Label>
                 <Form.Control
                   required
@@ -98,7 +87,7 @@ class AdminPage extends Component {
                   {errors.definition}
                 </Form.Control.Feedback>
               </Form.Group>
-              <Form.Group controlId="formGroupDescription">
+              <Form.Group>
                 <Form.Label>Description</Form.Label>
                 <Form.Control
                   required

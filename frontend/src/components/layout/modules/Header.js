@@ -31,7 +31,7 @@ class Header extends Component {
     render() {
         return (
             <Navbar bg="dark" sticky="top" className="border-bottom border-gray bg-white">
-                <Navbar.Brand as={Link} to="/"> Pharma-app</Navbar.Brand>
+                <Navbar.Brand as={Link} to="/">Toposanté</Navbar.Brand>
                 <Nav className="mr-auto"></Nav>
                 <this.userBoard></this.userBoard>
             </Navbar>

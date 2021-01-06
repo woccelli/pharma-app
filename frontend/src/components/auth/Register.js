@@ -16,8 +16,7 @@ class Register extends Component {
       name: "",
       email: "",
       password: "",
-      password2: "",
-      errors: {}
+      password2: ""
     };
   }
 
@@ -26,13 +25,6 @@ class Register extends Component {
     if (this.props.auth.isAuthenticated) {
       this.props.history.push("/dashboard");
     }
-  }
-
-  static getDerivedStateFromProps(nextProps, prevState) {
-    if (nextProps.errors !== prevState.errors) {
-      return { errors: nextProps.errors };
-    }
-    else return null; // Triggers no change in the state
   }
 
   onChange = e => {
@@ -54,7 +46,7 @@ class Register extends Component {
   };
 
   render() {
-    const { errors } = this.state;
+    const { errors } = this.props;
 
     return (
       <div class="container h-100">

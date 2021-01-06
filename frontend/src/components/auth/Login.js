@@ -11,7 +11,7 @@ import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
 import Container from 'react-bootstrap/Container'
 import Modal from 'react-bootstrap/Modal'
-
+import Alert from 'react-bootstrap/Alert'
 
 class Login extends Component {
   constructor() {
@@ -19,8 +19,7 @@ class Login extends Component {
     this.state = {
       email: "",
       password: "",
-      showForgottenPwd: false,
-      errors: {}
+      showForgottenPwd: false
     };
   }
 
@@ -29,17 +28,6 @@ class Login extends Component {
     if (this.props.auth.isAuthenticated) {
       this.props.history.push("/dashboard");
     }
-  }
-
-  static getDerivedStateFromProps(nextProps, prevState) {
-    if (nextProps.auth.isAuthenticated) {
-      nextProps.history.push("/dashboard");
-      return null; // push user to dashboard when they login and no change in the state
-    }
-    if (nextProps.errors !== prevState.errors) {
-      return { errors: nextProps.errors };
-    }
-    else return null; // Triggers no change in the state
   }
 
   onChange = e => {
@@ -55,22 +43,18 @@ class Login extends Component {
   }
 
   onSubmit = e => {
-    const form = event.currentTarget;
-    event.preventDefault();
-    if (form.checkValidity() === false) {
-      event.stopPropagation();
-    }
+    e.preventDefault()
 
     const userData = {
       email: this.state.email,
       password: this.state.password
     };
 
-    this.props.loginUser(userData); // since we handle the redirect within our component, we don't need to pass in this.props.history as a parameter
+    this.props.loginUser(userData, this.props.history);
   };
 
   render() {
-    const { errors } = this.state;
+    const { errors } = this.props;
 
     return (
       <Container fluid>
@@ -83,6 +67,10 @@ class Login extends Component {
 
         </Modal>
 
+        <Alert show={this.props.success.registeredUser || false} variant="success">
+          Votre compte a bien été créé, vous pouvez vous connecter en utilisant vos identifiants.
+        </Alert>
+        {console.log(this.props.success)}
         <Form noValidate onSubmit={this.onSubmit} class="row align-items-center">
           <Form.Label> <h2>Connexion</h2> </Form.Label>
           <Form.Group>
@@ -138,13 +126,13 @@ Login.propTypes = {
   loginUser: PropTypes.func.isRequired,
   auth: PropTypes.object.isRequired,
   errors: PropTypes.object.isRequired,
-  validated: PropTypes.object.isRequired
+  success: PropTypes.object.isRequired
 };
 
 const mapStateToProps = state => ({
   auth: state.auth,
   errors: state.errors,
-  validated: false
+  success: state.success
 });
 
 export default connect(

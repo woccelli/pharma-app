@@ -23,6 +23,9 @@ import Dashboard from "./components/layout/Dashboard";
 import AddSheet from "./components/admin/AddSheet";
 import AdminDashboard from "./components/admin/Dashboard";
 import Header from "./components/layout/modules/Header"
+import NameForm from "./components/user/NameForm"
+import EmailForm from "./components/user/EmailForm"
+import AddressForm from "./components/user/AddressForm"
 
 // Check for token to keep user logged in
 if (localStorage.jwtToken) {
@@ -56,6 +59,9 @@ class App extends Component {
               <PrivateRoute exact path="/dashboard" component={Dashboard} />
               <PrivateRoute exact path="/subscribe" component={Subscribe} />
               <PrivateRoute exact path="/account" component={Account} />
+              <PrivateRoute exact path="/account/name" component={NameForm} />
+              <PrivateRoute exact path="/account/email" component={EmailForm} />
+              <PrivateRoute exact path="/account/address" component={AddressForm} />
             </Switch>
             <AdminRoute exact path="/admin/addsheet" component={AddSheet} />
             <AdminRoute exact path="/admin/dashboard" component={AdminDashboard} />

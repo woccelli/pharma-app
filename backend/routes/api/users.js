@@ -11,10 +11,11 @@ const passport = require("passport");
 const validateRegisterInput = require("../../validation/register");
 const validateLoginInput = require("../../validation/login");
 const validateAddInput = require("../../validation/add")
-const { validateUpdateInput, validateUpdateEmailInput, validateAddAddressInput } = require("../../validation/update");
+const { validateUpdateInput, validateUpdateEmailInput, validateAddAddressInput, validateForgotPasswordInput, validateResetPasswordInput } = require("../../validation/update");
 
 // Load User model
 const User = require("../../models/User");
+const { sendEmailReset } = require("../../email/mailer");
 
 // @route GET api/users/all
 // @desc get all existing users
@@ -199,6 +200,100 @@ router.post("/add-address", passport.authenticate('user', { session: false }), (
         }
     })
 });
+
+
+// @route POST api/users/add-address
+// @desc Add an address to the user's addresses list - Send new token
+// @access Protected
+router.post("/delete-address", passport.authenticate('user', { session: false }), (req, res) => {
+    const user = req.user;
+    const addressToDelete = req.body;
+
+    User.findByIdAndUpdate(user._id, {$pull: { addresses: addressToDelete}}, { useFindAndModify: false, new: true }, (err, result) => {
+        // result = updated user
+        if (result) {
+            signUserJwtToken(result, res)
+        }
+        if (err) {
+            return res.status(400).json(err);
+        }
+    })
+});
+
+
+router.post('/forgot-password', (req, res) => {
+    // Form validation
+    const { errors, isValid } = validateForgotPasswordInput(req.body);
+    // Check validation
+    if (!isValid) {
+        return res.status(400).json(errors);
+    }
+    const email = req.body.email
+    User.findOne({ email })
+        .then(user => {
+            if (!user) {
+                // Another user exists with the same email address
+                return res.status(400).json({ email: "Cet e-mail n'existe pas" })
+            }
+            const token = makeTokenFromPwd(user)
+            const url = getPasswordResetURL(user, token)
+            sendEmailReset(user, url).then(() => {
+                return res.json({
+                    emailsent: true
+                })
+            })
+        })
+})
+
+router.post('/password/reset/:userId/:token', (req, res) => {
+    // Form validation
+    const { errors, isValid } = validateResetPasswordInput(req.body);
+    // Check validation
+    if (!isValid) {
+        return res.status(400).json(errors);
+    }
+    const { userId, token } = req.params
+    const { password } = req.body
+
+    User.findById({ _id: userId }).then(user => {
+        if (!user) {
+            return res.status(400).json({ password: "Utilisateur invalide" })
+        }
+        const payload = decodeTokenFromPwd(token, user.password)
+        if (payload._id.localeCompare(user._id) === 0) {
+            // Hash password before saving in database
+            bcrypt.genSalt(10, (err, salt) => {
+                bcrypt.hash(password, salt, (err, hash) => {
+                    if (err) throw err;
+                    User.findOneAndUpdate({ _id: userId }, { password: hash }, {useFindAndModify: false})
+                        .then(() => res.status(202).json("Password change accepted"))
+                        .catch(err => res.status(500).json(err))
+                });
+            });
+        }
+    })
+})
+
+const getPasswordResetURL = (user, token) => {
+    return `http://localhost:3000/users/password/reset/${user._id}/${token}`
+}
+
+const getUserSecret = password => {
+    return password + keys.secretOrKey
+}
+
+const makeTokenFromPwd = ({ _id, password }) => {
+    const secret = getUserSecret()
+    const token = jwt.sign({ _id }, secret, {
+        expiresIn: 3600 // 1 hour
+    })
+    return token
+}
+
+const decodeTokenFromPwd = (token, password) => {
+    const secret = getUserSecret(password)
+    return jwt.decode(token, secret)
+}
 
 const signUserJwtToken = (user, res) => {
     // Create JWT Payload

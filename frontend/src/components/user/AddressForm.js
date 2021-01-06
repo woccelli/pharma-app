@@ -2,12 +2,14 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
+import { withRouter } from "react-router-dom";
 // Local
-import { addAddress } from "../../../actions/userActions";
+import { addAddress } from "../../actions/userActions";
 // Components
-import Container from "react-bootstrap/Container";
-import Form from 'react-bootstrap/Form'
-import Button from 'react-bootstrap/Button'
+import { Container, Jumbotron, ListGroup, Form, Button, Row, Col} from 'react-bootstrap'
+import {Link} from 'react-router-dom'
+import { ArrowBackIos }  from '@material-ui/icons'
+
 
 
 class AddressForm extends Component {
@@ -21,14 +23,7 @@ class AddressForm extends Component {
             addr_2: "",
             postcode: "",
             city: "",
-            country: "",
-            errors: {}
-        }
-    }
-
-    static getDerivedStateFromProps(nextProps, prevState) {
-        if (nextProps.errors !== prevState.errors) {
-            return { errors: nextProps.errors };
+            country: ""
         }
     }
 
@@ -47,15 +42,24 @@ class AddressForm extends Component {
             city: this.state.city,
             country: this.state.country
         };
-        this.props.addAddress({ address: newAddress });
+        this.props.addAddress({ address: newAddress }, this.props.history);
     };
 
     render() {
-        const { errors } = this.state;
+        const { errors } = this.props;
 
         return (
             <Container>
-                <Form noValidate onSubmit={this.onSubmit}>
+                 <ListGroup variant="flush">
+                    <ListGroup.Item action as={Link} to="/account" >
+                        <Row >
+                            <Col xs="5"><ArrowBackIos/></Col>
+                        </Row>
+                    </ListGroup.Item>
+                </ListGroup>    
+                <Jumbotron>
+                <Form onSubmit={this.onSubmit}>
+                    <Form.Label> <h4>Ajouter une adresse</h4> </Form.Label>
                     <Form.Group>
                         <Form.Label>
                             Destinataire
@@ -66,6 +70,7 @@ class AddressForm extends Component {
                             onChange={this.onChange}
                             error={errors.dest}
                             isInvalid={errors.dest}
+                            required
                         />
                         <Form.Control.Feedback type="invalid">
                             {errors.dest}
@@ -98,6 +103,7 @@ class AddressForm extends Component {
                             onChange={this.onChange}
                             error={errors.addr_1}
                             isInvalid={errors.addr_1}
+                            required
                         />
                         <Form.Control.Feedback type="invalid">
                             {errors.addr_1}
@@ -130,6 +136,7 @@ class AddressForm extends Component {
                             onChange={this.onChange}
                             error={errors.postcode}
                             isInvalid={errors.postcode}
+                            required
                         />
                         <Form.Control.Feedback type="invalid">
                             {errors.postcode}
@@ -146,6 +153,7 @@ class AddressForm extends Component {
                             onChange={this.onChange}
                             error={errors.city}
                             isInvalid={errors.city}
+                            required
                         />
                         <Form.Control.Feedback type="invalid">
                             {errors.city}
@@ -162,14 +170,16 @@ class AddressForm extends Component {
                             onChange={this.onChange}
                             error={errors.country}
                             isInvalid={errors.country}
+                            required
                         />
                         <Form.Control.Feedback type="invalid">
                             {errors.country}
                         </Form.Control.Feedback>
                     </Form.Group>
 
-                    <Button type="submit">Ajouter la nouvelle adresse</Button>
+                    <Button className="float-right" type="submit">Ajouter la nouvelle adresse</Button>
                 </Form>
+                </Jumbotron>
             </Container>
         )
     }
@@ -191,7 +201,7 @@ const mapStateToProps = state => {
 export default connect(
     mapStateToProps,
     { addAddress }
-)(AddressForm);
+)(withRouter(AddressForm));
 
 
 

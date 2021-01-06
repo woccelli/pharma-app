@@ -1,10 +1,11 @@
 import axios from "axios";
-
+import { clearErrors } from "./utilActions"
 import {
     SET_USERS,
     GET_ERRORS,
-    SET_ADDED_USER
+    GET_SUCCESS
 } from "./types";
+
 
 export const setUsers = data => {
     return {
@@ -33,7 +34,14 @@ export const getUsers = () => dispatch => {
 export const addSheet = (sheetData, history) => dispatch => {
     axios
         .post("/api/sheets/add", sheetData)
-        .then(res => history.push('/admin/dashboard'))
+        .then(res => {
+            history.push('/admin/dashboard')
+            dispatch(clearErrors())
+            dispatch({
+                type: GET_SUCCESS,
+                payload: { addedSheet: true }
+            })
+        })
         .catch(err =>
             dispatch({
                 type: GET_ERRORS,
@@ -46,13 +54,10 @@ export const addUser = (userData, history) => dispatch => {
     axios
         .post("/api/users/add", userData)
         .then(res => {
+            dispatch(clearErrors())
             dispatch({
-                type: GET_ERRORS,
-                payload: {}
-            })
-            dispatch({
-                type: SET_ADDED_USER,
-                payload: true
+                type: GET_SUCCESS,
+                payload: { addedUser: true }
             })
         })
         .catch(err =>
@@ -61,11 +66,4 @@ export const addUser = (userData, history) => dispatch => {
                 payload: err.response.data
             })
         );
-}
-
-export const clearAddedUser = () => dispatch => {
-    dispatch({
-        type: SET_ADDED_USER,
-        payload: false
-    })
 }

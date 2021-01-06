@@ -11,7 +11,7 @@ const { validateAddInput, validateSendInput } = require("../../validation/sheet"
 const passport = require("passport");
 
 // Email sending
-const sendEmail = require("../../email/mailer");
+const { sendSheetEmail }  = require("../../email/mailer");
 
 // @route GET api/sheets/
 // @desc get all existing sheets
@@ -65,7 +65,7 @@ router.post("/send", passport.authenticate('subscriber', { session: false }), (r
 
     Sheet.findOne({ name: req.body.name }).then(sheet => {
         if (sheet) {
-            sendEmail(req.body)
+            sendSheetEmail(req.body)
                 .then(() => {
                     return res.json({
                         emailsent: true

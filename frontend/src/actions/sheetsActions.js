@@ -3,7 +3,7 @@ import axios from "axios";
 import {
   GET_ERRORS,
   SET_SHEETS,
-  SET_EMAILSENT
+  GET_SUCCESS
 } from "./types";
 
 export const setLoadedSheets = data => {
@@ -29,14 +29,6 @@ export const getSheets = () => dispatch => {
     );
 };
 
-// Inform on email sending success
-export const setEmailSent = data => {
-  return {
-    type: SET_EMAILSENT,
-    payload: data
-  };
-};
-
 export const sendSheet = (emailData) => dispatch => {
   axios
     .post("/api/sheets/send", emailData)
@@ -47,23 +39,16 @@ export const sendSheet = (emailData) => dispatch => {
         payload: {}
       })
       // dispatch "email sent" indicator to store
-      dispatch(setEmailSent(res.data))
-      
+      dispatch({
+        type: GET_SUCCESS,
+        payload: { sheetEmailSent: true }
+      })
     })
     .catch(err => {
       dispatch({
         type: GET_ERRORS,
         payload: err.response.data
       })
-      // dispatch "email not sent" indicator to store
-      dispatch(setEmailSent({ emailsent: false }))
     }
     );
-};
-
-export const clearErrors = () => {
-  return {
-    type: GET_ERRORS,
-    payload: {}
-  };
 };

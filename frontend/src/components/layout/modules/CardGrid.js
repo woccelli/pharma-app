@@ -3,9 +3,9 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 // Local
-import img from '../../../card-image.png'
 import Sheet from './Sheet'
-import { getSheets, sendSheet, setEmailSent, clearErrors } from '../../../actions/sheetsActions';
+import { getSheets, sendSheet } from '../../../actions/sheetsActions';
+import { clearErrors, clearSuccess } from '../../../actions/utilActions'
 // Components
 import Card from 'react-bootstrap/Card'
 import CardColumns from 'react-bootstrap/CardColumns'
@@ -30,7 +30,6 @@ class CardGrid extends Component {
       sendtoemail: "",
       emailsent: false,
       pdfurl: "",
-      errors: {},
       search: ""
     };
   }
@@ -39,29 +38,22 @@ class CardGrid extends Component {
     this.props.getSheets();
   }
 
-  static getDerivedStateFromProps(nextProps, prevState) {
-    if (nextProps.errors !== prevState.errors) {
-      return { errors: nextProps.errors };
-    }
-    else return null; // Triggers no change in the state
-  }
-
   getSelectedSheet = () => {
     return <Sheet sheet={this.state.selectedSheet}></Sheet>
   }
 
   handleClose = () => {
+    this.props.clearErrors();
+    this.props.clearSuccess();
     this.setState({
       selectedSheet: {},
       sendtoemail: "",
       emailsent: false,
-      errors: {},
       show: false,
       pdfurl: "",
       showSubAlert: false
     });
-    this.props.setEmailSent({ emailsent: false })
-    this.props.clearErrors();
+    
   }
 
   handleShow = sheet => {
@@ -112,7 +104,7 @@ class CardGrid extends Component {
 
   render() {
     const { sheets } = this.props.sheets;
-    const { errors } = this.state;
+    const { errors } = this.props;
 
     return (
       <div>
@@ -157,7 +149,7 @@ class CardGrid extends Component {
                         {errors.sendtoemail}
                       </Form.Control.Feedback>
                     </Form.Group>
-                    <Alert show={this.props.sheets.emailsent} key="emailsuccess" variant="success">
+                    <Alert show={this.props.success.sheetEmailSent || false} key="emailsuccess" variant="success">
                       La fiche a été envoyée.
                       </Alert>
                     <Form.Group className="float-right">
@@ -197,9 +189,8 @@ class CardGrid extends Component {
                 if (sheet.name.toLowerCase().includes(this.state.search.toLowerCase())) {
                   return (
                     <Card key={_id} tag="a" style={{ cursor: "pointer" }} onClick={() => this.handleShow(sheet)}>
-                      <Card.Img variant="top" src={img} />
                       <Card.Body >
-                        <Card.Title>{sheet.name}</Card.Title>
+                        <Card.Title><h3>{sheet.name}</h3></Card.Title>
                         <Card.Text>
                           {sheet.definition}
                         </Card.Text>
@@ -219,11 +210,12 @@ class CardGrid extends Component {
 CardGrid.propTypes = {
   getSheets: PropTypes.func.isRequired,
   sendSheet: PropTypes.func.isRequired,
-  setEmailSent: PropTypes.func.Required,
   clearErrors: PropTypes.func.isRequired,
+  clearSuccess: PropTypes.func.isRequired,
   errors: PropTypes.object.isRequired,
   sheets: PropTypes.object.isRequired,
-  auth: PropTypes.object.isRequired
+  auth: PropTypes.object.isRequired,
+  success: PropTypes.object.isRequired
 }
 
 const mapStateToProps = state => {
@@ -231,10 +223,11 @@ const mapStateToProps = state => {
     auth: state.auth,
     sheets: state.sheets,
     errors: state.errors,
+    success: state.success
   }
 }
 
 export default connect(
   mapStateToProps,
-  { getSheets, sendSheet, setEmailSent, clearErrors }
+  { getSheets, sendSheet, clearErrors, clearSuccess }
 )(CardGrid);

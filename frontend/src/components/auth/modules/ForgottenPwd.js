@@ -8,6 +8,7 @@ import { forgottenPwd } from "../../../actions/authActions";
 import Container from "react-bootstrap/Container";
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
+import Alert from 'react-bootstrap/Alert'
 
 
 class ForgottenPwd extends Component {
@@ -15,8 +16,7 @@ class ForgottenPwd extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            email: "",
-            errors: {}
+            email: ""
         }
     }
 
@@ -32,7 +32,10 @@ class ForgottenPwd extends Component {
 
     onSubmit = e => {
         e.preventDefault();
-        this.props.forgottenPwd(this.state.email);
+        const lostUser = {
+            email: this.state.email
+        }
+        this.props.forgottenPwd(lostUser);
     };
 
     render() {
@@ -55,6 +58,9 @@ class ForgottenPwd extends Component {
                         <Form.Control.Feedback type="invalid">
                             {errors.email}
                         </Form.Control.Feedback>
+                        <Alert show={this.props.success.pwdEmailSent || false} variant="success">
+                            Un email a été envoyé à l'adresse email indiquée
+                      </Alert>
                     </Form.Group>
                     <Button className="float-right" type="submit">Envoyer</Button>
                 </Form>
@@ -66,13 +72,15 @@ class ForgottenPwd extends Component {
 ForgottenPwd.propTypes = {
     forgottenPwd: PropTypes.func.isRequired,
     errors: PropTypes.object.isRequired,
-    auth: PropTypes.object.isRequired
+    auth: PropTypes.object.isRequired,
+    success: PropTypes.object.isRequired
 }
 
 const mapStateToProps = state => {
     return {
         auth: state.auth,
         errors: state.errors,
+        success: state.success
     }
 }
 

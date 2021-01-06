@@ -74,6 +74,49 @@ module.exports = {
             errors,
             isValid: isEmpty(errors)
         };
-    }
+    },
+    validateForgotPasswordInput:  function (data) {
+        let errors = {};
+        
+        // Convert empty fields to an empty string so we can use validator functions
+        data.email = !isEmpty(data.email) ? data.email : "";
 
+        // Email checks
+        if (Validator.isEmpty(data.email)) {
+            errors.email = "Veuillez renseigner une adresse e-mail";
+        } else if (!Validator.isEmail(data.email)) {
+            errors.email = "Veuillez renseigner une adresse e-mail valide";
+        }
+
+        return {
+            errors,
+            isValid: isEmpty(errors)
+        };
+    },
+    validateResetPasswordInput: function(data) {
+        let errors = {};
+
+        // Convert empty fields to an empty string so we can use validator functions
+        data.password = !isEmpty(data.password) ? data.password : "";
+        data.password2 = !isEmpty(data.password2) ? data.password2 : "";
+    
+        // Password checks
+        if (Validator.isEmpty(data.password)) {
+            errors.password = "Veuillez renseigner un mot de passe";
+        }
+        if (Validator.isEmpty(data.password2)) {
+            errors.password2 = "Veuillez confirmer votre mot de passe";
+        }
+        if (!Validator.isLength(data.password, { min: 6, max: 30 })) {
+            errors.password = "Le mot de passe doit faire au moins 6 caractères";
+        }
+        if (!Validator.equals(data.password, data.password2)) {
+            errors.password2 = "Les mots de passe doivent correspondre";
+        }
+    
+        return {
+            errors,
+            isValid: isEmpty(errors)
+        };
+    }
 }

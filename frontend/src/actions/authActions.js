@@ -1,9 +1,11 @@
 import axios from "axios";
 import setAuthToken from "../utils/setAuthToken";
 import jwt_decode from "jwt-decode";
+import { clearErrors } from "./utilActions"
 
 import {
   GET_ERRORS,
+  GET_SUCCESS,
   SET_CURRENT_USER,
   USER_LOADING
 } from "./types";
@@ -12,7 +14,14 @@ import {
 export const registerUser = (userData, history) => dispatch => {
   axios
     .post("/api/users/register", userData)
-    .then(res => history.push("/login")) // re-direct to login on successful register
+    .then(res => {
+      history.push("/login")
+      dispatch(clearErrors())
+      dispatch({
+        type: GET_SUCCESS,
+        payload: { registeredUser: true }
+      })
+    }) // re-direct to login on successful register
     .catch(err =>
       dispatch({
         type: GET_ERRORS,
@@ -31,11 +40,6 @@ export const setCurrentUser = decoded => {
 
 // Get auth token and set current user
 export const updateAuthToken = data => dispatch => {
-  // Clear errors
-  dispatch({
-    type: GET_ERRORS,
-    payload: {}
-  })
   // Save to localStorage
   // Set token to localStorage
   const { token } = data;
@@ -44,15 +48,17 @@ export const updateAuthToken = data => dispatch => {
   setAuthToken(token);
   // Decode token to get user data
   const decoded = jwt_decode(token);
+  dispatch(clearErrors())
   dispatch(setCurrentUser(decoded));
 }
 
 // Login - get user token
-export const loginUser = userData => dispatch => {
+export const loginUser = (userData, history) => dispatch => {
   axios
     .post("/api/users/login", userData)
     .then(res => {
       dispatch(updateAuthToken(res.data))
+      history.push('/dashboard')
     })
     .catch(err =>
       dispatch({
@@ -80,6 +86,20 @@ export const logoutUser = () => dispatch => {
 };
 
 // Send an email with forgotten password link
-export const forgottenPwd = userData => {
-
+export const forgottenPwd = userData => dispatch => {
+  axios
+    .post("/api/users/forgot-password", userData)
+    .then(res => {
+      dispatch(clearErrors())
+      dispatch({
+        type: GET_SUCCESS,
+        payload: { pwdEmailSent: true }
+      })
+    })
+    .catch(err =>
+      dispatch({
+        type: GET_ERRORS,
+        payload: err.response.data
+      })
+    );
 }

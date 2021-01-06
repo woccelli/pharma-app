@@ -3,18 +3,15 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 // Local
-import { updateUser } from "../../actions/userActions";
-import editpen from '../../edit-pen.svg'
+import { updateUser, deleteAddress } from "../../actions/userActions";
+import { clearErrors, clearSuccess } from "../../actions/utilActions"
 // Components
-import Nav from 'react-bootstrap/Nav'
-import Container from "react-bootstrap/Container";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
-import Form from 'react-bootstrap/Form'
-import Button from 'react-bootstrap/Button'
-import CardDeck from 'react-bootstrap/CardDeck'
-import Card from 'react-bootstrap/Card'
-import Figure from 'react-bootstrap/Figure'
+import { Container, CardColumns, Card, ListGroup, Row, Col, Alert } from 'react-bootstrap'
+import { Link } from "react-router-dom"
+import MaterialIcon from 'react-google-material-icons'
+import { Icon, IconButton } from '@material-ui/core';
+import { Delete, Edit, ArrowForwardIos, Add } from '@material-ui/icons'
+
 
 class Account extends Component {
 
@@ -24,157 +21,79 @@ class Account extends Component {
             name: this.props.auth.user.name,
             initialname: this.props.auth.user.name,
             email: this.props.auth.user.email,
-            modify: false,
-            errors: {}
+            updateUser: false
         }
     }
 
-    static getDerivedStateFromProps(nextProps, prevState) {
-        if (nextProps.errors !== prevState.errors) {
-            return { errors: nextProps.errors };
-        }
-        if (nextProps.auth.user.name != prevState.initialname) {
-            return {
-                name: nextProps.auth.user.name,
-                initialname: nextProps.auth.user.name,
-                nameSuccess: "Le nom a bien été modifié !",
-                modify: false
-            };
-        }
-        else return null; // Triggers no change in the state
+    componentWillUnmount = () => {
+        this.props.clearSuccess()
     }
 
-    handleModify = () => {
-        this.setState(prevState => ({
-            errors: {},
-            name: this.props.auth.user.name,
-            email: this.props.auth.user.email,
-            nameSuccess: "",
-            modify: !prevState.modify
-        }));
+    onDeleteAddress = address => {
+        this.props.deleteAddress(address)
     }
-
-    onChange = e => {
-        this.setState({ [e.target.id]: e.target.value });
-    };
-
-    clearErrors = () => {
-        this.setState({ errors: {} });
-    }
-
-    onSubmit = e => {
-        e.preventDefault();
-        const updatedUser = {
-            name: this.state.name
-        };
-        this.props.updateUser(updatedUser);
-    };
 
     render() {
-        const { errors } = this.state;
         const { addresses } = this.props.auth.user
-        console.log(this.props.auth.user)
-        console.log(addresses)
+
         return (
             <Container fluid>
-                <Row>
-                    <Col xs="auto">
-                        <Nav defaultActiveKey="/home" className="flex-column">
-                            <Nav.Link>Compte</Nav.Link>
-                            <Nav.Link eventKey="link-1">Abonnements</Nav.Link>
-                            <Nav.Link eventKey="link-2">Réglages</Nav.Link>
-                        </Nav>
-                    </Col>
-                    <Col xs="auto">
+                <Card>
+                    <Card.Header>
                         <Row>
-                            <h4>Mes informations</h4>  
-                            <Button variant="link" onClick={this.handleModify} style={{'height':'35px'}}>
-                                <Figure>
-                                    <Figure.Image
-                                        width={10}
-                                        alt="editpen"
-                                        src={editpen}
-                                    />
-                                </Figure>
-                            </Button>
+                            <Col><h4>Informations du compte</h4></Col>
+                            <Col>{this.props.success.updatedUser && <Alert variant="success" className="float-right">Modification effectuée</Alert>}</Col>
                         </Row>
-                        <Row>
-                            <Form noValidate onSubmit={this.onSubmit}>
-                                <Form.Group as={Row}>
-                                    <Col sm="5">
-                                        <Form.Label column>
-                                            Dénomination sociale
-                                        </Form.Label>
-                                    </Col>
-                                    <Col >
-                                        <Form.Control
-                                            id="name"
-                                            plaintext={!this.state.modify}
-                                            readOnly={!this.state.modify}
-                                            value={this.state.name}
-                                            onChange={this.onChange}
-                                            error={errors.name}
-                                            isInvalid={errors.name}
-                                        />
-                                        <Form.Control.Feedback type="invalid">
-                                            {errors.name}
-                                        </Form.Control.Feedback>
-                                        <Form.Text className="text-success">
-                                            {this.state.nameSuccess}
-                                        </Form.Text>
-                                    </Col>
-                                </Form.Group>
+                    </Card.Header>
+                    <Card.Body>
+                        <ListGroup variant="flush">
+                            <ListGroup.Item action as={Link} to="/account/name" >
+                                <Row >
+                                    <Col>Dénomination sociale</Col>
+                                    <Col>{this.props.auth.user.name}</Col>
+                                    <Col className="d-flex justify-content-end" xs="2"><ArrowForwardIos /></Col>
+                                </Row>
+                            </ListGroup.Item>
+                            <ListGroup.Item action as={Link} to="/account/email">
+                                <Row>
+                                    <Col>Email</Col>
+                                    <Col>{this.props.auth.user.email}</Col>
+                                    <Col className="d-flex justify-content-end" xs="2"><ArrowForwardIos /></Col>
+                                </Row>
+                            </ListGroup.Item>
+                            <ListGroup.Item>
+                                <Row >
+                                    <Col>Adresses</Col>
+                                    <Col className="d-flex justify-content-end"  xs="2"><Link to="/account/address" ><IconButton ><Add /></IconButton></Link></Col>
+                                </Row>
+                                <ListGroup variant="light">
+                                    {addresses.map((address, _id) => {
+                                        return (
+                                            <ListGroup.Item key={_id} tag="a">
+                                                <Row>
+                                                    <Col>
+                                                        <Row><b>{address.dest}</b></Row>
+                                                        <Row>{address.addr_comp} {address.addr_2}</Row>
+                                                        <Row>{address.addr_1}, {address.postcode} {address.city}, {address.country}</Row></Col>
+                                                    <Col className="d-flex justify-content-end">
+                                                        <IconButton>
+                                                            <Edit />
+                                                        </IconButton>
 
-                                <Form.Group as={Row}>
-                                    <Col sm="5">
-                                        <Form.Label column>
-                                            Email
-                                    </Form.Label>
-                                    </Col>
-                                    <Col>
-                                        <Form.Control plaintext readOnly value={this.state.email} />
-                                    </Col>
-                                </Form.Group>
-                                <Button className="float-right" hidden={!this.state.modify} disabled={!this.state.modify} type="submit">Valider la modification</Button>
-                                <Button className="float-right" hidden={!this.state.modify} onClick={this.handleModify} variant='secondary'>Annuler</Button>
-                            </Form>
-                        </Row>
-                        <Row>
-                            <h4>Mes adresses</h4>
-                        </Row>
-                        <Row>
-                            {
-                                addresses.map((address, _id) => { return (console.log(address.dest)) }
-                                )}
-
-                            <CardDeck>
-                                {addresses.map((address, _id) => {
-                                    return (
-                                        <Card key={_id} tag="a">
-                                            <Card.Body >
-                                                <Card.Text>
-                                                    <Container fluid>
-                                                        <Row>{address.dest}</Row>
-                                                        <Row>{address.addr_comp}</Row>
-                                                        <Row>{address.addr_1}</Row>
-                                                        <Row>{address.addr_2}</Row>
-                                                        <Row>{address.postcode} {address.city}</Row>
-                                                        <Row>{address.country}</Row>
-                                                    </Container>
-                                                </Card.Text>
-                                            </Card.Body>
-                                        </Card>
-                                    )
-                                }
-                                )}
-                                <Card>
-                                    <Card.Body ><h1>+</h1></Card.Body>
-                                </Card>
-                            </CardDeck>
-
-                        </Row>
-                    </Col>
-                </Row>
+                                                        <IconButton onClick={() => this.onDeleteAddress(address)}>
+                                                            <Delete />
+                                                        </IconButton>
+                                                    </Col>
+                                                </Row>
+                                            </ListGroup.Item>
+                                        )
+                                    }
+                                    )}
+                                </ListGroup>
+                            </ListGroup.Item>
+                        </ListGroup>
+                    </Card.Body>
+                </Card>
             </Container >
         )
     }
@@ -182,6 +101,10 @@ class Account extends Component {
 
 Account.propTypes = {
     updateUser: PropTypes.func.isRequired,
+    deleteAddress: PropTypes.func.isRequired,
+    clearErrors: PropTypes.func.isRequired,
+    clearSuccess: PropTypes.func.isRequired,
+    success: PropTypes.object.isRequired,
     errors: PropTypes.object.isRequired,
     auth: PropTypes.object.isRequired
 }
@@ -190,10 +113,11 @@ const mapStateToProps = state => {
     return {
         auth: state.auth,
         errors: state.errors,
+        success: state.success
     }
 }
 
 export default connect(
     mapStateToProps,
-    { updateUser }
+    { updateUser, deleteAddress, clearErrors, clearSuccess }
 )(Account);

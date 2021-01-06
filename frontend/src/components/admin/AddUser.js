@@ -16,20 +16,12 @@ class AddUser extends Component {
         super(props);
         this.state = {
             name: "",
-            email: "",
-            errors: {}
+            email: ""
         };
     }
 
     onChange = e => {
         this.setState({ [e.target.id]: e.target.value });
-    }
-
-    static getDerivedStateFromProps(nextProps, prevState) {
-        if (nextProps.errors !== prevState.errors) {
-            return { errors: nextProps.errors };
-        }
-        else return null; // Triggers no change in the state
     }
 
     onSubmit = e => {
@@ -43,7 +35,7 @@ class AddUser extends Component {
 
     render() {
 
-        const { errors } = this.state;
+        const { errors } = this.props;
 
         return (
             <Container>
