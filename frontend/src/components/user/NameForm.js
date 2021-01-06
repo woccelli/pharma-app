@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { withRouter } from "react-router-dom";
 // Local
-import { updateUser } from "../../actions/userActions";
+import { updateName } from "../../actions/userActions";
 import { clearErrors } from "../../actions/utilActions"
 // Components
 import { Jumbotron, Form, Button, Row, Col, Container, ListGroup } from "react-bootstrap"
@@ -30,7 +30,7 @@ class NameForm extends Component {
         const updatedUser = {
             name: this.state.name
         };
-        this.props.updateUser(updatedUser, this.props.history)
+        this.props.updateName(updatedUser, this.props.history)
     };
 
     onChange = e => {
@@ -85,7 +85,7 @@ class NameForm extends Component {
 }
 
 NameForm.propTypes = {
-    updateUser: PropTypes.func.isRequired,
+    updateName: PropTypes.func.isRequired,
     clearErrors: PropTypes.func.isRequired,
     errors: PropTypes.object.isRequired,
     auth: PropTypes.object.isRequired
@@ -99,4 +99,4 @@ const mapStateToProps = state => {
     }
 }
 
-export default connect(mapStateToProps, { updateUser, clearErrors })(withRouter(NameForm))
+export default connect(mapStateToProps, { updateName, clearErrors })(withRouter(NameForm))

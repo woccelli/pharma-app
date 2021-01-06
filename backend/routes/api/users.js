@@ -11,7 +11,7 @@ const passport = require("passport");
 const validateRegisterInput = require("../../validation/register");
 const validateLoginInput = require("../../validation/login");
 const validateAddInput = require("../../validation/add")
-const { validateUpdateInput, validateUpdateEmailInput, validateAddAddressInput, validateForgotPasswordInput, validateResetPasswordInput } = require("../../validation/update");
+const { validateUpdateNameInput, validateUpdateEmailInput, validateAddressInput, validateForgotPasswordInput, validateResetPasswordInput } = require("../../validation/update");
 
 // Load User model
 const User = require("../../models/User");
@@ -119,9 +119,9 @@ router.post("/add", passport.authenticate('admin', { session: false }), (req, re
 // @route POST api/users/update
 // @desc Update user - Send new token
 // @access Protected - user only
-router.post("/update", passport.authenticate('user', { session: false }), (req, res) => {
+router.post("/update-name", passport.authenticate('user', { session: false }), (req, res) => {
     // Form validation
-    const { errors, isValid } = validateUpdateInput(req.body);
+    const { errors, isValid } = validateUpdateNameInput(req.body);
     // Check validation
     if (!isValid) {
         return res.status(400).json(errors);
@@ -155,25 +155,54 @@ router.post("/update-email", passport.authenticate('user', { session: false }), 
     const user = req.user;
     const email = req.body.email;
 
-    User.findOne({ email })
-        .then(existinguser => {
-            if (existinguser) {
-                // Another user exists with the same email address
-                return res.status(400).json({ email: "Cet e-mail n'est pas disponible" })
-            }
-            else {
-                // The email address is free
-                User.findByIdAndUpdate(user._id, { email: email }, { useFindAndModify: false, new: true }, (err, result) => {
-                    // result = updated user
-                    if (result) {
-                        signUserJwtToken(result, res)
-                    }
-                    if (err) {
-                        return res.status(400).json(err);
-                    }
-                })
-            }
-        })
+    if (user.email === email) {
+        signUserJwtToken(user, res)
+    } else {
+
+        User.findOne({ email })
+            .then(existinguser => {
+                if (existinguser) {
+                    // Another user exists with the same email address
+                    return res.status(400).json({ email: "Cet e-mail n'est pas disponible" })
+                }
+                else {
+                    // The email address is free
+                    User.findByIdAndUpdate(user._id, { email: email }, { useFindAndModify: false, new: true }, (err, result) => {
+                        // result = updated user
+                        if (result) {
+                            signUserJwtToken(result, res)
+                        }
+                        if (err) {
+                            return res.status(400).json(err);
+                        }
+                    })
+                }
+            })
+    }
+});
+
+// @route POST api/users/update
+// @desc Update user - Send new token
+// @access Protected - user only
+router.post("/update-address", passport.authenticate('user', { session: false }), (req, res) => {
+    // Form validation
+    const { errors, isValid } = validateAddressInput(req.body.address);
+    // Check validation
+    if (!isValid) {
+        return res.status(400).json(errors);
+    }
+
+    const user = req.user;
+    const { address } = req.body;
+    User.findOneAndUpdate({ _id: user._id, addresses: { $elemMatch: { _id: address._id } } }, { $set: { 'addresses.$': address } }, { useFindAndModify: false, new: true }, (err, result) => {
+        // result = updated user
+        if (result) {
+            signUserJwtToken(result, res)
+        }
+        if (err) {
+            return res.status(400).json(err);
+        }
+    })
 });
 
 // @route POST api/users/add-address
@@ -181,16 +210,15 @@ router.post("/update-email", passport.authenticate('user', { session: false }), 
 // @access Protected
 router.post("/add-address", passport.authenticate('user', { session: false }), (req, res) => {
     // Form validation
-    const { errors, isValid } = validateAddAddressInput(req.body.address);
+    const { errors, isValid } = validateAddressInput(req.body.address);
     // Check validation
     if (!isValid) {
         return res.status(400).json(errors);
     }
 
     const user = req.user;
-    const newAddress = req.body.address;
-
-    User.findByIdAndUpdate(user._id, { $push: { addresses: newAddress } }, { useFindAndModify: false, new: true }, (err, result) => {
+    const { address } = req.body;
+    User.findByIdAndUpdate(user._id, { $push: { addresses: address } }, { useFindAndModify: false, new: true }, (err, result) => {
         // result = updated user
         if (result) {
             signUserJwtToken(result, res)
@@ -207,9 +235,8 @@ router.post("/add-address", passport.authenticate('user', { session: false }), (
 // @access Protected
 router.post("/delete-address", passport.authenticate('user', { session: false }), (req, res) => {
     const user = req.user;
-    const addressToDelete = req.body;
-
-    User.findByIdAndUpdate(user._id, {$pull: { addresses: addressToDelete}}, { useFindAndModify: false, new: true }, (err, result) => {
+    const addressToDelete = req.body.address;
+    User.findByIdAndUpdate(user._id, { $pull: { addresses: addressToDelete } }, { useFindAndModify: false, new: true }, (err, result) => {
         // result = updated user
         if (result) {
             signUserJwtToken(result, res)
@@ -265,7 +292,7 @@ router.post('/password/reset/:userId/:token', (req, res) => {
             bcrypt.genSalt(10, (err, salt) => {
                 bcrypt.hash(password, salt, (err, hash) => {
                     if (err) throw err;
-                    User.findOneAndUpdate({ _id: userId }, { password: hash }, {useFindAndModify: false})
+                    User.findOneAndUpdate({ _id: userId }, { password: hash }, { useFindAndModify: false })
                         .then(() => res.status(202).json("Password change accepted"))
                         .catch(err => res.status(500).json(err))
                 });

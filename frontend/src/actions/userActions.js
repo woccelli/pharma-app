@@ -8,10 +8,10 @@ import {
 } from "./types";
 
 
-// Update user - get updated user token
-export const updateUser = (userData, history) => dispatch => {
+// Update user name - get updated user token
+export const updateName = (data, history) => dispatch => {
     axios
-        .post("/api/users/update", userData)
+        .post("/api/users/update-name", data)
         .then(res => {
             dispatch(clearErrors())
             dispatch({
@@ -31,9 +31,9 @@ export const updateUser = (userData, history) => dispatch => {
 };
 
 // Update user - get updated user token
-export const updateEmail = (userData, history) => dispatch => {
+export const updateEmail = (data, history) => dispatch => {
     axios
-        .post("/api/users/update-email", userData)
+        .post("/api/users/update-email", data)
         .then(res => {
             dispatch(clearErrors())
             dispatch({
@@ -51,16 +51,38 @@ export const updateEmail = (userData, history) => dispatch => {
         );
 };
 
-
-// add an address to the user's addresses list - get updated user token
-export const addAddress = (userData,history) => dispatch => {
+// Update user address - get updated user token
+export const updateAddress = (data, history) => dispatch => {
     axios
-        .post("/api/users/add-address", userData)
+        .post("/api/users/update-address", data)
         .then(res => {
             dispatch(clearErrors())
             dispatch({
                 type: GET_SUCCESS,
-                payload: { addedAddress: true}
+                payload: { updatedUser: true}
+            })
+            dispatch(updateAuthToken(res.data))
+            history.push("/account")
+        })
+        .catch(err => 
+            dispatch({
+                type: GET_ERRORS,
+                payload: err.response.data
+            })
+        );
+        
+};
+
+
+// add an address to the user's addresses list - get updated user token
+export const addAddress = (data, history) => dispatch => {
+    axios
+        .post("/api/users/add-address", data)
+        .then(res => {
+            dispatch(clearErrors())
+            dispatch({
+                type: GET_SUCCESS,
+                payload: { updatedUser: true}
             })
             dispatch(updateAuthToken(res.data))
             history.push("/account")
@@ -75,14 +97,14 @@ export const addAddress = (userData,history) => dispatch => {
         );
 };
 
-export const deleteAddress = address => dispatch => {
+export const deleteAddress = data => dispatch => {
     axios
-        .post("/api/users/delete-address", address)
+        .post("/api/users/delete-address", data)
         .then(res => {
             dispatch(clearErrors())
             dispatch({
                 type: GET_SUCCESS,
-                payload: { deletedAddress: true}
+                payload: { updatedUser: true}
             })
             dispatch(updateAuthToken(res.data))
             

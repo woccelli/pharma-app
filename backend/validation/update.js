@@ -3,7 +3,7 @@ const isEmpty = require("is-empty");
 
 module.exports = {
 
-    validateUpdateInput: function (data) {
+    validateUpdateNameInput: function (data) {
         let errors = {};
 
         // Convert empty fields to an empty string so we can use validator functions
@@ -39,9 +39,8 @@ module.exports = {
         };
     },
 
-    validateAddAddressInput: function (data) {
+    validateAddressInput: function (data) {
         let errors = {};
-
         // Convert empty fields to an empty string so we can use validator functions
         data.dest = !isEmpty(data.dest) ? data.dest : "";
         data.addr_1 = !isEmpty(data.addr_1) ? data.addr_1 : "";

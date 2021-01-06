@@ -3,7 +3,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 // Local
-import { updateUser, deleteAddress } from "../../actions/userActions";
+import { updateName, deleteAddress } from "../../actions/userActions";
 import { clearErrors, clearSuccess } from "../../actions/utilActions"
 // Components
 import { Container, CardColumns, Card, ListGroup, Row, Col, Alert } from 'react-bootstrap'
@@ -30,7 +30,7 @@ class Account extends Component {
     }
 
     onDeleteAddress = address => {
-        this.props.deleteAddress(address)
+        this.props.deleteAddress({address: address})
     }
 
     render() {
@@ -64,7 +64,7 @@ class Account extends Component {
                             <ListGroup.Item>
                                 <Row >
                                     <Col>Adresses</Col>
-                                    <Col className="d-flex justify-content-end"  xs="2"><Link to="/account/address" ><IconButton ><Add /></IconButton></Link></Col>
+                                    <Col className="d-flex justify-content-end" xs="2"><Link to="/account/address" ><IconButton ><Add /></IconButton></Link></Col>
                                 </Row>
                                 <ListGroup variant="light">
                                     {addresses.map((address, _id) => {
@@ -76,13 +76,20 @@ class Account extends Component {
                                                         <Row>{address.addr_comp} {address.addr_2}</Row>
                                                         <Row>{address.addr_1}, {address.postcode} {address.city}, {address.country}</Row></Col>
                                                     <Col className="d-flex justify-content-end">
-                                                        <IconButton>
-                                                            <Edit />
-                                                        </IconButton>
-
+                                                        <Link to={{
+                                                            pathname: '/account/address',
+                                                            state: {
+                                                                address
+                                                            }
+                                                        }}>
+                                                            <IconButton>
+                                                                <Edit />
+                                                            </IconButton>
+                                                        </Link>
+                                                        <div>
                                                         <IconButton onClick={() => this.onDeleteAddress(address)}>
                                                             <Delete />
-                                                        </IconButton>
+                                                        </IconButton></div>
                                                     </Col>
                                                 </Row>
                                             </ListGroup.Item>
@@ -119,5 +126,5 @@ const mapStateToProps = state => {
 
 export default connect(
     mapStateToProps,
-    { updateUser, deleteAddress, clearErrors, clearSuccess }
+    { updateUser: updateName, deleteAddress, clearErrors, clearSuccess }
 )(Account);

@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const AddressSchema = require("./Address");
 const Schema = mongoose.Schema;
 const UserSchema = new Schema({
     name: {
@@ -13,20 +14,10 @@ const UserSchema = new Schema({
         type: String,
         required: true
     },
-    addresses: {
-        type: [
-            {
-                dest: { type: String },
-                addr_1: { type: String },
-                addr_2: { type: String },
-                addr_comp: { type: String },
-                postcode: { type: String },
-                city: { type: String },
-                country: { type: String }
-            }
-        ],
+    addresses: 
+        [AddressSchema],
         default: []
-    },
+    ,
     role: {
         type: String,
         default: "BASIC"
