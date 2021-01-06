@@ -5,7 +5,7 @@
   "dependencies": {
     "@material-ui/core": "^4.11.2",
     "@react-pdf/renderer": "^1.6.12",
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "bootstrap": "^4.5.0",
     "classnames": "^2.2.6",
     "is-empty": "^1.2.0",
