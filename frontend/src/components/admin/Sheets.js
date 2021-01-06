@@ -3,14 +3,14 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 // Local
-import { getSheets } from "../../../actions/sheetsActions";
+import { getSheets } from "../../actions/sheetsActions";
 // Components
 import MaterialTable from 'material-table'
-import Container from 'react-bootstrap/Container'
-import Button from 'react-bootstrap/Button'
-import Navbar from "react-bootstrap/Navbar";
+import { Container, Button, Navbar } from 'react-bootstrap'
+import { Add } from '@material-ui/icons'
 import { Link } from 'react-router-dom'
-class SheetsTab extends Component {
+
+class Sheets extends Component {
 
     constructor(props) {
         super(props);
@@ -51,14 +51,14 @@ class SheetsTab extends Component {
                 }}
             />
             <Navbar className="float-right">
-                <Link to="/admin/addsheet"><Button className="btn-lg navbar-btn text-center" style={{'border-radius': '50%'}} href='/admin/addsheet'><h4>+</h4></Button></Link>
-            </Navbar>
+                    <Button as={Link} to="/admin/sheets/add-sheet" ><Add />Ajouter</Button>
+                </Navbar>
             </Container>
         )
     }
 }
 
-SheetsTab.propTypes = {
+Sheets.propTypes = {
     getSheets: PropTypes.func.isRequired,
     sheets: PropTypes.object.isRequired,
     auth: PropTypes.object.isRequired
@@ -74,4 +74,4 @@ const mapStateToProps = state => {
 export default connect(
     mapStateToProps,
     { getSheets }
-)(SheetsTab);
+)(Sheets);

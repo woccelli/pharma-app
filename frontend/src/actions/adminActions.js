@@ -35,7 +35,7 @@ export const addSheet = (sheetData, history) => dispatch => {
     axios
         .post("/api/sheets/add", sheetData)
         .then(res => {
-            history.push('/admin/dashboard')
+            history.push('/admin/sheets')
             dispatch(clearErrors())
             dispatch({
                 type: GET_SUCCESS,
@@ -59,6 +59,7 @@ export const addUser = (userData, history) => dispatch => {
                 type: GET_SUCCESS,
                 payload: { addedUser: true }
             })
+            history.push("/admin/users")
         })
         .catch(err =>
             dispatch({

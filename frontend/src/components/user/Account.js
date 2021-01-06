@@ -8,8 +8,7 @@ import { clearErrors, clearSuccess } from "../../actions/utilActions"
 // Components
 import { Container, CardColumns, Card, ListGroup, Row, Col, Alert } from 'react-bootstrap'
 import { Link } from "react-router-dom"
-import MaterialIcon from 'react-google-material-icons'
-import { Icon, IconButton } from '@material-ui/core';
+import { IconButton } from '@material-ui/core';
 import { Delete, Edit, ArrowForwardIos, Add } from '@material-ui/icons'
 
 
@@ -30,7 +29,7 @@ class Account extends Component {
     }
 
     onDeleteAddress = address => {
-        this.props.deleteAddress({address: address})
+        this.props.deleteAddress({ address: address })
     }
 
     render() {
@@ -87,9 +86,10 @@ class Account extends Component {
                                                             </IconButton>
                                                         </Link>
                                                         <div>
-                                                        <IconButton onClick={() => this.onDeleteAddress(address)}>
-                                                            <Delete />
-                                                        </IconButton></div>
+                                                            <IconButton onClick={() => this.onDeleteAddress(address)}>
+                                                                <Delete />
+                                                            </IconButton>
+                                                        </div>
                                                     </Col>
                                                 </Row>
                                             </ListGroup.Item>

@@ -8,6 +8,7 @@ import { logoutUser } from "../../../actions/authActions";
 import Navbar from 'react-bootstrap/Navbar'
 import Nav from 'react-bootstrap/Nav'
 import { Link } from 'react-router-dom'
+import { ThreeSixty } from "@material-ui/icons";
 
 class Header extends Component {
 
@@ -28,10 +29,23 @@ class Header extends Component {
         }
     }
 
+    adminBoard = () => {
+        if (this.props.auth.isAuthenticated && this.props.auth.user.role === "ADMIN") {
+        return (
+            <Nav>
+                <Nav.Link as={Link} to="/admin/users">Utilisateurs</Nav.Link>
+                <Nav.Link as={Link} to="/admin/sheets">Fiches</Nav.Link>
+            </Nav>
+        )} else {
+            return (<div></div>)
+        }
+    }
+
     render() {
         return (
             <Navbar bg="dark" sticky="top" className="border-bottom border-gray bg-white">
                 <Navbar.Brand as={Link} to="/">Toposanté</Navbar.Brand>
+                <this.adminBoard></this.adminBoard>
                 <Nav className="mr-auto"></Nav>
                 <this.userBoard></this.userBoard>
             </Navbar>

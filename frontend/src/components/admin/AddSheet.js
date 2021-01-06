@@ -6,12 +6,10 @@ import { connect } from "react-redux";
 import { addSheet } from "../../actions/adminActions"
 import Sheet from "../layout/modules/Sheet"
 // Components
-import Container from 'react-bootstrap/Container'
-import Row from 'react-bootstrap/Row'
-import Col from 'react-bootstrap/Col'
-import Form from 'react-bootstrap/Form'
-import Button from 'react-bootstrap/Button'
+import { Jumbotron, Form, Button, Row, Col, Container, ListGroup } from "react-bootstrap"
 import { BlobProvider } from '@react-pdf/renderer';
+import { Link } from "react-router-dom"
+import { ArrowBackIos } from '@material-ui/icons'
 
 class AdminPage extends Component {
 
@@ -26,6 +24,10 @@ class AdminPage extends Component {
         modules: []
       }
     };
+  }
+
+  onComponentDidMount = () => {
+    this.props.clearErrors()
   }
 
   onChange = e => {
@@ -47,11 +49,19 @@ class AdminPage extends Component {
   render() {
     const { errors } = this.props;
     const MyDoc = (
-      <Sheet sheet={this.state.sheet}/>
+      <Sheet sheet={this.state.sheet} />
     );
 
     return (
       <Container>
+            <ListGroup variant="flush">
+               <ListGroup.Item action as={Link} to="/admin/sheets" >
+                   <Row >
+                       <Col xs="5"><ArrowBackIos/></Col>
+                   </Row>
+               </ListGroup.Item>
+           </ListGroup>    
+           <Jumbotron>
         <Row>
           <Col>
             <Form noValidate onSubmit={this.onSubmit} class="row align-items-center">
@@ -121,6 +131,7 @@ class AdminPage extends Component {
             </BlobProvider>
           </Col>
         </Row>
+        </Jumbotron>
       </Container >
     );
   }
@@ -136,12 +147,9 @@ const mapStateToProps = state => ({
   auth: state.auth,
   errors: state.errors,
 });
-
-const mapDispatchToProps = {
-  addSheet
-}
+ 
 
 export default connect(
   mapStateToProps,
-  mapDispatchToProps
+  { addSheet }
 )(AdminPage);

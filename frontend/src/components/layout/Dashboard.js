@@ -10,18 +10,11 @@ import Container from 'react-bootstrap/Container'
 
 class Dashboard extends Component {
 
-  componentDidMount() {
-    if (this.props.auth.user.role === 'ADMIN') {
-      this.props.history.push("/admin/dashboard");
-    }
-  }
-
   render() {
     const { user } = this.props.auth;
 
     return (
       <Container> 
-        <h4>Bonjour {user.name}</h4>
         <CardGrid/>
       </Container>
     );

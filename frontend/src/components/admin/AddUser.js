@@ -2,12 +2,13 @@
 import React, { Component } from 'react'
 import PropTypes from "prop-types";
 import { connect } from 'react-redux'
+import { withRouter } from "react-router-dom";
 // Local
 import { addUser } from '../../actions/adminActions'
 // Components
-import Container from 'react-bootstrap/Container'
-import Form from 'react-bootstrap/Form'
-import Button from 'react-bootstrap/Button'
+import { Jumbotron, Form, Button, Row, Col, Container, ListGroup } from "react-bootstrap"
+import { Link } from "react-router-dom"
+import { ArrowBackIos }  from '@material-ui/icons'
 
 
 class AddUser extends Component {
@@ -18,6 +19,10 @@ class AddUser extends Component {
             name: "",
             email: ""
         };
+    }
+
+    onComponentDidMount = () => {
+        this.props.clearErrors()
     }
 
     onChange = e => {
@@ -39,6 +44,14 @@ class AddUser extends Component {
 
         return (
             <Container>
+            <ListGroup variant="flush">
+               <ListGroup.Item action as={Link} to="/admin/users" >
+                   <Row >
+                       <Col xs="5"><ArrowBackIos/></Col>
+                   </Row>
+               </ListGroup.Item>
+           </ListGroup>    
+           <Jumbotron>
                 <Form noValidate onSubmit={this.onSubmit} class="row align-items-center">
                     <Form.Label> <h2>Ajouter un utilisateur</h2> </Form.Label>
                     <Form.Group>
@@ -80,6 +93,7 @@ class AddUser extends Component {
                     </Form.Group>
 
                 </Form>
+                </Jumbotron>
             </Container>
         )
     }
@@ -100,4 +114,4 @@ const mapStateToProps = state => ({
 export default connect(
     mapStateToProps,
     { addUser }
-)(AddUser); 
+)(withRouter(AddUser)); 

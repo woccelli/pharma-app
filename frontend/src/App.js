@@ -21,7 +21,9 @@ import PrivateRoute from "./components/private-route/PrivateRoute";
 import AdminRoute from "./components/private-route/AdminRoute"
 import Dashboard from "./components/layout/Dashboard";
 import AddSheet from "./components/admin/AddSheet";
-import AdminDashboard from "./components/admin/Dashboard";
+import AddUser from "./components/admin/AddUser"
+import Users from "./components/admin/Users";
+import Sheets from "./components/admin/Sheets";
 import Header from "./components/layout/modules/Header"
 import NameForm from "./components/user/NameForm"
 import EmailForm from "./components/user/EmailForm"
@@ -63,8 +65,10 @@ class App extends Component {
               <PrivateRoute exact path="/account/email" component={EmailForm} />
               <PrivateRoute exact path="/account/address" component={AddressForm} />
             </Switch>
-            <AdminRoute exact path="/admin/addsheet" component={AddSheet} />
-            <AdminRoute exact path="/admin/dashboard" component={AdminDashboard} />
+            <AdminRoute exact path="/admin/sheets" component={Sheets} />
+            <AdminRoute exact path="/admin/sheets/add-sheet" component={AddSheet} />
+            <AdminRoute exact path="/admin/users" component={Users} />
+            <AdminRoute exact path="/admin/users/add-user" component={AddUser} />
           </Container>
         </Router>
       </Provider>

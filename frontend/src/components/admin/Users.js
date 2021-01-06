@@ -3,18 +3,15 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 // Local
-import { getUsers } from "../../../actions/adminActions";
-import { clearSuccess } from "../../../actions/utilActions"
-import AddUser from "../AddUser"
+import { getUsers } from "../../actions/adminActions";
+import { clearSuccess } from "../../actions/utilActions"
 // Components
 import MaterialTable from 'material-table'
-import Container from 'react-bootstrap/Container'
-import Button from 'react-bootstrap/Button'
-import Navbar from 'react-bootstrap/Navbar'
-import Modal from 'react-bootstrap/Modal'
-import Alert from 'react-bootstrap/Alert'
+import { Container, Button, Navbar, Alert } from 'react-bootstrap'
+import { Add } from '@material-ui/icons'
+import { Link } from 'react-router-dom'
 
-class UserTab extends Component {
+class Users extends Component {
 
     constructor(props) {
         super(props);
@@ -27,17 +24,8 @@ class UserTab extends Component {
         this.props.getUsers();
     }
 
-    showAddUser = () => {
+    componentWillUnmount = () => {
         this.props.clearSuccess()
-        this.setState({
-            showAddUser: true,
-        })
-    }
-
-    hideAddUser =() => {
-        this.setState({
-            showAddUser: false
-        })
     }
 
     render() {
@@ -68,12 +56,7 @@ class UserTab extends Component {
 
         return (
             <Container>
-                <Modal show={this.state.showAddUser && !this.props.success.addedUser} onHide={this.hideAddUser}>
-                    <Modal.Body>
-                        <AddUser />
-                    </Modal.Body>
-                </Modal>
-                <Alert show={this.props.success.addedUser || false } variant="success">
+                <Alert show={this.props.success.addedUser || false} variant="success">
                     L'utilisateur a bien été créé, un email a été envoyé à l'adresse indiquée pour l'informer.
                 </Alert>
                 <MaterialTable
@@ -91,18 +74,14 @@ class UserTab extends Component {
                     }}
                 />
                 <Navbar className="float-right">
-                    <Button
-                        className="btn-lg navbar-btn text-center"
-                        style={{ 'border-radius': '50%' }}
-                        onClick={this.showAddUser}
-                    ><h4>+</h4></Button>
+                    <Button as={Link} to="/admin/users/add-user" ><Add />Ajouter</Button>
                 </Navbar>
             </Container>
         )
     }
 }
 
-UserTab.propTypes = {
+Users.propTypes = {
     getUsers: PropTypes.func.isRequired,
     clearSuccess: PropTypes.func.isRequired,
     admin: PropTypes.object.isRequired,
@@ -120,4 +99,4 @@ const mapStateToProps = state => {
 export default connect(
     mapStateToProps,
     { getUsers, clearSuccess }
-)(UserTab);
+)(Users);
