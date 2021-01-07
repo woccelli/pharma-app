@@ -13,9 +13,12 @@ const validateLoginInput = require("../../validation/login");
 const validateAddInput = require("../../validation/add")
 const { validateUpdateNameInput, validateUpdateEmailInput, validateAddressInput, validateForgotPasswordInput, validateResetPasswordInput } = require("../../validation/update");
 
-// Load User model
+// Load models
 const User = require("../../models/User");
+const Log = require("../../models/Log");
+const Sheet = require("../../models/Sheet")
 const { sendEmailReset } = require("../../email/mailer");
+
 
 // @route GET api/users/all
 // @desc get all existing users
@@ -300,6 +303,15 @@ router.post('/password/reset/:userId/:token', (req, res) => {
         }
     })
 })
+
+// @route GET api/users/logs
+// @desc get logs of user
+// @access Protected - admin only
+router.get('/logs',  (req, res) => {
+    Log.find({ _user: req.body.userId}).populate('_sheet', 'name')
+        .then(logs => res.send(logs))
+        .catch(err => res.status(400).json('Error: ' + err));
+});
 
 const getPasswordResetURL = (user, token) => {
     return `http://localhost:3000/users/password/reset/${user._id}/${token}`

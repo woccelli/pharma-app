@@ -5,6 +5,9 @@ const bodyParser = require('body-parser')
 // DB
 const mongoose = require('mongoose');
 const db = require("./config/keys").mongoURI;
+require('./models/User');
+require('./models/Sheet')
+require('./models/Log')
 // Authentication and authorization
 const passport = require("passport");
 // route handlers

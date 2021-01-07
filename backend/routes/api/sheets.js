@@ -1,7 +1,8 @@
 const express = require("express");
 const router = express.Router();
 
-// Load Sheet model
+// Load models
+const Log = require('../../models/Log')
 const Sheet = require("../../models/Sheet");
 
 // Load input validation
@@ -52,6 +53,14 @@ router.post("/add", passport.authenticate('admin', { session: false }), (req, re
     });
 });
 
+function addLog(sheet, user){
+    const log = new Log({
+        _sheet: sheet._id,
+        _user: user._id
+    })
+    log.save()
+}
+
 // @route POST api/sheets/send
 // @desc send sheet
 // @access protected - subscribed users only
@@ -67,6 +76,7 @@ router.post("/send", passport.authenticate('subscriber', { session: false }), (r
         if (sheet) {
             sendSheetEmail(req.body)
                 .then(() => {
+                    addLog(sheet, req.user)
                     return res.json({
                         emailsent: true
                     })
