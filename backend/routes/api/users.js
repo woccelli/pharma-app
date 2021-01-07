@@ -307,8 +307,8 @@ router.post('/password/reset/:userId/:token', (req, res) => {
 // @route GET api/users/logs
 // @desc get logs of user
 // @access Protected - admin only
-router.get('/logs',  (req, res) => {
-    Log.find({ _user: req.body.userId}).populate('_sheet', 'name')
+router.get('/logs', passport.authenticate('admin', { session: false }), (req, res) => {
+    Log.find({ _user: req.query.userId}).populate('_sheet', 'name')
         .then(logs => res.send(logs))
         .catch(err => res.status(400).json('Error: ' + err));
 });

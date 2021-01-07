@@ -3,7 +3,9 @@ import { clearErrors } from "./utilActions"
 import {
     SET_USERS,
     GET_ERRORS,
-    GET_SUCCESS
+    GET_SUCCESS,
+    GET_USER_LOGS,
+    CLEAR_USER_LOGS
 } from "./types";
 
 
@@ -68,3 +70,25 @@ export const addUser = (userData, history) => dispatch => {
             })
         );
 }
+
+
+export const getUserLogs = user => dispatch => {
+    axios  
+        .get('/api/users/logs',  {params: {userId: user._id}})
+        .then(res => {
+            const data = { userId:user._id, userlogs: res.data }
+            dispatch({
+            type: GET_USER_LOGS,
+            payload: data
+        })})
+        .catch(err =>
+           console.log(err)
+        );
+}
+
+export const clearUserLogs = () => {
+    return {
+      type: CLEAR_USER_LOGS,
+      payload: {}
+    };
+};

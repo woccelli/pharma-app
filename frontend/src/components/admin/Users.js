@@ -3,7 +3,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 // Local
-import { getUsers } from "../../actions/adminActions";
+import { getUsers, getUserLogs, clearUserLogs } from "../../actions/adminActions";
 import { clearSuccess } from "../../actions/utilActions"
 // Components
 import MaterialTable from 'material-table'
@@ -26,6 +26,28 @@ class Users extends Component {
 
     componentWillUnmount = () => {
         this.props.clearSuccess()
+        this.props.clearUserLogs()
+    }
+
+    renderUserDetails = user => {
+        const userLogs = this.props.admin.logs.find(log => log.userId === user._id)
+        console.log(this.props.admin.logs)
+        if (userLogs) {
+            const logs = userLogs.userlogs
+            return (
+                logs.map((log, _id) => {
+                    return (
+                        <div key={_id}>{log._id}{log._sheet.name}{log._sheet._id}</div>
+                    )
+                })
+            )
+        } else {
+            this.callUserDetails(user)
+        }
+    }
+
+    callUserDetails = user => {
+        this.props.getUserLogs(user)
     }
 
     render() {
@@ -67,11 +89,12 @@ class Users extends Component {
                         sorting: true,
                         filtering: true
                     }}
-                    detailPanel={rowData => {
-                        return (
-                            <div>{rowData._id}</div>
-                        )
+                    onRowClick={(event, rowData, togglePanel) => {
+                        this.callUserDetails(rowData)
+                        togglePanel()
                     }}
+                    detailPanel={rowData => this.renderUserDetails(rowData)}
+
                 />
                 <Navbar className="float-right">
                     <Button as={Link} to="/admin/users/add-user" ><Add />Ajouter</Button>
@@ -83,6 +106,8 @@ class Users extends Component {
 
 Users.propTypes = {
     getUsers: PropTypes.func.isRequired,
+    getUserLogs: PropTypes.func.isRequired,
+    clearUserLogs: PropTypes.func.isRequired,
     clearSuccess: PropTypes.func.isRequired,
     admin: PropTypes.object.isRequired,
     auth: PropTypes.object.isRequired
@@ -98,5 +123,5 @@ const mapStateToProps = state => {
 
 export default connect(
     mapStateToProps,
-    { getUsers, clearSuccess }
+    { getUsers, getUserLogs, clearSuccess, clearUserLogs }
 )(Users);
