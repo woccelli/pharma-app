@@ -68,11 +68,22 @@ export const loginUser = (userData, history) => dispatch => {
     );
 };
 
-// User loading
-export const setUserLoading = () => {
-  return {
-    type: USER_LOADING
-  };
+// Check if jwt token still corresponds to DB - get user token
+// Necessary since Admin can manually set the subscription date
+export const checkUserToken = () => dispatch => {
+  axios
+    .get("/api/users/check-token-validity")
+    .then(res => {
+      if(res.data !== "OK") {
+        dispatch(updateAuthToken(res.data))
+      }
+    })
+    .catch(err =>
+      dispatch({
+        type: GET_ERRORS,
+        payload: err.response.data
+      })
+    );
 };
 
 // Log user out

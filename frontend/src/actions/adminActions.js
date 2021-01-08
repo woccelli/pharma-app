@@ -116,3 +116,22 @@ export const clearSheetLogs = () => {
       payload: {}
     };
 };
+
+export const editUserSubscription = (data, history) => dispatch => {
+    axios
+    .post("/api/users/user-subscription", data)
+    .then(res => {
+        dispatch(clearErrors())
+        dispatch({
+            type: GET_SUCCESS,
+            payload: { addedSubscription: true }
+        })
+        history.push("/admin/users")
+    })
+    .catch(err =>
+        dispatch({
+            type: GET_ERRORS,
+            payload: err.response.data
+        })
+    );
+}

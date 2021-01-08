@@ -11,7 +11,7 @@ const passport = require("passport");
 const validateRegisterInput = require("../../validation/register");
 const validateLoginInput = require("../../validation/login");
 const validateAddInput = require("../../validation/add")
-const { validateUpdateNameInput, validateUpdateEmailInput, validateAddressInput, validateForgotPasswordInput, validateResetPasswordInput } = require("../../validation/update");
+const { validateUpdateNameInput, validateUpdateEmailInput, validateAddressInput, validateForgotPasswordInput, validateResetPasswordInput, validateSubInput } = require("../../validation/update");
 
 // Load models
 const User = require("../../models/User");
@@ -210,6 +210,30 @@ router.post("/update-address", passport.authenticate('user', { session: false })
     })
 });
 
+// @route POST api/users/user-subscription
+// @desc Update user subscription date - Send new token
+// @access Protected - admin only
+router.post("/user-subscription", passport.authenticate('admin', { session: false }), (req, res) => {
+    // Form validation
+    const { errors, isValid } = validateSubInput(req.body);
+    // Check validation
+    if (!isValid) {
+        return res.status(400).json(errors);
+    }
+
+    const { userId, subuntil} = req.body;
+
+    User.findByIdAndUpdate({ _id: userId}, { subuntil: subuntil }, { useFindAndModify: false, new: true }, (err, result) => {
+        // result = updated user
+        if (result) {
+            res.send(result)
+        }
+        if (err) {
+            return res.status(400).json(err);
+        }
+    })
+});
+
 // @route POST api/users/add-address
 // @desc Add an address to the user's addresses list - Send new token
 // @access Protected
@@ -306,6 +330,17 @@ router.post('/password/reset/:userId/:token', (req, res) => {
     })
 })
 
+// @route GET api/users/all
+// @desc get all existing users
+// @access Protected - admin only
+router.get('/check-token-validity', passport.authenticate('check-token', { session: false }), (req, res) => {
+    if(new Date(req.user.dbUser.subuntil).getTime() !==  new Date(req.user.jwtUser.subuntil).getTime()) {
+        signUserJwtToken(req.user.dbUser, res)
+    } else {
+        res.sendStatus(200)
+    }
+});
+
 // @route GET api/users/logs
 // @desc get logs of user
 // @access Protected - admin only
@@ -387,7 +422,7 @@ const signUserJwtToken = (user, res) => {
         email: user.email,
         addresses: user.addresses,
         role: user.role,
-        subscriber: user.subscriber
+        subuntil: user.subuntil
     };
 
     // Sign token

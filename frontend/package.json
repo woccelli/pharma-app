@@ -18,6 +18,7 @@
     "pdf-to-base64": "^1.0.3",
     "react": "^16.13.1",
     "react-bootstrap": "^1.0.1",
+    "react-bootstrap-date-picker": "^5.1.0",
     "react-chartjs-2": "^2.11.1",
     "react-dom": "^16.13.1",
     "react-google-material-icons": "^1.0.4",

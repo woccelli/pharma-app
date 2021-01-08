@@ -3,12 +3,17 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 // Local
+import { checkUserToken } from '../../actions/authActions'
 import CardGrid from "./modules/CardGrid"
 // Components
 import Container from 'react-bootstrap/Container'
 
 
 class Dashboard extends Component {
+
+  componentDidMount() {
+    this.props.checkUserToken()
+  }
 
   render() {
     const { user } = this.props.auth;
@@ -22,6 +27,7 @@ class Dashboard extends Component {
 }
 
 Dashboard.propTypes = {
+  checkUserToken: PropTypes.func.isRequired,
   auth: PropTypes.object.isRequired
 };
 
@@ -31,5 +37,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  null
+  { checkUserToken }
 )(Dashboard);

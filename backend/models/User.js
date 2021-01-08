@@ -22,9 +22,9 @@ const UserSchema = new Schema({
         type: String,
         default: "BASIC"
     },
-    subscriber: {
-        type: Boolean,
-        default: false
+    subuntil: {
+        type: Date,
+        default: Date.now
     },
     date: {
         type: Date,

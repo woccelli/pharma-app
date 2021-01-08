@@ -57,7 +57,7 @@ class CardGrid extends Component {
   }
 
   handleShow = sheet => {
-    if (this.props.auth.user.subscriber) {
+    if ((new Date(this.props.auth.user.subuntil)) > Date.now()) {
       this.setState({
         selectedSheet: sheet,
         show: true
@@ -109,9 +109,9 @@ class CardGrid extends Component {
     return (
       <div>
         <Modal show={!this.state.show && this.state.showSubAlert} onHide={this.handleClose}>
-          <Alert>
-            Vous n'êtes pas abonné(e)... Veuillez vous abonner pour accéder à l'intégralité du contenu.
-            <Button>S'abonner</Button>
+          <Alert variant="info">
+            Le contenu de ce site est réservé aux utilisateurs abonnés. 
+            Un système d'abonnement indépendant sera bientôt mis en place pour vous permettre de vous abonner directement. 
           </Alert>
         </Modal>
 

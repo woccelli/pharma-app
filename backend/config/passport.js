@@ -51,10 +51,25 @@ module.exports = passport => {
             User.findById(jwt_payload.id)
                 .then(user => {
                     if (user) {
-                        if(user.subscriber) {
+                        if((new Date(user.subuntil)) > Date.now()) {
                             return done(null, user);
                         }
                         return done(null, false);
+                    }
+                    return done(null, false);
+                })
+                .catch(err => console.log(err));
+        })
+    );
+
+    //authorization for users routes
+    passport.use(
+        'check-token',
+        new JwtStrategy(opts, (jwt_payload, done) => {
+            User.findById(jwt_payload.id)
+                .then(user => {
+                    if (user) {
+                        return done(null, {dbUser: user,jwtUser :jwt_payload});
                     }
                     return done(null, false);
                 })

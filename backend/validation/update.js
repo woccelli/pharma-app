@@ -117,5 +117,26 @@ module.exports = {
             errors,
             isValid: isEmpty(errors)
         };
+    },
+    validateSubInput: function(data) {
+        let errors = {};
+
+        // Convert empty fields to an empty string so we can use validator functions
+        data.subuntil = !isEmpty(data.subuntil) ? data.subuntil : "";
+        data.userId = !isEmpty(data.userId) ? data.userId : "";
+
+         // Password checks
+         if (Validator.isEmpty(data.subuntil)) {
+            errors.subuntil = "Veuillez renseigner une date";
+        }
+        if (Validator.isEmpty(data.userId)) {
+            errors.userId = "Veuillez renseigner l'utilisateur";
+        }
+
+        return {
+            errors,
+            isValid: isEmpty(errors)
+        };
     }
+
 }

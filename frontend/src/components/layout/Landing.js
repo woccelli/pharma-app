@@ -8,6 +8,7 @@ import CardGrid from "./modules/CardGrid"
 import Container from 'react-bootstrap/Container'
 import Button from 'react-bootstrap/Button'
 import Navbar from 'react-bootstrap/Navbar'
+import { Link } from 'react-router-dom'
 
 
 class Landing extends Component {
@@ -25,10 +26,10 @@ class Landing extends Component {
         <CardGrid />
         <Navbar fixed="bottom" >
           <div className="w-50">
-            <Button type="button" href="/register" className="btn btn-secondary btn-lg btn-block">S'inscrire</Button>
+            <Button type="button" as={Link} to="/register" className="btn btn-secondary btn-lg btn-block">S'inscrire</Button>
           </div>
           <div className="w-50">
-          <Button type="button" href="/login" className="btn btn-primary btn-lg btn-block">Se connecter</Button>
+          <Button type="button" as={Link} to="/login" className="btn btn-primary btn-lg btn-block">Se connecter</Button>
           </div>
         </Navbar>
       </Container>

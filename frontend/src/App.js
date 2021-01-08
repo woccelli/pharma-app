@@ -28,6 +28,7 @@ import Header from "./components/layout/modules/Header"
 import NameForm from "./components/user/NameForm"
 import EmailForm from "./components/user/EmailForm"
 import AddressForm from "./components/user/AddressForm"
+import UserSubscription from "./components/admin/UserSubscription";
 
 // Check for token to keep user logged in
 if (localStorage.jwtToken) {
@@ -69,6 +70,7 @@ class App extends Component {
             <AdminRoute exact path="/admin/sheets/add-sheet" component={AddSheet} />
             <AdminRoute exact path="/admin/users" component={Users} />
             <AdminRoute exact path="/admin/users/add-user" component={AddUser} />
+            <AdminRoute exact path="/admin/users/user-subscription" component={UserSubscription} />
           </Container>
         </Router>
       </Provider>

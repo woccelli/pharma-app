@@ -8,9 +8,11 @@ import { clearSuccess } from "../../actions/utilActions"
 // Components
 import MaterialTable from 'material-table'
 import { Container, Button, Navbar, Alert } from 'react-bootstrap'
-import { Add } from '@material-ui/icons'
+import { Add, Build } from '@material-ui/icons'
 import { Link } from 'react-router-dom'
 import { Bar } from 'react-chartjs-2'
+import { IconButton } from '@material-ui/core';
+
 class Users extends Component {
 
     componentDidMount = () => {
@@ -60,7 +62,7 @@ class Users extends Component {
                 },
             }
             return (
-                <Bar data={chartData} options={options}/>
+                <Bar data={chartData} options={options} />
             )
         } else {
             this.callUserDetails(user)
@@ -89,12 +91,32 @@ class Users extends Component {
             {
                 title: 'Abonné',
                 field: 'subscriber',
-                render: row => row.subscriber ? 'Oui' : 'Non'
+                render: row => (new Date(row.subuntil)) > Date.now() ? 'Oui' : 'Non'
+            },
+            {
+                title: "Date de fin d'abonnement",
+                field: 'subuntil',
+                render: row => (new Date(row.subuntil)).toLocaleDateString()
             },
             {
                 title: 'Date de création',
-                field: 'date'
+                field: 'date',
+                render: row => (new Date(row.date)).toLocaleDateString()
             },
+            {
+                title: '',
+                render: user => 
+                <Link to={{
+                    pathname: '/admin/users/user-subscription',
+                    state: {
+                        user
+                    }
+                }}>
+                    <IconButton>
+                        <Build />
+                    </IconButton>
+                </Link>
+            }
         ];
 
         return (
