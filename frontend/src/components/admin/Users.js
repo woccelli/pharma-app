@@ -10,7 +10,7 @@ import MaterialTable from 'material-table'
 import { Container, Button, Navbar, Alert } from 'react-bootstrap'
 import { Add } from '@material-ui/icons'
 import { Link } from 'react-router-dom'
-
+import { Bar } from 'react-chartjs-2'
 class Users extends Component {
 
     constructor(props) {
@@ -31,15 +31,43 @@ class Users extends Component {
 
     renderUserDetails = user => {
         const userLogs = this.props.admin.logs.find(log => log.userId === user._id)
-        console.log(this.props.admin.logs)
         if (userLogs) {
             const logs = userLogs.userlogs
+            const data = logs.map((log, _id) => {
+                const x = new Date(log._id.year, log._id.month, log._id.day)
+                const y = log.sheetCount.reduce((accumulator, curr) => accumulator + curr.count, 0)
+                return { x, y }
+            })
+            const labels = data.map(val => val.x)
+            const datasets = [{
+                label: "Nombre d'envois",
+                data: data,
+                fill: true,
+                backgroundColor: "rgb(192,217,255)",
+                borderColor: "rgb(0,98,251)",
+            }]
+            const chartData = {
+                labels: labels,
+                datasets: datasets,
+            }
+            const options = {
+                scales: {
+                    xAxes: [{
+                        type: 'time',
+                        time: {
+                            unit: 'day'
+                        }
+                    }],
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true,
+                            min: 0
+                        }
+                    }]
+                },
+            }
             return (
-                logs.map((log, _id) => {
-                    return (
-                        <div key={_id}>{log._id}{log._sheet.name}{log._sheet._id}</div>
-                    )
-                })
+                <Bar data={chartData} options={options}/>
             )
         } else {
             this.callUserDetails(user)

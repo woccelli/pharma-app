@@ -18,6 +18,8 @@ const User = require("../../models/User");
 const Log = require("../../models/Log");
 const Sheet = require("../../models/Sheet")
 const { sendEmailReset } = require("../../email/mailer");
+const mongoose = require('mongoose')
+const { Mongoose } = require("mongoose");
 
 
 // @route GET api/users/all
@@ -307,10 +309,53 @@ router.post('/password/reset/:userId/:token', (req, res) => {
 // @route GET api/users/logs
 // @desc get logs of user
 // @access Protected - admin only
-router.get('/logs', passport.authenticate('admin', { session: false }), (req, res) => {
-    Log.find({ _user: req.query.userId}).populate('_sheet', 'name')
-        .then(logs => res.send(logs))
-        .catch(err => res.status(400).json('Error: ' + err));
+router.get('/logs', passport.authenticate('admin', { session: false }), async (req, res) => {
+    const docs = await Log.aggregate([
+        { $match: { _user: mongoose.Types.ObjectId(req.query.userId) } },
+        {
+            $lookup: {
+                from: "sheets", localField: "_sheet", foreignField: "_id", as: "sheetDetails"
+            }
+        }, {
+            $unwind: "$sheetDetails"
+        },{
+            $project: {
+                "_id": 1,
+                "_sheet": 1,
+                "name": "$sheetDetails.name",
+                "_user": 1,
+                "date": 1
+            }
+        },
+        {
+            $group: {
+                _id: {
+                    year: { $year: "$date" },
+                    month: { $month: "$date" },
+                    day: { $dayOfMonth: "$date" },
+                    _sheet: { _id: "$_sheet", name: "$name"}
+                },
+                count: {
+                    $sum: 1
+                }
+            },
+        }, {
+            $group: {
+                _id: {
+                    year:  "$_id.year" ,
+                    month: "$_id.month" ,
+                    day:  "$_id.day"
+                },
+                sheetCount: {
+                    $push: {
+                        _sheet: "$_id._sheet",
+                        count: "$count"
+                    }
+                }
+            }
+        }
+    ])
+    res.send(docs)
 });
 
 const getPasswordResetURL = (user, token) => {
