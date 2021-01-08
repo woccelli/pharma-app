@@ -5,7 +5,9 @@ import {
     GET_ERRORS,
     GET_SUCCESS,
     GET_USER_LOGS,
-    CLEAR_USER_LOGS
+    CLEAR_USER_LOGS,
+    GET_SHEET_LOGS,
+    CLEAR_SHEET_LOGS
 } from "./types";
 
 
@@ -89,6 +91,28 @@ export const getUserLogs = user => dispatch => {
 export const clearUserLogs = () => {
     return {
       type: CLEAR_USER_LOGS,
+      payload: {}
+    };
+};
+
+
+export const getSheetLogs = sheet => dispatch => {
+    axios  
+        .get('/api/sheets/logs',  {params: {sheetId: sheet._id}})
+        .then(res => {
+            const data = { sheetId:sheet._id, sheetlogs: res.data }
+            dispatch({
+            type: GET_SHEET_LOGS,
+            payload: data
+        })})
+        .catch(err =>
+           console.log(err)
+        );
+}
+
+export const clearSheetLogs = () => {
+    return {
+      type: CLEAR_SHEET_LOGS,
       payload: {}
     };
 };

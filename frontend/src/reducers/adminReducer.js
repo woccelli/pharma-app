@@ -2,13 +2,16 @@ import {
   SET_USERS,
   SET_ADDED_USER,
   GET_USER_LOGS,
-  CLEAR_USER_LOGS
+  CLEAR_USER_LOGS,
+  GET_SHEET_LOGS,
+  CLEAR_SHEET_LOGS
 } from "../actions/types";
 
 const initialState = {
   users: [],
   added_user: false,
-  logs: []
+  userLogs: [],
+  sheetLogs: []
 };
 
 export default function (state = initialState, action) {
@@ -24,11 +27,11 @@ export default function (state = initialState, action) {
         added_user: action.payload
       };
     case GET_USER_LOGS:
-      const index = state.logs.findIndex(log => log.userId === action.payload.userId)
+      var index = state.userLogs.findIndex(log => log.userId === action.payload.userId)
       if (index === -1) {
         return {
           ...state,
-          logs: [...state.logs, action.payload]
+          userLogs: [...state.userLogs, action.payload]
         }
       } else {
         return state
@@ -36,7 +39,22 @@ export default function (state = initialState, action) {
     case CLEAR_USER_LOGS:
       return {
         ...state,
-        logs: []
+        userLogs: []
+      };
+      case GET_SHEET_LOGS:
+      var index = state.sheetLogs.findIndex(log => log.sheetId === action.payload.sheetId)
+      if (index === -1) {
+        return {
+          ...state,
+          sheetLogs: [...state.sheetLogs, action.payload]
+        }
+      } else {
+        return state
+      };
+    case CLEAR_SHEET_LOGS:
+      return {
+        ...state,
+        sheetLogs: []
       };
     default:
       return state;

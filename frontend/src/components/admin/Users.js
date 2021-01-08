@@ -13,13 +13,6 @@ import { Link } from 'react-router-dom'
 import { Bar } from 'react-chartjs-2'
 class Users extends Component {
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            showAddUser: false
-        }
-    }
-
     componentDidMount = () => {
         this.props.getUsers();
     }
@@ -30,7 +23,7 @@ class Users extends Component {
     }
 
     renderUserDetails = user => {
-        const userLogs = this.props.admin.logs.find(log => log.userId === user._id)
+        const userLogs = this.props.admin.userLogs.find(log => log.userId === user._id)
         if (userLogs) {
             const logs = userLogs.userlogs
             const data = logs.map((log, _id) => {

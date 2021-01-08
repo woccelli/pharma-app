@@ -4,7 +4,7 @@ const router = express.Router();
 // Load models
 const Log = require('../../models/Log')
 const Sheet = require("../../models/Sheet");
-
+const mongoose = require('mongoose')
 // Load input validation
 const { validateAddInput, validateSendInput } = require("../../validation/sheet");
 
@@ -93,6 +93,30 @@ router.post("/send", passport.authenticate('subscriber', { session: false }), (r
             return res.status(400).json({ name: "La fiche demandée n'existe pas", emailsent: false });
         }
     });
+});
+
+// @route GET api/sheets/logs
+// @desc get logs of sheet
+// @access Protected - admin only
+router.get('/logs',  async (req, res) => {
+    const docs = await Log.aggregate([
+        { 
+            $match: { _sheet: mongoose.Types.ObjectId(req.query.sheetId) } 
+        },
+        {
+            $group: {
+                _id: {
+                    year: { $year: "$date" },
+                    month: { $month: "$date" },
+                    day: { $dayOfMonth: "$date" },
+                },
+                count: {
+                    $sum: 1
+                }
+            },
+        }
+    ])
+    res.send(docs)
 });
 
 module.exports = router;
