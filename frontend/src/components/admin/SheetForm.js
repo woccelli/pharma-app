@@ -18,7 +18,9 @@ class SheetForm extends Component {
   constructor(props) {
     super(props);
     if (this.props.location.state) {
-      const { sheet } = this.props.location.state
+      console.log(this.props.sheets)
+      const { sheetId } = this.props.location.state
+      const sheet  = this.props.sheets.sheets.find(({_id}) => _id === sheetId)
       if(sheet) {
         this.state = {
           sheet: sheet,
@@ -163,12 +165,14 @@ SheetForm.propTypes = {
   addSheet: PropTypes.func.isRequired,
   updateSheet: PropTypes.func.isRequired,
   auth: PropTypes.object.isRequired,
-  errors: PropTypes.object.isRequired
+  errors: PropTypes.object.isRequired,
+  admin: PropTypes.object.isRequired
 };
 
 const mapStateToProps = state => ({
   auth: state.auth,
   errors: state.errors,
+  sheets: state.sheets
 });
 
 

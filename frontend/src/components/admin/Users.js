@@ -25,6 +25,7 @@ class Users extends Component {
     }
 
     renderUserDetails = user => {
+        console.log(user)
         const userLogs = this.props.admin.userLogs.find(log => log.userId === user._id)
         if (userLogs) {
             const logs = userLogs.userlogs
@@ -109,7 +110,7 @@ class Users extends Component {
                 <Link to={{
                     pathname: '/admin/users/user-subscription',
                     state: {
-                        user
+                        userId: user._id
                     }
                 }}>
                     <IconButton>
@@ -132,11 +133,7 @@ class Users extends Component {
                         sorting: true,
                         filtering: true
                     }}
-                    onRowClick={(event, rowData, togglePanel) => {
-                        this.callUserDetails(rowData)
-                        togglePanel()
-                    }}
-                    detailPanel={rowData => this.renderUserDetails(rowData)}
+                   detailPanel={rowData => this.renderUserDetails(rowData)}
 
                 />
                 <Navbar className="float-right">

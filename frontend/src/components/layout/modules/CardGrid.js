@@ -96,7 +96,7 @@ class CardGrid extends Component {
     })
       .catch(
         (error) => {
-          console.log(error); //Exepection error....
+          console.log(error); 
         }
       );
 
@@ -171,7 +171,7 @@ class CardGrid extends Component {
         </Modal>
 
         <Container>
-          <Row className="flex-row-reverse">
+          <Row className="flex-row-reverse" style={{padding:"10px"}}>
             <Form >
               <Form.Group >
                 <Form.Control

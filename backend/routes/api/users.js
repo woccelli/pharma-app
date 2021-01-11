@@ -287,7 +287,6 @@ router.post("/update-password", passport.authenticate('user', { session: false }
     }
     const password = req.body.password;
     const newPassword = req.body.newPassword1
-    console.log(password, newPassword)
     // Check password
     bcrypt.compare(password, req.user.password).then(isMatch => {
         if (isMatch) {
@@ -299,8 +298,6 @@ router.post("/update-password", passport.authenticate('user', { session: false }
                     User.findByIdAndUpdate(req.user._id, { password: hash }, { useFindAndModify: false, new: true }, (err, result) => {
                         // result = updated user
                         if (result) {
-                            console.log(hash)
-                            console.log(result)
                             signUserJwtToken(result, res)
                         }
                         if (err) {
@@ -342,19 +339,21 @@ router.post('/forgot-password', (req, res) => {
         })
 })
 
-router.post('/password/reset/:userId/:token', (req, res) => {
+router.post('/password-reset', (req, res) => {
+
     // Form validation
     const { errors, isValid } = validateResetPasswordInput(req.body);
     // Check validation
     if (!isValid) {
         return res.status(400).json(errors);
     }
-    const { userId, token } = req.params
-    const { password } = req.body
+
+    const { userId, token } = req.query
+    const password  = req.body.newPassword1
 
     User.findById({ _id: userId }).then(user => {
         if (!user) {
-            return res.status(400).json({ password: "Utilisateur invalide" })
+            return res.status(400).json({ newPassword1: "Utilisateur invalide" })
         }
         const payload = decodeTokenFromPwd(token, user.password)
         if (payload._id.localeCompare(user._id) === 0) {
@@ -435,7 +434,7 @@ router.get('/logs', passport.authenticate('admin', { session: false }), async (r
 });
 
 const getPasswordResetURL = (user, token) => {
-    return `http://localhost:3000/users/password/reset/${user._id}/${token}`
+    return `http://localhost:3000/password-reset/${user._id}/${token}`
 }
 
 const getUserSecret = password => {

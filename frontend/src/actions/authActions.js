@@ -97,7 +97,7 @@ export const logoutUser = () => dispatch => {
 };
 
 // Send an email with forgotten password link
-export const forgottenPwd = userData => dispatch => {
+export const forgottenPwd = (userData, history) => dispatch => {
   axios
     .post("/api/users/forgot-password", userData)
     .then(res => {
@@ -106,6 +106,30 @@ export const forgottenPwd = userData => dispatch => {
         type: GET_SUCCESS,
         payload: { pwdEmailSent: true }
       })
+      history.push("/login")
+    })
+    .catch(err =>
+      dispatch({
+        type: GET_ERRORS,
+        payload: err.response.data
+      })
+    );
+}
+
+// Send an email with forgotten password link
+export const resetPwd = (data, history) => dispatch => {
+  axios
+    .post("/api/users/password-reset", data.passwords, { params: {
+      userId: data.userId,
+      token: data.token
+    }})
+    .then(res => {
+      dispatch(clearErrors())
+      dispatch({
+        type: GET_SUCCESS,
+        payload: { resetPwd: true }
+      })
+      history.push("/login")
     })
     .catch(err =>
       dispatch({

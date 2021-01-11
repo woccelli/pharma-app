@@ -5,12 +5,11 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 // Local
 import { loginUser } from "../../actions/authActions";
-import ForgottenPwd from './modules/ForgottenPwd'
+import { clearSuccess } from "../../actions/utilActions"
 // Components
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
 import Container from 'react-bootstrap/Container'
-import Modal from 'react-bootstrap/Modal'
 import Alert from 'react-bootstrap/Alert'
 
 class Login extends Component {
@@ -18,8 +17,7 @@ class Login extends Component {
     super();
     this.state = {
       email: "",
-      password: "",
-      showForgottenPwd: false
+      password: ""
     };
   }
 
@@ -30,17 +28,17 @@ class Login extends Component {
     }
   }
 
+  componentWillUnmount() {
+    this.props.clearSuccess()
+  }
+
   onChange = e => {
     this.setState({
       [e.target.id]: e.target.value,
     });
   };
 
-  showForgottenPwd = () => {
-    this.setState(prevState => ({
-      showForgottenPwd: !prevState.showForgottenPwd
-    }))
-  }
+
 
   onSubmit = e => {
     e.preventDefault()
@@ -58,19 +56,15 @@ class Login extends Component {
 
     return (
       <Container fluid>
-
-        <Modal show={this.state.showForgottenPwd} onHide={this.showForgottenPwd}>
-          <Modal.Header>Mot de passe oublié</Modal.Header>
-          <Modal.Body>
-            <ForgottenPwd />
-          </Modal.Body>
-
-        </Modal>
-
         <Alert show={this.props.success.registeredUser || false} variant="success">
           Votre compte a bien été créé, vous pouvez vous connecter en utilisant vos identifiants.
         </Alert>
-        {console.log(this.props.success)}
+        <Alert show={this.props.success.resetPwd || false} variant="success">
+          Le mot de passe a bien été réinitialisé.
+        </Alert>
+        <Alert show={this.props.success.pwdEmailSent || false} variant="success">
+          Un email a été envoyé à l'adresse mail indiquée pour réinitialiser le mot de passe.
+        </Alert>
         <Form noValidate onSubmit={this.onSubmit} class="row align-items-center">
           <Form.Label> <h2>Connexion</h2> </Form.Label>
           <Form.Group>
@@ -114,7 +108,7 @@ class Login extends Component {
             Pas encore de compte? <Link to="/register">S'inscrire</Link>
           </p>
           <p>
-            <Link onClick={this.showForgottenPwd}>Mot de passe oublié?</Link>
+            <Link to="/forgot-password">Mot de passe oublié?</Link>
           </p>
         </Form>
       </Container>
@@ -124,6 +118,7 @@ class Login extends Component {
 
 Login.propTypes = {
   loginUser: PropTypes.func.isRequired,
+  clearSuccess: PropTypes.func.isRequired,
   auth: PropTypes.object.isRequired,
   errors: PropTypes.object.isRequired,
   success: PropTypes.object.isRequired
@@ -137,5 +132,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { loginUser }
+  { loginUser, clearSuccess }
 )(Login);

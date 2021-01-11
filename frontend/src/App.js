@@ -30,7 +30,8 @@ import EmailForm from "./components/user/EmailForm"
 import AddressForm from "./components/user/AddressForm"
 import UserSubscription from "./components/admin/UserSubscription";
 import PwdForm from "./components/user/PwdForm"
-
+import ResetPwd from "./components/auth/ResetPwd"
+import ForgottenPwd from "./components/auth/ForgottenPwd"
 // Check for token to keep user logged in
 if (localStorage.jwtToken) {
   // Set auth token header auth
@@ -59,6 +60,8 @@ class App extends Component {
             <Route exact path="/" component={Landing} />
             <Route exact path="/register" component={Register} />
             <Route exact path="/login" component={Login} />
+            <Route exact path="/forgot-password" component={ForgottenPwd}/>
+            <Route path="/password-reset/:userId/:token" component={ResetPwd} />
             <Switch>
               <PrivateRoute exact path="/dashboard" component={Dashboard} />
               <PrivateRoute exact path="/subscribe" component={Subscribe} />

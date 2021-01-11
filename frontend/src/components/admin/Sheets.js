@@ -97,7 +97,7 @@ class Sheets extends Component {
                         <Link to={{
                             pathname: '/admin/sheets/sheet',
                             state: {
-                                sheet
+                                sheetId: sheet._id
                             }
 
                         }} >
@@ -129,10 +129,6 @@ class Sheets extends Component {
                     options={{
                         sorting: true,
                         filtering: true
-                    }}
-                    onRowClick={(event, rowData, togglePanel) => {
-                        this.callSheetDetails(rowData)
-                        togglePanel()
                     }}
                     detailPanel={rowData => this.renderSheetDetails(rowData)}
                 />

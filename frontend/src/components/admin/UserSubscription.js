@@ -24,7 +24,8 @@ class UserSubscription extends Component {
         if (!this.props.location.state) {
             this.props.history.push("/admin/users")
         } else {
-            const { user } = this.props.location.state
+            const {userId} = this.props.location.state
+            const  user  = this.props.admin.users.find(({_id}) => _id === userId)
             if (user) {
                 this.setState({
                     user: user,

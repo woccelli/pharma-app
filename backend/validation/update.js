@@ -96,21 +96,21 @@ module.exports = {
         let errors = {};
 
         // Convert empty fields to an empty string so we can use validator functions
-        data.password = !isEmpty(data.password) ? data.password : "";
-        data.password2 = !isEmpty(data.password2) ? data.password2 : "";
+        data.newPassword1 = !isEmpty(data.newPassword1) ? data.newPassword1 : "";
+        data.newPassword2 = !isEmpty(data.newPassword2) ? data.newPassword2 : "";
 
         // Password checks
-        if (Validator.isEmpty(data.password)) {
-            errors.password = "Veuillez renseigner un mot de passe";
+        if (Validator.isEmpty(data.newPassword1)) {
+            errors.newPassword1 = "Veuillez renseigner un mot de passe";
         }
-        if (Validator.isEmpty(data.password2)) {
-            errors.password2 = "Veuillez confirmer votre mot de passe";
+        if (Validator.isEmpty(data.newPassword2)) {
+            errors.newPassword2 = "Veuillez confirmer votre mot de passe";
         }
-        if (!Validator.isLength(data.password, { min: 6, max: 30 })) {
-            errors.password = "Le mot de passe doit faire au moins 6 caractères";
+        if (!Validator.isLength(data.newPassword1, { min: 6, max: 30 })) {
+            errors.newPassword1 = "Le mot de passe doit faire au moins 6 caractères";
         }
-        if (!Validator.equals(data.password, data.password2)) {
-            errors.password2 = "Les mots de passe doivent correspondre";
+        if (!Validator.equals(data.newPassword1, data.newPassword2)) {
+            errors.newPassword2 = "Les mots de passe doivent correspondre";
         }
 
         return {
