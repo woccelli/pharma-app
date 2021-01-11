@@ -16,6 +16,7 @@
     "material-table": "^1.69.2",
     "mdbreact": "^5.0.1",
     "pdf-to-base64": "^1.0.3",
+    "queue": "^6.0.2",
     "react": "^16.13.1",
     "react-bootstrap": "^1.0.1",
     "react-bootstrap-date-picker": "^5.1.0",

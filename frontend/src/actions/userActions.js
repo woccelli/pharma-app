@@ -107,7 +107,6 @@ export const deleteAddress = data => dispatch => {
                 payload: { updatedUser: true}
             })
             dispatch(updateAuthToken(res.data))
-            
         })
         .catch(err => {
             console.log(err)

@@ -4,19 +4,24 @@ import { connect } from "react-redux";
 import PropTypes from "prop-types";
 // Local
 import { getSheets } from "../../actions/sheetsActions";
-import { getSheetLogs, clearSheetLogs } from "../../actions/adminActions"
+import { getSheetLogs, clearSheetLogs, deleteSheet } from "../../actions/adminActions"
 import { clearSuccess } from "../../actions/utilActions"
 // Components
 import MaterialTable from 'material-table'
 import { Container, Button, Navbar, Alert } from 'react-bootstrap'
-import { Add } from '@material-ui/icons'
+import { Add, Delete, Edit } from '@material-ui/icons'
 import { Link } from 'react-router-dom'
 import { Line } from 'react-chartjs-2'
+import { IconButton } from '@material-ui/core';
 
 class Sheets extends Component {
 
     componentDidMount = () => {
         this.props.getSheets();
+    }
+
+    onDeleteSheet = sheet => {
+        this.props.deleteSheet(sheet)
     }
 
     componentWillUnmount = () => {
@@ -85,12 +90,37 @@ class Sheets extends Component {
                 title: 'Date',
                 field: 'date',
             },
+            {
+                title: '',
+                render: sheet =>
+                    <div className="float-right">
+                        <Link to={{
+                            pathname: '/admin/sheets/sheet',
+                            state: {
+                                sheet
+                            }
+
+                        }} >
+                            <IconButton>
+                                <Edit />
+                            </IconButton>
+                        </Link>
+                        <IconButton onClick={() => this.onDeleteSheet(sheet)}>
+                            <Delete />
+                        </IconButton></div>
+            }
         ];
 
         return (
             <Container>
                 <Alert show={this.props.success.addedSheet || false} variant="success">
                     La fiche a bien été créée.
+                </Alert>
+                <Alert show={this.props.success.updatedSheet || false} variant="success">
+                    La fiche a bien été modifiée.
+                </Alert>
+                <Alert show={this.props.success.deletedSheet || false} variant="success">
+                    La fiche a bien été supprimée.
                 </Alert>
                 <MaterialTable
                     columns={columns}
@@ -107,7 +137,7 @@ class Sheets extends Component {
                     detailPanel={rowData => this.renderSheetDetails(rowData)}
                 />
                 <Navbar className="float-right">
-                    <Button as={Link} to="/admin/sheets/add-sheet" ><Add />Ajouter</Button>
+                    <Button as={Link} to="/admin/sheets/sheet" ><Add />Ajouter</Button>
                 </Navbar>
             </Container>
         )
@@ -117,6 +147,7 @@ class Sheets extends Component {
 Sheets.propTypes = {
     getSheets: PropTypes.func.isRequired,
     getSheetLogs: PropTypes.func.isRequired,
+    deleteSheet: PropTypes.func.isRequired,
     clearSheetLogs: PropTypes.func.isRequired,
     clearSuccess: PropTypes.func.isRequired,
     sheets: PropTypes.object.isRequired,
@@ -134,5 +165,5 @@ const mapStateToProps = state => {
 
 export default connect(
     mapStateToProps,
-    { getSheets, getSheetLogs, clearSheetLogs, clearSuccess }
+    { getSheets, getSheetLogs, clearSheetLogs, clearSuccess, deleteSheet }
 )(Sheets);

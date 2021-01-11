@@ -6,7 +6,7 @@ const Log = require('../../models/Log')
 const Sheet = require("../../models/Sheet");
 const mongoose = require('mongoose')
 // Load input validation
-const { validateAddInput, validateSendInput } = require("../../validation/sheet");
+const { validateAddInput, validateSendInput, validateDeleteInput,validateUpdateInput } = require("../../validation/sheet");
 
 // Authentication and authorization 
 const passport = require("passport");
@@ -39,12 +39,7 @@ router.post("/add", passport.authenticate('admin', { session: false }), (req, re
             // Sheet already exists
             return res.status(400).json({ name: "Cette fiche existe déjà" });
         } else {
-            const newSheet = new Sheet({
-                name: req.body.name,
-                definition: req.body.definition,
-                synonyms: req.body.synonyms,
-                description: req.body.description
-            });
+            newSheet = new Sheet(createSheet(req.body))
             newSheet
                 .save()
                 .then(sheet => res.json(sheet)) // return added sheet
@@ -52,6 +47,59 @@ router.post("/add", passport.authenticate('admin', { session: false }), (req, re
         }
     });
 });
+
+// @route POST api/sheets/add
+// @desc add sheet
+// @access protected - admin only
+router.post("/update", passport.authenticate('admin', { session: false }), (req, res) => {
+    // Form validation
+    const { errors, isValid } = validateUpdateInput(req.body);
+    // Check validation
+    if (!isValid) {
+        return res.status(400).json(errors);
+    }
+    const newSheet = createSheet(req.body)
+    Sheet.findByIdAndUpdate(req.body._id, newSheet, { useFindAndModify: false, new: true }, (err, result) => {
+        if (result) {
+            // result = updated sheet
+            res.send(result._id)
+        }
+        if (err) {
+            return res.status(400).json(err);
+        }
+    } )
+});
+
+// @route POST api/sheets/delete
+// @desc delete sheet
+// @access protected - admin only
+router.post("/delete", passport.authenticate('admin', { session: false }), (req, res) => {
+    // Form validation
+    const { errors, isValid } = validateDeleteInput(req.body);
+    // Check validation
+    if (!isValid) {
+        return res.status(400).json(errors);
+    }
+    Sheet.findByIdAndRemove(req.body._id, { useFindAndModify: false }, (err, result) => {
+        if (result) {
+            // result = updated sheet
+            res.send(result._id)
+        }
+        if (err) {
+            return res.status(400).json(err);
+        }
+    })
+});
+
+function createSheet(data) {
+    const newSheet = {
+        name: data.name,
+        definition: data.definition,
+        synonyms: data.synonyms,
+        description: data.description
+    };
+    return newSheet
+}
 
 function addLog(sheet, user){
     const log = new Log({

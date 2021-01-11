@@ -103,6 +103,9 @@ router.post("/login", (req, res) => {
     });
 });
 
+// @route POST api/users/add
+// @desc Add a user 
+// @access Protected - admin only
 router.post("/add", passport.authenticate('admin', { session: false }), (req, res) => {
     // Form validation
     const { errors, isValid } = validateAddInput(req.body);
@@ -110,7 +113,6 @@ router.post("/add", passport.authenticate('admin', { session: false }), (req, re
     if (!isValid) {
         return res.status(400).json(errors);
     }
-
     User.findOne({ email: req.body.email }).then(user => {
         if (user) {
             // User already exists

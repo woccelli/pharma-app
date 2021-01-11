@@ -16,23 +16,10 @@ class AddressForm extends Component {
 
     constructor(props) {
         super(props);
-        this.state = {
-            dest: "",
-            addr_comp: "",
-            addr_1: "",
-            addr_2: "",
-            postcode: "",
-            city: "",
-            country: "",
-            new: true
-        }
-    }
-
-    componentDidMount = () => {
         if (this.props.location.state) {
             const { address } = this.props.location.state
             if (address) {
-                this.setState({
+                this.state = {
                     _id: address._id,
                     dest: address.dest,
                     addr_comp: address.addr_comp,
@@ -42,7 +29,18 @@ class AddressForm extends Component {
                     city: address.city,
                     country: address.country,
                     new: false
-                })
+                }
+            }
+        } else {
+            this.state = {
+                dest: "",
+                addr_comp: "",
+                addr_1: "",
+                addr_2: "",
+                postcode: "",
+                city: "",
+                country: "",
+                new: true
             }
         }
     }
@@ -53,7 +51,7 @@ class AddressForm extends Component {
 
     onSubmit = e => {
         e.preventDefault();
-       
+
         if (this.state.new) {
             const newAddress = {
                 dest: this.state.dest,
@@ -76,7 +74,7 @@ class AddressForm extends Component {
                 city: this.state.city,
                 country: this.state.country
             }
-            this.props.updateAddress({ address: updatedAddress}, this.props.history)
+            this.props.updateAddress({ address: updatedAddress }, this.props.history)
         }
 
     };

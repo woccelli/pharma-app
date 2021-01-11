@@ -20,7 +20,7 @@ import Subscribe from "./components/auth/Subscribe";
 import PrivateRoute from "./components/private-route/PrivateRoute";
 import AdminRoute from "./components/private-route/AdminRoute"
 import Dashboard from "./components/layout/Dashboard";
-import AddSheet from "./components/admin/AddSheet";
+import SheetForm from "./components/admin/SheetForm";
 import AddUser from "./components/admin/AddUser"
 import Users from "./components/admin/Users";
 import Sheets from "./components/admin/Sheets";
@@ -67,7 +67,7 @@ class App extends Component {
               <PrivateRoute exact path="/account/address" component={AddressForm} />
             </Switch>
             <AdminRoute exact path="/admin/sheets" component={Sheets} />
-            <AdminRoute exact path="/admin/sheets/add-sheet" component={AddSheet} />
+            <AdminRoute exact path="/admin/sheets/sheet" component={SheetForm} />
             <AdminRoute exact path="/admin/users" component={Users} />
             <AdminRoute exact path="/admin/users/add-user" component={AddUser} />
             <AdminRoute exact path="/admin/users/user-subscription" component={UserSubscription} />
