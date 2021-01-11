@@ -74,9 +74,9 @@ module.exports = {
             isValid: isEmpty(errors)
         };
     },
-    validateForgotPasswordInput:  function (data) {
+    validateForgotPasswordInput: function (data) {
         let errors = {};
-        
+
         // Convert empty fields to an empty string so we can use validator functions
         data.email = !isEmpty(data.email) ? data.email : "";
 
@@ -92,13 +92,13 @@ module.exports = {
             isValid: isEmpty(errors)
         };
     },
-    validateResetPasswordInput: function(data) {
+    validateResetPasswordInput: function (data) {
         let errors = {};
 
         // Convert empty fields to an empty string so we can use validator functions
         data.password = !isEmpty(data.password) ? data.password : "";
         data.password2 = !isEmpty(data.password2) ? data.password2 : "";
-    
+
         // Password checks
         if (Validator.isEmpty(data.password)) {
             errors.password = "Veuillez renseigner un mot de passe";
@@ -112,25 +112,56 @@ module.exports = {
         if (!Validator.equals(data.password, data.password2)) {
             errors.password2 = "Les mots de passe doivent correspondre";
         }
-    
+
         return {
             errors,
             isValid: isEmpty(errors)
         };
     },
-    validateSubInput: function(data) {
+    validateSubInput: function (data) {
         let errors = {};
 
         // Convert empty fields to an empty string so we can use validator functions
         data.subuntil = !isEmpty(data.subuntil) ? data.subuntil : "";
         data.userId = !isEmpty(data.userId) ? data.userId : "";
 
-         // Password checks
-         if (Validator.isEmpty(data.subuntil)) {
+        // Password checks
+        if (Validator.isEmpty(data.subuntil)) {
             errors.subuntil = "Veuillez renseigner une date";
         }
         if (Validator.isEmpty(data.userId)) {
             errors.userId = "Veuillez renseigner l'utilisateur";
+        }
+
+        return {
+            errors,
+            isValid: isEmpty(errors)
+        };
+    },
+
+    validateUpdatePasswordInput: function (data) {
+        let errors = {};
+
+        // Convert empty fields to an empty string so we can use validator functions
+        data.password = !isEmpty(data.password) ? data.password : "";
+        data.newPassword1 = !isEmpty(data.newPassword1) ? data.newPassword1 : "";
+        data.newPassword2 = !isEmpty(data.newPassword2) ? data.newPassword2 : "";
+
+        // Password checks
+        if (Validator.isEmpty(data.password)) {
+            errors.password = "Veuillez renseigner votre mot de passe";
+        }
+        if (Validator.isEmpty(data.newPassword1)) {
+            errors.newPassword1 = "Veuillez renseigner un nouveau mot de passe";
+        }
+        if (Validator.isEmpty(data.newPassword2)) {
+            errors.newPassword2 = "Veuillez confirmer votre nouveau mot de passe";
+        }
+        if (!Validator.isLength(data.newPassword1, { min: 6, max: 30 })) {
+            errors.newPassword1 = "Le mot de passe doit faire au moins 6 caractères";
+        }
+        if (!Validator.equals(data.newPassword1, data.newPassword2)) {
+            errors.newPassword2 = "Les mots de passe doivent correspondre";
         }
 
         return {

@@ -60,6 +60,13 @@ class Account extends Component {
                                     <Col className="d-flex justify-content-end" xs="2"><ArrowForwardIos /></Col>
                                 </Row>
                             </ListGroup.Item>
+                            <ListGroup.Item action as={Link} to="/account/password">
+                                <Row>
+                                    <Col>Mot de passe</Col>
+                                    <Col>**********</Col>
+                                    <Col className="d-flex justify-content-end" xs="2"><ArrowForwardIos /></Col>
+                                </Row>
+                            </ListGroup.Item>
                             <ListGroup.Item>
                                 <Row >
                                     <Col>Adresses</Col>

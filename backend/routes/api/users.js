@@ -11,7 +11,7 @@ const passport = require("passport");
 const validateRegisterInput = require("../../validation/register");
 const validateLoginInput = require("../../validation/login");
 const validateAddInput = require("../../validation/add")
-const { validateUpdateNameInput, validateUpdateEmailInput, validateAddressInput, validateForgotPasswordInput, validateResetPasswordInput, validateSubInput } = require("../../validation/update");
+const { validateUpdateNameInput, validateUpdateEmailInput, validateAddressInput, validateForgotPasswordInput, validateResetPasswordInput, validateSubInput, validateUpdatePasswordInput } = require("../../validation/update");
 
 // Load models
 const User = require("../../models/User");
@@ -223,9 +223,9 @@ router.post("/user-subscription", passport.authenticate('admin', { session: fals
         return res.status(400).json(errors);
     }
 
-    const { userId, subuntil} = req.body;
+    const { userId, subuntil } = req.body;
 
-    User.findByIdAndUpdate({ _id: userId}, { subuntil: subuntil }, { useFindAndModify: false, new: true }, (err, result) => {
+    User.findByIdAndUpdate({ _id: userId }, { subuntil: subuntil }, { useFindAndModify: false, new: true }, (err, result) => {
         // result = updated user
         if (result) {
             res.send(result)
@@ -276,6 +276,45 @@ router.post("/delete-address", passport.authenticate('user', { session: false })
             return res.status(400).json(err);
         }
     })
+});
+
+router.post("/update-password", passport.authenticate('user', { session: false }), (req, res) => {
+    // Form validation
+    const { errors, isValid } = validateUpdatePasswordInput(req.body);
+    // Check validation
+    if (!isValid) {
+        return res.status(400).json(errors);
+    }
+    const password = req.body.password;
+    const newPassword = req.body.newPassword1
+    console.log(password, newPassword)
+    // Check password
+    bcrypt.compare(password, req.user.password).then(isMatch => {
+        if (isMatch) {
+            // User matched
+            // Hash password before saving in database
+            bcrypt.genSalt(10, (err, salt) => {
+                bcrypt.hash(newPassword, salt, (err, hash) => {
+                    if (err) throw err;
+                    User.findByIdAndUpdate(req.user._id, { password: hash }, { useFindAndModify: false, new: true }, (err, result) => {
+                        // result = updated user
+                        if (result) {
+                            console.log(hash)
+                            console.log(result)
+                            signUserJwtToken(result, res)
+                        }
+                        if (err) {
+                            return res.status(400).json(err);
+                        }
+                    })
+                });
+            })
+        } else {
+            return res
+                .status(400)
+                .json({ password: "Mot de passe incorrect" });
+        }
+    });
 });
 
 
@@ -336,7 +375,7 @@ router.post('/password/reset/:userId/:token', (req, res) => {
 // @desc get all existing users
 // @access Protected - admin only
 router.get('/check-token-validity', passport.authenticate('check-token', { session: false }), (req, res) => {
-    if(new Date(req.user.dbUser.subuntil).getTime() !==  new Date(req.user.jwtUser.subuntil).getTime()) {
+    if (new Date(req.user.dbUser.subuntil).getTime() !== new Date(req.user.jwtUser.subuntil).getTime()) {
         signUserJwtToken(req.user.dbUser, res)
     } else {
         res.sendStatus(200)
@@ -355,7 +394,7 @@ router.get('/logs', passport.authenticate('admin', { session: false }), async (r
             }
         }, {
             $unwind: "$sheetDetails"
-        },{
+        }, {
             $project: {
                 "_id": 1,
                 "_sheet": 1,
@@ -370,7 +409,7 @@ router.get('/logs', passport.authenticate('admin', { session: false }), async (r
                     year: { $year: "$date" },
                     month: { $month: "$date" },
                     day: { $dayOfMonth: "$date" },
-                    _sheet: { _id: "$_sheet", name: "$name"}
+                    _sheet: { _id: "$_sheet", name: "$name" }
                 },
                 count: {
                     $sum: 1
@@ -379,9 +418,9 @@ router.get('/logs', passport.authenticate('admin', { session: false }), async (r
         }, {
             $group: {
                 _id: {
-                    year:  "$_id.year" ,
-                    month: "$_id.month" ,
-                    day:  "$_id.day"
+                    year: "$_id.year",
+                    month: "$_id.month",
+                    day: "$_id.day"
                 },
                 sheetCount: {
                     $push: {

@@ -29,6 +29,7 @@ import NameForm from "./components/user/NameForm"
 import EmailForm from "./components/user/EmailForm"
 import AddressForm from "./components/user/AddressForm"
 import UserSubscription from "./components/admin/UserSubscription";
+import PwdForm from "./components/user/PwdForm"
 
 // Check for token to keep user logged in
 if (localStorage.jwtToken) {
@@ -65,6 +66,7 @@ class App extends Component {
               <PrivateRoute exact path="/account/name" component={NameForm} />
               <PrivateRoute exact path="/account/email" component={EmailForm} />
               <PrivateRoute exact path="/account/address" component={AddressForm} />
+              <PrivateRoute exact path="/account/password" component={PwdForm} />
             </Switch>
             <AdminRoute exact path="/admin/sheets" component={Sheets} />
             <AdminRoute exact path="/admin/sheets/sheet" component={SheetForm} />

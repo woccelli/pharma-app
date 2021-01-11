@@ -114,9 +114,26 @@ export const deleteAddress = data => dispatch => {
                 type: GET_ERRORS,
                 payload: err.response.data
             })
-        }
-        );
+        });
 }
 
-
+export const updatePwd = (data, history) => dispatch => {
+    axios.post("/api/users/update-password", data)
+    .then(res => {
+        dispatch(clearErrors())
+            dispatch({
+                type: GET_SUCCESS,
+                payload: { updatedUser: true}
+            })
+            dispatch(updateAuthToken(res.data))
+            history.push("/account")
+    })
+    .catch(err => {
+        console.log(err)
+        dispatch({
+            type: GET_ERRORS,
+            payload: err.response.data
+        })
+    });
+}
 
