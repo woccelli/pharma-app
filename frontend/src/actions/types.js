@@ -10,4 +10,4 @@ export const GET_USER_LOGS = "GET_USER_LOGS"
 export const CLEAR_USER_LOGS = "CLEAR_USER_LOGS"
 export const GET_SHEET_LOGS = "GET_SHEET_LOGS"
 export const CLEAR_SHEET_LOGS = "CLEAR_SHEET_LOGS"
-
+export const GET_USER_NAME = " GET_USER_NAME"

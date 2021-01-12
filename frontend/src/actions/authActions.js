@@ -7,7 +7,7 @@ import {
   GET_ERRORS,
   GET_SUCCESS,
   SET_CURRENT_USER,
-  USER_LOADING
+  GET_USER_NAME
 } from "./types";
 
 // Register User
@@ -74,7 +74,7 @@ export const checkUserToken = () => dispatch => {
   axios
     .get("/api/users/check-token-validity")
     .then(res => {
-      if(res.data !== "OK") {
+      if (res.data !== "OK") {
         dispatch(updateAuthToken(res.data))
       }
     })
@@ -119,10 +119,12 @@ export const forgottenPwd = (userData, history) => dispatch => {
 // Send an email with forgotten password link
 export const resetPwd = (data, history) => dispatch => {
   axios
-    .post("/api/users/password-reset", data.passwords, { params: {
-      userId: data.userId,
-      token: data.token
-    }})
+    .post("/api/users/password-reset", data.passwords, {
+      params: {
+        userId: data.userId,
+        token: data.token
+      }
+    })
     .then(res => {
       dispatch(clearErrors())
       dispatch({
@@ -137,4 +139,16 @@ export const resetPwd = (data, history) => dispatch => {
         payload: err.response.data
       })
     );
+}
+
+export const getUserName = userId => dispatch => {
+  axios
+  .get("/api/users/user", { params: { userId: userId } })
+  .then(res => {
+    dispatch({
+      type: GET_USER_NAME,
+      payload: res.data
+    })
+  })
+  .catch(err => console.log(err))
 }

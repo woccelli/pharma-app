@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { withRouter } from "react-router-dom";
 // Local
-import { resetPwd } from "../../actions/authActions";
+import { resetPwd, getUserName } from "../../actions/authActions";
 import { clearErrors } from "../../actions/utilActions"
 // Components
 import { Jumbotron, Form, Button, Row, Col, Container } from "react-bootstrap"
@@ -22,6 +22,7 @@ class ResetPwd extends Component {
 
     onComponentDidMount = () => {
         this.props.clearErrors()
+        this.props.getUserName(this.props.match.params.userId)
     }
 
     onSubmit = e => {
@@ -49,6 +50,9 @@ class ResetPwd extends Component {
             <Container>
                 <Jumbotron>
                     <Form onSubmit={this.onSubmit}>
+                        <Form.Label>
+                            <h4>Réinitialisation du mot de passe: {this.props.auth.user.name}</h4>
+                        </Form.Label>
                         <Form.Group as={Row}>
                             <Col sm="5">
                                 <Form.Label column>
@@ -102,6 +106,7 @@ class ResetPwd extends Component {
 
 ResetPwd.propTypes = {
     resetPwd: PropTypes.func.isRequired,
+    getUserName: PropTypes.func.isRequired,
     clearErrors: PropTypes.func.isRequired,
     errors: PropTypes.object.isRequired,
     auth: PropTypes.object.isRequired
@@ -115,4 +120,4 @@ const mapStateToProps = state => {
     }
 }
 
-export default connect(mapStateToProps, { resetPwd, clearErrors })(withRouter(ResetPwd))
+export default connect(mapStateToProps, { resetPwd, clearErrors, getUserName })(withRouter(ResetPwd))

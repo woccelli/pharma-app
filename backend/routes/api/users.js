@@ -31,6 +31,18 @@ router.get('/all', passport.authenticate('admin', { session: false }), (req, res
         .catch(err => res.status(400).json('Error: ' + err));
 });
 
+// @route GET api/users/user
+// @desc get a user name by Id
+// @access Public
+router.get('/user', (req, res) => {
+    const { userId } = req.query
+    User.findById(userId)
+    .then(user => {
+        res.send({ name: user.name})
+    })
+    .catch(err => console.log(err))
+})
+
 // @route POST api/users/register
 // @desc Register user
 // @access Public
@@ -132,13 +144,13 @@ router.post("/add", passport.authenticate('admin', { session: false }), (req, re
                         .save()
                         .then(user => {
                             // Send email to user for password initialization
-                            const token = makeTokenFromPwd(user, 3600*24*2)//48hour
-                            const url = getPasswordResetURL(user, token) 
+                            const token = makeTokenFromPwd(user, 3600 * 24 * 2)//48hour
+                            const url = getPasswordResetURL(user, token)
                             sendEmailCreateUser(user, url)
-                            .then(() => {
-                                return res.json(user)
-                            })
-                            .catch(err => console.log(err));
+                                .then(() => {
+                                    return res.json(user)
+                                })
+                                .catch(err => console.log(err));
                         }) // Return added user
                         .catch(err => console.log(err));
                 });
@@ -249,7 +261,7 @@ router.post("/user-subscription", passport.authenticate('admin', { session: fals
 
     const { userId, subuntil } = req.body;
 
-    User.findByIdAndUpdate({ _id: userId }, { subuntil: subuntil }, { useFindAndModify: false, new: true }, (err, result) => {
+    User.findByIdAndUpdate(userId, { subuntil: subuntil }, { useFindAndModify: false, new: true }, (err, result) => {
         // result = updated user
         if (result) {
             res.send(result)
@@ -354,7 +366,7 @@ router.post('/forgot-password', (req, res) => {
                 return res.status(400).json({ email: "Cet e-mail n'existe pas" })
             }
             const token = makeTokenFromPwd(user, 3600) //1hour
-            const url = getPasswordResetURL(user, token) 
+            const url = getPasswordResetURL(user, token)
             sendEmailReset(user, url).then(() => {
                 return res.json({
                     emailsent: true
@@ -465,7 +477,7 @@ const getUserSecret = password => {
     return password + keys.secretOrKey
 }
 
-const makeTokenFromPwd = ({ _id, password}, expIn) => {
+const makeTokenFromPwd = ({ _id, password }, expIn) => {
     console.log(_id, password, expIn)
     const secret = getUserSecret(password)
     const token = jwt.sign({ _id }, secret, {
