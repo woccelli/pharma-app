@@ -39,6 +39,20 @@ module.exports = {
                 <p>Ce lien expire dans 1 heure.</p>
             ` // html body
         });
+    },
+    sendEmailCreateUser: async (user, url) => {
+        await transporter.sendMail({
+            from: '"Toposanté" <pharma@toposante.com>', // sender address
+            to: user.email, // list of receivers
+            subject: 'Création de votre compte', // Subject line
+            html: `
+                <p>Bonjour ${user.name || user.email},</p>
+                <p>Un compte a été créé pour vous sur l'application Toposanté !</p>
+                <p>Pour profiter de l'application, merci d'initialiser votre compte en saisissant un nouveau mot de passe via le lien suivant:</p>
+                <a href=${url}>${url}</a>
+                <p>Ce lien expire dans 48 heures.</p>
+            ` // html body
+        });
     }
 
 

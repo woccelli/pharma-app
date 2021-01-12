@@ -6,10 +6,9 @@ import { withRouter } from "react-router-dom";
 // Local
 import { updateName } from "../../actions/userActions";
 import { clearErrors } from "../../actions/utilActions"
+import FormLayout from "../layout/modules/FormLayout"
 // Components
-import { Jumbotron, Form, Button, Row, Col, Container, ListGroup } from "react-bootstrap"
-import { Link } from "react-router-dom"
-import { ArrowBackIos }  from '@material-ui/icons'
+import { Form, Button, Row, Col } from "react-bootstrap"
 
 
 class NameForm extends Component {
@@ -42,44 +41,35 @@ class NameForm extends Component {
         const { errors } = this.props;
 
         return (
-            <Container>
-                 <ListGroup variant="flush">
-                    <ListGroup.Item action as={Link} to="/account" >
-                        <Row >
-                            <Col xs="5"><ArrowBackIos/></Col>
-                        </Row>
-                    </ListGroup.Item>
-                </ListGroup>    
-                <Jumbotron>
-                    <Form onSubmit={this.onSubmit}>
-                        <Form.Group as={Row}>
-                            <Col sm="5">
-                                <Form.Label column>
-                                    Dénomination sociale
+            <FormLayout back="/account">
+                <Form onSubmit={this.onSubmit}>
+                    <Form.Group as={Row}>
+                        <Col sm="5">
+                            <Form.Label column>
+                                Dénomination sociale
                         </Form.Label>
-                            </Col>
-                            <Col >
-                                <Form.Control
-                                    id="name"
-                                    value={this.state.name}
-                                    onChange={this.onChange}
-                                    error={errors.name}
-                                    isInvalid={errors.name}
-                                    required
-                                />
-                                <Form.Control.Feedback type="invalid">
-                                    {errors.name}
-                                </Form.Control.Feedback>
-                            </Col>
-                        </Form.Group>
+                        </Col>
+                        <Col >
+                            <Form.Control
+                                id="name"
+                                value={this.state.name}
+                                onChange={this.onChange}
+                                error={errors.name}
+                                isInvalid={errors.name}
+                                required
+                            />
+                            <Form.Control.Feedback type="invalid">
+                                {errors.name}
+                            </Form.Control.Feedback>
+                        </Col>
+                    </Form.Group>
 
 
-                        <Button className="float-right" type="submit">Valider la modification</Button>
+                    <Button className="float-right" type="submit">Valider la modification</Button>
 
 
-                    </Form>
-                </Jumbotron>
-            </Container>
+                </Form>
+            </FormLayout>
         )
     }
 }

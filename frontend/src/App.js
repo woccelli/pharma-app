@@ -32,6 +32,7 @@ import UserSubscription from "./components/admin/UserSubscription";
 import PwdForm from "./components/user/PwdForm"
 import ResetPwd from "./components/auth/ResetPwd"
 import ForgottenPwd from "./components/auth/ForgottenPwd"
+import SendSheet from "./components/layout/SendSheet";
 // Check for token to keep user logged in
 if (localStorage.jwtToken) {
   // Set auth token header auth
@@ -65,6 +66,7 @@ class App extends Component {
             <Switch>
               <PrivateRoute exact path="/dashboard" component={Dashboard} />
               <PrivateRoute exact path="/subscribe" component={Subscribe} />
+              <PrivateRoute exact path="/send-sheet" component={SendSheet} />
               <PrivateRoute exact path="/account" component={Account} />
               <PrivateRoute exact path="/account/name" component={NameForm} />
               <PrivateRoute exact path="/account/email" component={EmailForm} />

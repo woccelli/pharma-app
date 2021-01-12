@@ -29,7 +29,7 @@ export const getSheets = () => dispatch => {
     );
 };
 
-export const sendSheet = (emailData) => dispatch => {
+export const sendSheet = (emailData, history) => dispatch => {
   axios
     .post("/api/sheets/send", emailData)
     .then(res => {
@@ -43,6 +43,7 @@ export const sendSheet = (emailData) => dispatch => {
         type: GET_SUCCESS,
         payload: { sheetEmailSent: true }
       })
+      history.push("/dashboard")
     })
     .catch(err => {
       dispatch({

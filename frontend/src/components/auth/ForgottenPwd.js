@@ -6,10 +6,10 @@ import { withRouter } from "react-router-dom";
 // Local
 import { forgottenPwd } from "../../actions/authActions";
 import { clearErrors } from "../../actions/utilActions"
+import FormLayout from "../layout/modules/FormLayout"
 // Components
-import { Jumbotron, Form, Button, Row, Col, Container, ListGroup } from "react-bootstrap"
-import { Link } from "react-router-dom"
-import { ArrowBackIos }  from '@material-ui/icons'
+import { Form, Button } from "react-bootstrap"
+
 
 class ForgottenPwd extends Component {
 
@@ -44,38 +44,29 @@ class ForgottenPwd extends Component {
         const { errors } = this.props;
 
         return (
-            <Container>
-                <ListGroup variant="flush">
-                    <ListGroup.Item action as={Link} to="/login" >
-                        <Row >
-                            <Col xs="5"><ArrowBackIos /></Col>
-                        </Row>
-                    </ListGroup.Item>
-                </ListGroup>
-                <Jumbotron>
-                    <Form noValidate onSubmit={this.onSubmit}>
-                      <Form.Label>
-                          <h4>Mot de passe oublié ?</h4>
-                      </Form.Label>
-                        <Form.Group>
-                            <Form.Label>
-                                Adresse mail associée à votre compte :
+            <FormLayout back="/login">
+                <Form noValidate onSubmit={this.onSubmit}>
+                    <Form.Label>
+                        <h4>Mot de passe oublié ?</h4>
+                    </Form.Label>
+                    <Form.Group>
+                        <Form.Label>
+                            Adresse mail associée à votre compte :
                                 </Form.Label>
-                            <Form.Control
-                                id="email"
-                                value={this.state.email}
-                                onChange={this.onChange}
-                                error={errors.email}
-                                isInvalid={errors.email}
-                            />
-                            <Form.Control.Feedback type="invalid">
-                                {errors.email}
-                            </Form.Control.Feedback>
-                        </Form.Group>
-                        <Button className="float-right" type="submit">Envoyer</Button>
-                    </Form>
-                </Jumbotron>
-            </Container>
+                        <Form.Control
+                            id="email"
+                            value={this.state.email}
+                            onChange={this.onChange}
+                            error={errors.email}
+                            isInvalid={errors.email}
+                        />
+                        <Form.Control.Feedback type="invalid">
+                            {errors.email}
+                        </Form.Control.Feedback>
+                    </Form.Group>
+                    <Button className="float-right" type="submit">Envoyer</Button>
+                </Form>
+            </FormLayout>
         )
     }
 }

@@ -5,10 +5,10 @@ import { connect } from 'react-redux'
 import { withRouter } from "react-router-dom";
 // Local
 import { editUserSubscription } from '../../actions/adminActions'
+import FormLayout from "../layout/modules/FormLayout"
 // Components
-import { Jumbotron, Form, Button, Row, Col, Container, ListGroup, Table } from "react-bootstrap"
-import { Link } from "react-router-dom"
-import { ArrowBackIos } from '@material-ui/icons'
+import { Form, Button, Table } from "react-bootstrap"
+
 
 class UserSubscription extends Component {
 
@@ -24,8 +24,8 @@ class UserSubscription extends Component {
         if (!this.props.location.state) {
             this.props.history.push("/admin/users")
         } else {
-            const {userId} = this.props.location.state
-            const  user  = this.props.admin.users.find(({_id}) => _id === userId)
+            const { userId } = this.props.location.state
+            const user = this.props.admin.users.find(({ _id }) => _id === userId)
             if (user) {
                 this.setState({
                     user: user,
@@ -55,59 +55,50 @@ class UserSubscription extends Component {
         const { errors } = this.props;
 
         return (
-            <Container>
-                <ListGroup variant="flush">
-                    <ListGroup.Item action as={Link} to="/admin/users" >
-                        <Row >
-                            <Col xs="5"><ArrowBackIos /></Col>
-                        </Row>
-                    </ListGroup.Item>
-                </ListGroup>
-                <Jumbotron>
-                    <Form noValidate onSubmit={this.onSubmit} class="row align-items-center">
-                        <Form.Label> <h2>Abonnement de l'utilisateur</h2> </Form.Label>
-                        <Table bordered>
-                            <thead>
-                                <tr>
-                                    <th>Nom</th>
-                                    <th>Email</th>
-                                    <th>Abonné</th>
-                                    <th>Date de fin d'abonnement</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>{this.state.user.name}</td>
-                                    <td>{this.state.user.email}</td>
-                                    <td>{ (new Date(this.state.user.subuntil)) > Date.now() ? 'Oui' : 'Non'}</td>
-                                    <td>{(new Date(this.state.user.subuntil)).toLocaleDateString()}</td>
-                                </tr>
-                            </tbody>
-                        </Table>
-                        <Form.Group>
-                            <Form.Label> Nouvelle date de fin d'abonnement </Form.Label>
-                            <Form.Control
-                                required
-                                onChange={this.onChange}
-                                error={errors.subuntil}
-                                id="subuntil"
-                                type="date"
-                                isInvalid={errors.subuntil}
-                            />
-                            <Form.Control.Feedback type="invalid">
-                                {errors.subuntil}
-                            </Form.Control.Feedback>
-                        </Form.Group>
+            <FormLayout back="/admin/users">
+                <Form noValidate onSubmit={this.onSubmit} class="row align-items-center">
+                    <Form.Label> <h2>Abonnement de l'utilisateur</h2> </Form.Label>
+                    <Table bordered>
+                        <thead>
+                            <tr>
+                                <th>Nom</th>
+                                <th>Email</th>
+                                <th>Abonné</th>
+                                <th>Date de fin d'abonnement</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>{this.state.user.name}</td>
+                                <td>{this.state.user.email}</td>
+                                <td>{(new Date(this.state.user.subuntil)) > Date.now() ? 'Oui' : 'Non'}</td>
+                                <td>{(new Date(this.state.user.subuntil)).toLocaleDateString()}</td>
+                            </tr>
+                        </tbody>
+                    </Table>
+                    <Form.Group>
+                        <Form.Label> Nouvelle date de fin d'abonnement </Form.Label>
+                        <Form.Control
+                            required
+                            onChange={this.onChange}
+                            error={errors.subuntil}
+                            id="subuntil"
+                            type="date"
+                            isInvalid={errors.subuntil}
+                        />
+                        <Form.Control.Feedback type="invalid">
+                            {errors.subuntil}
+                        </Form.Control.Feedback>
+                    </Form.Group>
 
-                        <Form.Group>
-                            <Button className="float-right" type="submit">
-                                Modifier la date de fin d'abonnement
+                    <Form.Group>
+                        <Button className="float-right" type="submit">
+                            Modifier la date de fin d'abonnement
                 </Button>
-                        </Form.Group>
+                    </Form.Group>
 
-                    </Form>
-                </Jumbotron>
-            </Container>
+                </Form>
+            </FormLayout>
         )
     }
 }

@@ -6,10 +6,10 @@ import { withRouter } from "react-router-dom";
 // Local
 import { updatePwd } from "../../actions/userActions";
 import { clearErrors } from "../../actions/utilActions"
+import FormLayout from "../layout/modules/FormLayout"
 // Components
-import { Jumbotron, Form, Button, Row, Col, Container, ListGroup } from "react-bootstrap"
-import { Link } from "react-router-dom"
-import { ArrowBackIos }  from '@material-ui/icons'
+import { Form, Button, Row, Col } from "react-bootstrap"
+
 
 
 class PwdForm extends Component {
@@ -46,15 +46,7 @@ class PwdForm extends Component {
         const { errors } = this.props;
 
         return (
-            <Container>
-                 <ListGroup variant="flush">
-                    <ListGroup.Item action as={Link} to="/account" >
-                        <Row >
-                            <Col xs="5"><ArrowBackIos/></Col>
-                        </Row>
-                    </ListGroup.Item>
-                </ListGroup>    
-                <Jumbotron>
+            <FormLayout back="/account">
                     <Form onSubmit={this.onSubmit}>
                         <Form.Group as={Row}>
                             <Col sm="5">
@@ -123,8 +115,7 @@ class PwdForm extends Component {
 
                         <Button className="float-right" type="submit">Valider la modification</Button>
                     </Form>
-                </Jumbotron>
-            </Container>
+                </FormLayout>
         )
     }
 }

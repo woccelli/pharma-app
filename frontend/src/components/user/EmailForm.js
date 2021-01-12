@@ -6,10 +6,10 @@ import { withRouter } from "react-router-dom";
 // Local
 import { updateEmail } from "../../actions/userActions";
 import { clearErrors } from "../../actions/utilActions"
+import FormLayout from "../layout/modules/FormLayout"
 // Components
-import { Jumbotron, Form, Button, Row, Col, Container, ListGroup } from "react-bootstrap"
-import { Link } from "react-router-dom"
-import { ArrowBackIos }  from '@material-ui/icons'
+import { Form, Button, Row, Col } from "react-bootstrap"
+
 
 
 class EmailForm extends Component {
@@ -42,15 +42,7 @@ class EmailForm extends Component {
         const { errors } = this.props;
 
         return (
-            <Container>
-                 <ListGroup variant="flush">
-                    <ListGroup.Item action as={Link} to="/account" >
-                        <Row >
-                            <Col xs="5"><ArrowBackIos/></Col>
-                        </Row>
-                    </ListGroup.Item>
-                </ListGroup>    
-                <Jumbotron>
+            <FormLayout back="/account">
                     <Form onSubmit={this.onSubmit}>
                         <Form.Group as={Row}>
                             <Col sm="5">
@@ -78,8 +70,7 @@ class EmailForm extends Component {
 
 
                     </Form>
-                </Jumbotron>
-            </Container>
+                </FormLayout>
         )
     }
 }

@@ -17,7 +17,7 @@ const { validateUpdateNameInput, validateUpdateEmailInput, validateAddressInput,
 const User = require("../../models/User");
 const Log = require("../../models/Log");
 const Sheet = require("../../models/Sheet")
-const { sendEmailReset } = require("../../email/mailer");
+const { sendEmailReset, sendEmailCreateUser } = require("../../email/mailer");
 const mongoose = require('mongoose')
 const { Mongoose } = require("mongoose");
 
@@ -118,7 +118,31 @@ router.post("/add", passport.authenticate('admin', { session: false }), (req, re
             // User already exists
             return res.status(400).json({ email: "Cette adresse e-mail existe déjà" });
         } else {
-            return res.status(200).json({ success: true })
+            const newUser = new User({
+                name: req.body.name,
+                email: req.body.email,
+                password: Date.now().toString()
+            });
+            // Hash password before saving in database
+            bcrypt.genSalt(10, (err, salt) => {
+                bcrypt.hash(newUser.password, salt, (err, hash) => {
+                    if (err) throw err;
+                    newUser.password = hash;
+                    newUser
+                        .save()
+                        .then(user => {
+                            // Send email to user for password initialization
+                            const token = makeTokenFromPwd(user, 3600*24*2)//48hour
+                            const url = getPasswordResetURL(user, token) 
+                            sendEmailCreateUser(user, url)
+                            .then(() => {
+                                return res.json(user)
+                            })
+                            .catch(err => console.log(err));
+                        }) // Return added user
+                        .catch(err => console.log(err));
+                });
+            });
         }
     })
 })
@@ -329,8 +353,8 @@ router.post('/forgot-password', (req, res) => {
                 // Another user exists with the same email address
                 return res.status(400).json({ email: "Cet e-mail n'existe pas" })
             }
-            const token = makeTokenFromPwd(user)
-            const url = getPasswordResetURL(user, token)
+            const token = makeTokenFromPwd(user, 3600) //1hour
+            const url = getPasswordResetURL(user, token) 
             sendEmailReset(user, url).then(() => {
                 return res.json({
                     emailsent: true
@@ -349,7 +373,7 @@ router.post('/password-reset', (req, res) => {
     }
 
     const { userId, token } = req.query
-    const password  = req.body.newPassword1
+    const password = req.body.newPassword1
 
     User.findById({ _id: userId }).then(user => {
         if (!user) {
@@ -441,10 +465,11 @@ const getUserSecret = password => {
     return password + keys.secretOrKey
 }
 
-const makeTokenFromPwd = ({ _id, password }) => {
-    const secret = getUserSecret()
+const makeTokenFromPwd = ({ _id, password}, expIn) => {
+    console.log(_id, password, expIn)
+    const secret = getUserSecret(password)
     const token = jwt.sign({ _id }, secret, {
-        expiresIn: 3600 // 1 hour
+        expiresIn: expIn
     })
     return token
 }

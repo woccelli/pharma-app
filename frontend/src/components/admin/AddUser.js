@@ -5,10 +5,10 @@ import { connect } from 'react-redux'
 import { withRouter } from "react-router-dom";
 // Local
 import { addUser } from '../../actions/adminActions'
+import FormLayout from "../layout/modules/FormLayout"
 // Components
-import { Jumbotron, Form, Button, Row, Col, Container, ListGroup } from "react-bootstrap"
-import { Link } from "react-router-dom"
-import { ArrowBackIos }  from '@material-ui/icons'
+import { Form, Button } from "react-bootstrap"
+
 
 
 class AddUser extends Component {
@@ -43,15 +43,7 @@ class AddUser extends Component {
         const { errors } = this.props;
 
         return (
-            <Container>
-            <ListGroup variant="flush">
-               <ListGroup.Item action as={Link} to="/admin/users" >
-                   <Row >
-                       <Col xs="5"><ArrowBackIos/></Col>
-                   </Row>
-               </ListGroup.Item>
-           </ListGroup>    
-           <Jumbotron>
+            <FormLayout back="/admin/users">
                 <Form noValidate onSubmit={this.onSubmit} class="row align-items-center">
                     <Form.Label> <h2>Ajouter un utilisateur</h2> </Form.Label>
                     <Form.Group>
@@ -93,8 +85,7 @@ class AddUser extends Component {
                     </Form.Group>
 
                 </Form>
-                </Jumbotron>
-            </Container>
+            </FormLayout>
         )
     }
 }
