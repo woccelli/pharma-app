@@ -6,11 +6,7 @@ import PropTypes from "prop-types";
 import { getSheets } from '../../../actions/sheetsActions';
 import { clearErrors, clearSuccess } from '../../../actions/utilActions'
 // Components
-import Card from 'react-bootstrap/Card'
-import CardColumns from 'react-bootstrap/CardColumns'
-import Form from 'react-bootstrap/Form'
-import Container from 'react-bootstrap/Container'
-import Row from 'react-bootstrap/Row'
+import { Card, CardColumns, Form, Container, Row, Alert } from 'react-bootstrap'
 import { Link } from "react-router-dom"
 
 class CardGrid extends Component {
@@ -48,6 +44,9 @@ class CardGrid extends Component {
                   value={this.state.search} />
               </Form.Group>
             </Form>
+            <Alert style={{marginRight: 'auto'}} show={this.props.success.sheetEmailSent || false} variant="success">
+              La fiche a bien été envoyée.
+            </Alert>
           </Row>
         </Container>
         <CardColumns>
