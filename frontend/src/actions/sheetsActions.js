@@ -3,7 +3,8 @@ import axios from "axios";
 import {
   GET_ERRORS,
   SET_SHEETS,
-  GET_SUCCESS
+  GET_SUCCESS,
+  IS_LOADING
 } from "./types";
 
 export const setLoadedSheets = data => {
@@ -30,6 +31,10 @@ export const getSheets = () => dispatch => {
 };
 
 export const sendSheet = (emailData, history) => dispatch => {
+  dispatch({
+    type: IS_LOADING,
+    payload: true
+  })
   axios
     .post("/api/sheets/send", emailData)
     .then(res => {
@@ -44,8 +49,16 @@ export const sendSheet = (emailData, history) => dispatch => {
         payload: { sheetEmailSent: true }
       })
       history.push("/dashboard")
+      dispatch({
+        type: IS_LOADING,
+        payload: false
+      })
     })
     .catch(err => {
+      dispatch({
+        type: IS_LOADING,
+        payload: false
+      })
       dispatch({
         type: GET_ERRORS,
         payload: err.response.data

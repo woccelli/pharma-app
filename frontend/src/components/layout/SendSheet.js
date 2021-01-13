@@ -7,7 +7,7 @@ import { withRouter } from "react-router-dom";
 import { sendSheet } from "../../actions/sheetsActions"
 import Sheet from "./modules/Sheet"
 // Components
-import { Form, Button, Row, Col } from "react-bootstrap"
+import { Form, Button, Row, Col, Spinner } from "react-bootstrap"
 import { BlobProvider, pdf } from '@react-pdf/renderer';
 import FormLayout from "./modules/FormLayout"
 
@@ -56,6 +56,9 @@ class SendSheet extends Component {
 
     onSubmit = e => {
         e.preventDefault();
+        this.setState({
+            loading: true
+        })
         pdf(this.getSheetComponent()).toBlob().then(sheetblob => {
             var reader = new FileReader();
             reader.readAsDataURL(sheetblob);
@@ -109,7 +112,7 @@ class SendSheet extends Component {
                                         variant="success"
                                         disabled={!/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(this.state.sendtoemail)}
                                     >
-                                        Envoyer
+                                        {this.props.success.loading ? <Spinner animation="border" role="status" /> : 'Envoyer'}
                       </Button>
                                 </Form.Group>
                             </Form>
@@ -127,13 +130,15 @@ SendSheet.propTypes = {
     sendSheet: PropTypes.func.isRequired,
     auth: PropTypes.object.isRequired,
     errors: PropTypes.object.isRequired,
-    sheets: PropTypes.object.isRequired
+    sheets: PropTypes.object.isRequired,
+    success: PropTypes.object.isRequired
 };
 
 const mapStateToProps = state => ({
     auth: state.auth,
     errors: state.errors,
-    sheets: state.sheets
+    sheets: state.sheets,
+    success: state.success
 });
 
 
