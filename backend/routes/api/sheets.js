@@ -122,7 +122,7 @@ router.post("/send", passport.authenticate('subscriber', { session: false }), (r
 
     Sheet.findOne({ name: req.body.name }).then(sheet => {
         if (sheet) {
-            sendSheetEmail(req.body)
+            sendSheetEmail(req.body, req.user)
                 .then(() => {
                     addLog(sheet, req.user)
                     return res.json({

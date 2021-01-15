@@ -1,5 +1,6 @@
 const nodemailer = require("nodemailer");
-const keys = require('../config/keys')
+const keys = require('../config/keys');
+const { sendSheet, addUser, forgotPwd, registerUser, subUser, deleteUser,updateEmailOld, updateEmailNew } = require("./content/htmlbodies");
 
 const transporter = nodemailer.createTransport({
     service: 'gmail',
@@ -10,14 +11,13 @@ const transporter = nodemailer.createTransport({
 });
 
 module.exports = {
-    sendSheetEmail: async (data) => {
+    sendSheetEmail: async (data, sender) => {
         // send mail with defined transport object
         await transporter.sendMail({
             from: '"Toposanté" <pharma@toposante.com>', // sender address
             to: data.sendtoemail, // list of receivers
             subject: data.name, // Subject line
-            text: "Bonjour", // plain text body
-            html: "<b>Bonjour</b>", // html body
+            html: sendSheet(sender), // html body
             attachments: [{
                 // define custom content type for the attachment
                 filename: data.name + '.pdf',
@@ -31,29 +31,53 @@ module.exports = {
             from: '"Toposanté" <pharma@toposante.com>', // sender address
             to: user.email, // list of receivers
             subject: 'Réinitialisation du mot de passe', // Subject line
-            html: `
-                <p>Bonjour ${user.name || user.email},</p>
-                <p>Nous sommes désolés d'apprendre que vous avez oublié votre mot de passe. </p>
-                <p>Mais pas de panique ! Vous pouvez utiliser le lien suivant pour le réinitialiser:</p>
-                <a href=${url}>${url}</a>
-                <p>Ce lien expire dans 1 heure.</p>
-            ` // html body
+            html: forgotPwd(user, url) // html body
         });
     },
-    sendEmailCreateUser: async (user, url) => {
+    sendEmailAddUser: async (user, url) => {
         await transporter.sendMail({
             from: '"Toposanté" <pharma@toposante.com>', // sender address
             to: user.email, // list of receivers
             subject: 'Création de votre compte', // Subject line
-            html: `
-                <p>Bonjour ${user.name || user.email},</p>
-                <p>Un compte a été créé pour vous sur l'application Toposanté !</p>
-                <p>Pour profiter de l'application, merci d'initialiser votre compte en saisissant un nouveau mot de passe via le lien suivant:</p>
-                <a href=${url}>${url}</a>
-                <p>Ce lien expire dans 48 heures.</p>
-            ` // html body
+            html: addUser(user, url)
+        });
+    },
+    sendEmailRegisterUser: async (user) => {
+        await transporter.sendMail({
+            from: '"Toposanté" <pharma@toposante.com>', // sender address
+            to: user.email, // list of receivers
+            subject: 'Création de votre compte', // Subject line
+            html: registerUser(user)
+        });
+    },
+    sendEmailSubUser: async (user) => {
+        await transporter.sendMail({
+            from: '"Toposanté" <pharma@toposante.com>', // sender address
+            to: user.email, // list of receivers
+            subject: 'Abonnement de votre compte', // Subject line
+            html: subUser(user)
+        });
+    },
+    sendEmailDeleteUser: async (user) => {
+        await transporter.sendMail({
+            from: '"Toposanté" <pharma@toposante.com>', // sender address
+            to: user.email, // list of receivers
+            subject: 'Suppression de votre compte', // Subject line
+            html: deleteUser(user)
+        });
+    },
+    sendEmailUpdateEmail: async (userOld, userNew) => {
+        await transporter.sendMail({
+            from: '"Toposanté" <pharma@toposante.com>', // sender address
+            to: userOld.email, // list of receivers
+            subject: "Changement d'adresse mail", // Subject line
+            html: updateEmailOld(user)
+        });
+        await transporter.sendMail({
+            from: '"Toposanté" <pharma@toposante.com>', // sender address
+            to: userNew.email, // list of receivers
+            subject: "Changement d'adresse mail", // Subject line
+            html: updateEmailNew(user)
         });
     }
-
-
 }

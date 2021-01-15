@@ -17,7 +17,7 @@ const { validateUpdateNameInput, validateUpdateEmailInput, validateAddressInput,
 const User = require("../../models/User");
 const Log = require("../../models/Log");
 const Sheet = require("../../models/Sheet")
-const { sendEmailReset, sendEmailCreateUser } = require("../../email/mailer");
+const { sendEmailReset, sendEmailAddUser, sendEmailRegisterUser, sendEmailSubUser, sendEmailUpdateEmail } = require("../../email/mailer");
 const mongoose = require('mongoose')
 const { Mongoose } = require("mongoose");
 
@@ -72,7 +72,10 @@ router.post("/register", (req, res) => {
                     newUser.password = hash;
                     newUser
                         .save()
-                        .then(user => res.json(user)) // Return added user
+                        .then(user => {
+                            sendEmailRegisterUser(user)
+                            res.json(user)
+                        }) // Return added user
                         .catch(err => console.log(err));
                 });
             });
@@ -146,7 +149,7 @@ router.post("/add", passport.authenticate('admin', { session: false }), (req, re
                             // Send email to user for password initialization
                             const token = makeTokenFromPwd(user, 3600 * 24 * 2)//48hour
                             const url = getPasswordResetURL(user, token)
-                            sendEmailCreateUser(user, url)
+                            sendEmailAddUser(user, url)
                                 .then(() => {
                                     return res.json(user)
                                 })
@@ -213,6 +216,7 @@ router.post("/update-email", passport.authenticate('user', { session: false }), 
                     User.findByIdAndUpdate(user._id, { email: email }, { useFindAndModify: false, new: true }, (err, result) => {
                         // result = updated user
                         if (result) {
+                            sendEmailUpdateEmail(user, result)
                             signUserJwtToken(result, res)
                         }
                         if (err) {
@@ -264,6 +268,7 @@ router.post("/user-subscription", passport.authenticate('admin', { session: fals
     User.findByIdAndUpdate(userId, { subuntil: subuntil }, { useFindAndModify: false, new: true }, (err, result) => {
         // result = updated user
         if (result) {
+            sendEmailSubUser(result)
             res.send(result)
         }
         if (err) {
