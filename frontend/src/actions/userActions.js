@@ -1,5 +1,5 @@
 import axios from "axios";
-import { updateAuthToken } from './authActions'
+import { logoutUser, updateAuthToken } from './authActions'
 import { clearErrors } from './utilActions'
 
 import {
@@ -134,6 +134,16 @@ export const updatePwd = (data, history) => dispatch => {
             type: GET_ERRORS,
             payload: err.response.data
         })
+    });
+}
+
+export const deleteUser = () => dispatch => {
+    axios.post("/api/users/delete-user")
+    .then(res => {
+        dispatch(logoutUser())
+    })
+    .catch(err => {
+        console.log(err)
     });
 }
 

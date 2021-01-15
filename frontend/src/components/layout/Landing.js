@@ -22,16 +22,18 @@ class Landing extends Component {
 
   render() {
     return (
-      <Container>
-        <CardGrid />
-        <Navbar fixed="bottom" >
-          <div className="w-50">
-            <Button type="button" as={Link} to="/register" className="btn btn-secondary btn-lg btn-block">S'inscrire</Button>
+      <Container className="justify-content-center" style={{height: '100vh', display:'flex', margin: 'auto', flexDirection: "column", alignContent: 'center', alignItems: 'center'}}>
+            <p>
+              <b>Bienvenue sur Toposanté !</b>
+            </p>
+            <p>
+               L’application qui vous permet d’envoyer à vos patients des fiches de conseils claires sur leur pathologie 
+            </p>
+            <div  style={{verticalAlign: "middle"}}>
+          <Button type="button" as={Link} to="/register" className="btn btn-secondary btn-lg ">S'inscrire</Button>
+          <Button type="button" as={Link} to="/login" className="btn btn-primary btn-lg" >Se connecter</Button>
           </div>
-          <div className="w-50">
-          <Button type="button" as={Link} to="/login" className="btn btn-primary btn-lg btn-block">Se connecter</Button>
-          </div>
-        </Navbar>
+
       </Container>
     );
   }

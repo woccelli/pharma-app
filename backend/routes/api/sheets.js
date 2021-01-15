@@ -80,7 +80,7 @@ router.post("/delete", passport.authenticate('admin', { session: false }), (req,
     if (!isValid) {
         return res.status(400).json(errors);
     }
-    Sheet.findByIdAndRemove(req.body._id, { useFindAndModify: false }, (err, result) => {
+    Sheet.findByIdAndDelete(req.body._id, { useFindAndModify: false }, (err, result) => {
         if (result) {
             // result = updated sheet
             res.send(result._id)

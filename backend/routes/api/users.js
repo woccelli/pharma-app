@@ -17,7 +17,7 @@ const { validateUpdateNameInput, validateUpdateEmailInput, validateAddressInput,
 const User = require("../../models/User");
 const Log = require("../../models/Log");
 const Sheet = require("../../models/Sheet")
-const { sendEmailReset, sendEmailAddUser, sendEmailRegisterUser, sendEmailSubUser, sendEmailUpdateEmail } = require("../../email/mailer");
+const { sendEmailReset, sendEmailAddUser, sendEmailRegisterUser, sendEmailSubUser, sendEmailUpdateEmail, sendEmailDeleteUser } = require("../../email/mailer");
 const mongoose = require('mongoose')
 const { Mongoose } = require("mongoose");
 
@@ -200,7 +200,6 @@ router.post("/update-email", passport.authenticate('user', { session: false }), 
 
     const user = req.user;
     const email = req.body.email;
-
     if (user.email === email) {
         signUserJwtToken(user, res)
     } else {
@@ -421,6 +420,17 @@ router.get('/check-token-validity', passport.authenticate('check-token', { sessi
         res.sendStatus(200)
     }
 });
+
+router.post('/delete-user', passport.authenticate('user', { session: false}), (req, res) => {
+    User.findByIdAndDelete(req.user._id, (err, res) => {
+        if(err) {
+            console.log(err)
+        }
+    }).then(deletedUser => {
+        sendEmailDeleteUser(deletedUser)
+        res.send(deletedUser)
+    })
+})
 
 // @route GET api/users/logs
 // @desc get logs of user

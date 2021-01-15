@@ -28,6 +28,7 @@ import Header from "./components/layout/modules/Header"
 import NameForm from "./components/user/NameForm"
 import EmailForm from "./components/user/EmailForm"
 import AddressForm from "./components/user/AddressForm"
+import DeleteForm from "./components/user/DeleteForm"
 import UserSubscription from "./components/admin/UserSubscription";
 import PwdForm from "./components/user/PwdForm"
 import ResetPwd from "./components/auth/ResetPwd"
@@ -72,6 +73,7 @@ class App extends Component {
               <PrivateRoute exact path="/account/email" component={EmailForm} />
               <PrivateRoute exact path="/account/address" component={AddressForm} />
               <PrivateRoute exact path="/account/password" component={PwdForm} />
+              <PrivateRoute exact path="/account/delete" component={DeleteForm} />
             </Switch>
             <AdminRoute exact path="/admin/sheets" component={Sheets} />
             <AdminRoute exact path="/admin/sheets/sheet" component={SheetForm} />

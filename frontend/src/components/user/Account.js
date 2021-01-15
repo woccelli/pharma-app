@@ -103,8 +103,16 @@ class Account extends Component {
                                         )
                                     }
                                     )}
+                                    
                                 </ListGroup>
                             </ListGroup.Item>
+                            <ListGroup.Item action as={Link} to="/account/delete">
+                                        <Row>
+                                            <Col style={{color: "red"}}>Suppression du compte</Col>
+                                            <Col></Col>
+                                            <Col className="d-flex justify-content-end" xs="2"><ArrowForwardIos /></Col>
+                                        </Row>
+                                    </ListGroup.Item>
                         </ListGroup>
                     </Card.Body>
                 </Card>

@@ -71,13 +71,13 @@ module.exports = {
             from: '"Toposanté" <pharma@toposante.com>', // sender address
             to: userOld.email, // list of receivers
             subject: "Changement d'adresse mail", // Subject line
-            html: updateEmailOld(user)
+            html: updateEmailOld(userOld)
         });
         await transporter.sendMail({
             from: '"Toposanté" <pharma@toposante.com>', // sender address
             to: userNew.email, // list of receivers
             subject: "Changement d'adresse mail", // Subject line
-            html: updateEmailNew(user)
+            html: updateEmailNew(userNew)
         });
     }
 }
