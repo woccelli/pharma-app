@@ -106,8 +106,9 @@ class SheetForm extends Component {
     */
   };
 
-  handleSetState = (object, functiion) => {
-    const { state } = object(this.state)
+  handleSetState = getNewState => {
+    const  state = getNewState(this.state)
+    console.log(state)
     this.setState(state)
     console.log("state", this.state)
   }
