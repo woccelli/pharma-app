@@ -1,13 +1,10 @@
 // General
 import React, { PureComponent } from "react";
-import { connect } from "react-redux";
-import PropTypes from "prop-types";
 //Local
 import Section from "./Section"
 // Components
 import MaterialTable from 'material-table'
-import { Container, Form } from "react-bootstrap"
-import { Done, Delete, Edit, Add } from '@material-ui/icons'
+import { Delete, Add } from '@material-ui/icons'
 import { IconButton } from '@material-ui/core';
 
 
@@ -22,7 +19,7 @@ class Sections extends PureComponent {
             ...prevState,
             sheet: {
                 ...prevState.sheet,
-                sections: newSections 
+                sections: newSections
             }
         }))
         console.log(newSections)
@@ -30,7 +27,7 @@ class Sections extends PureComponent {
 
     addSection = () => {
         const { setState, state } = this.props
-        const num = state.sheet.sections.length+1
+        const num = state.sheet.sections.length + 1
         let newSection = {
             _id: `newsection#${Date.now()}`,
             title: `Section ${num}`,
@@ -68,7 +65,7 @@ class Sections extends PureComponent {
         const { state, setState } = this.props
 
         return (
-                <div>
+            <div style={{ display: "flex", flexDirection: "column" }}>
                 <MaterialTable
                     columns={columns}
                     data={sections}
@@ -79,25 +76,14 @@ class Sections extends PureComponent {
                         search: false,
                         defaultExpanded: true
                     }}
-                    detailPanel={rowData => <Section key={rowData._id} state={state} setState={setState} section={rowData}/>}
-                    
+                    detailPanel={rowData => <Section key={rowData._id} state={state} setState={setState} section={rowData} />}
+
                 />
-                <IconButton className="float-right" onClick={this.addSection}><Add/></IconButton>
-                </div>
-     
+                <IconButton style={{ marginLeft: "auto" }} onClick={this.addSection}><Add /></IconButton>
+            </div>
+
         )
     }
 }
 
-Sections.propTypes = {
-    auth: PropTypes.object.isRequired
-}
-
-
-const mapStateToProps = state => {
-    return {
-        auth: state.auth,
-    }
-}
-
-export default connect(mapStateToProps, {})(Sections)
+export default Sections

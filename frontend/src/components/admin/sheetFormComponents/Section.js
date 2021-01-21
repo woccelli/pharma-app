@@ -48,12 +48,10 @@ class Section extends PureComponent {
                             const index = sections.findIndex(sec => sec._id === section._id)
                             sections[index] = item
                             setState(prevState => ({
-                                state: {
-                                    ...prevState,
-                                    sheet: {
-                                        ...prevState.sheet,
-                                        sections: sections
-                                    }
+                                ...prevState,
+                                sheet: {
+                                    ...prevState.sheet,
+                                    sections: sections
                                 }
                             }))
                         }}

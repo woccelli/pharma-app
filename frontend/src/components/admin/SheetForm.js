@@ -5,9 +5,11 @@ import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 // Local
 import { addSheet, updateSheet } from "../../actions/adminActions"
-import Sheet from "../layout/modules/Sheet"
+//import Sheet from "../layout/modules/Sheet"
+import Sheet from '@bit/toposante.sheet.sheet';
 import FormLayout from "../layout/modules/FormLayout"
 import Sections from "./sheetFormComponents/Sections";
+import Advices from "./sheetFormComponents/Advices"
 // Components
 import { Form, Button, Row, Col } from "react-bootstrap"
 import { BlobProvider } from '@react-pdf/renderer';
@@ -29,10 +31,39 @@ class SheetForm extends Component {
     } else {
       this.state = {
         sheet: {
-          name: "",
+          name: 'HYPERTENSION ARTÉRIELLE',
+          address: {
+            dest: 'Parmacie du Moulot',
+            addr_1: '13 rue de la Corvée',
+            addr_2: '',
+            postcode: '69100',
+            city: 'Villeurbanne',
+            country: 'France'
+          },
           definition: "",
           description: "",
-          advices: [],
+          advices: [
+            {
+              _id: "1",
+              icon: '/imgs/icons/weight-scale.png',
+              text: 'J’arrête de fumer et ne m’expose pas au tabagisme passif en cas de consommation de tabac.'
+            },
+            {
+              _id: "2",
+              icon: '/imgs/icons/weight-scale.png',
+              text: 'Je ne mange pas trop.'
+            },
+            {
+              _id: "3",
+              icon: '/imgs/icons/weight-scale.png',
+              text: 'Je fais du sport toute la journée.'
+            },
+            {
+              _id: "4",
+              icon: '/imgs/icons/weight-scale.png',
+              text: 'J\'evite l\'alcool.'
+            },
+          ],
           sections: [{
             _id: "1",
             title: 'Causes',
@@ -44,7 +75,7 @@ class SheetForm extends Component {
             text: 'Veniam consequat voluptate ea veniam aliquip aliquip nisi. Dolore tempor elit sint eiusmod dolore incididunt irure voluptate cupidatat non in. Nisi elit tempor laborum mollit dolore ullamco consequat culpa consectetur exercitation duis nisi velit. Occaecat labore aliquip eu laborum duis proident enim veniam Lorem.Fugiat pariatur laborum occaecat excepteur exercitation sit in dolor esse mollit sunt ea ipsum minim. Do elit nisi eu pariatur enim id cillum commodo consequat. Exercitation nostrud consectetur excepteur aliquip non laborum occaecat ullamco dolor quis minim enim.'
           },
           {
-            _id:"3",
+            _id: "3",
             title: 'Compléments alimentaires',
             text: 'Incididunt eu id reprehenderit id pariatur. Irure ullamco proident fugiat laboris sint minim exercitation nostrud laborum. Esse sunt pariatur ullamco cillum laboris ullamco sint occaecat voluptate occaecat qui consectetur est. Qui sunt quis deserunt in laboris. Cupidatat adipisicing est consequat est ex. Consectetur labore ullamco magna pariatur laboris amet consequat occaecat in sunt labore enim irure consectetur. Labore tempor sunt aute pariatur sint.Laboris in commodo cillum reprehenderit in exercitation proident ullamco voluptate cupidatat anim magna. Ex cillum laborum pariatur adipisicing culpa exercitation in aliqua dolor pariatur. Est aliqua dolore nulla ad veniam cupidatat fugiat. Reprehenderit aliquip et est veniam commodo voluptate ut aliqua excepteur eiusmod commodo excepteur. Non proident ad anim proident sint consectetur in commodo pariatur esse eiusmod sint. Elit tempor et magna ipsum consectetur sit aliquip.'
           },
@@ -71,44 +102,31 @@ class SheetForm extends Component {
 
 
   renderPdf = () => {
+    const { sheet } = this.state
     const doc = (
-      <Sheet sheet={this.state.sheet} />
+      <Sheet name={sheet.name} address={sheet.address} advices={sheet.advices} sections={sheet.sections} />
     );
     return (
       <BlobProvider document={doc}>
         {({ blob, url, loading, error }) => {
           // Do whatever you need with blob here
-          return <embed src={url} type="application/pdf" height={550} width={400} />
+          return <embed src={url} type="application/pdf" width="100%" height="100%" />
         }}
       </BlobProvider>
     )
   }
 
-  onSectionsChange = (newSections) => {
-    this.setState(prevState => ({
-      sheet: {
-        ...prevState.sheet,
-        sections: newSections
-      }
-    }))
-  }
 
   onSubmit = e => {
     e.preventDefault();
     const { sheet } = this.state;
     console.log(this.state)
-    /*
-    if (this.state.new) {
-      this.props.addSheet(sheet, this.props.history);
-    } else {
-      this.props.updateSheet(sheet, this.props.history);
-    }
-    */
+
   };
 
   handleSetState = getNewState => {
-    const  state = getNewState(this.state)
-    console.log(state)
+    const state = getNewState(this.state)
+    console.log("changed state", state)
     this.setState(state)
     console.log("state", this.state)
   }
@@ -119,11 +137,12 @@ class SheetForm extends Component {
       <FormLayout back="/admin/sheets">
         <Row>
           <Col>
-          <Form>
-            <Sections state={this.state} setState={this.handleSetState}/>
-            <Button type="submit">Valider</Button>
-          </Form>
-         
+            <Form>
+              <Advices state={this.state} setState={this.handleSetState} />
+              <Sections state={this.state} setState={this.handleSetState} />
+              <Button type="submit">Valider</Button>
+            </Form>
+
           </Col>
           <Col>
             {this.renderPdf()}
