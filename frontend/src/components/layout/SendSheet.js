@@ -40,7 +40,7 @@ class SendSheet extends Component {
             <BlobProvider document={doc}>
                 {({ blob, url, loading, error }) => {
                     // Do whatever you need with blob here
-                    return <embed src={url} type="application/pdf" height={550} width={400} />
+                    return <embed src={url} type="application/pdf" height={550} width={400} title={this.state.sheet.name}/>
                 }}
             </BlobProvider>
         )

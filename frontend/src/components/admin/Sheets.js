@@ -34,7 +34,7 @@ class Sheets extends Component {
         if (sheetLogs) {
             const logs = sheetLogs.sheetlogs
             const data = logs.map((log, _id) => {
-                const x = new Date(log._id.year, log._id.month, log._id.day)
+                const x = new Date(log._id.year, log._id.month-1, log._id.day) //js months start at 0
                 const y = log.count
                 return { x, y }
             })

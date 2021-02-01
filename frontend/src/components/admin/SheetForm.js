@@ -6,13 +6,14 @@ import { withRouter } from "react-router-dom";
 // Local
 import { addSheet, updateSheet } from "../../actions/adminActions"
 //import Sheet from "../layout/modules/Sheet"
-import Sheet from '@bit/toposante.sheet.sheet';
+import Sheet from '@bit/toposante.sheet.sheet'
 import FormLayout from "../layout/modules/FormLayout"
-import Sections from "./sheetFormComponents/Sections";
+import General from './sheetFormComponents/General'
+import Sections from "./sheetFormComponents/Sections"
 import Advices from "./sheetFormComponents/Advices"
 // Components
 import { Form, Button, Row, Col } from "react-bootstrap"
-import { BlobProvider } from '@react-pdf/renderer';
+import { BlobProvider } from '@react-pdf/renderer'
 import { Fab } from "@material-ui/core"
 import { Refresh } from "@material-ui/icons"
 
@@ -131,7 +132,7 @@ class SheetForm extends Component {
     e.preventDefault();
     const { sheet } = this.state;
     console.log(this.state)
-
+    //TODO
   };
 
   handleSetState = getNewState => {
@@ -148,6 +149,7 @@ class SheetForm extends Component {
         <Row>
           <Col>
             <Form>
+              <General state={this.state} setState={this.handleSetState} />
               <Advices state={this.state} setState={this.handleSetState} />
               <Sections state={this.state} setState={this.handleSetState} />
               <Button type="submit">Valider</Button>
