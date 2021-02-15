@@ -27,6 +27,7 @@ class AddressForm extends Component {
                     postcode: address.postcode,
                     city: address.city,
                     country: address.country,
+                    isHeader: address.isHeader,
                     new: false
                 }
             }
@@ -39,13 +40,21 @@ class AddressForm extends Component {
                 postcode: "",
                 city: "",
                 country: "",
+                isHeader: false,
                 new: true
             }
         }
     }
 
     onChange = e => {
+        console.log(e.target.id, e.target.value)
         this.setState({ [e.target.id]: e.target.value });
+    };
+
+    onSwitchHeader = () => {
+        this.setState(prevState => ({
+            isHeader: !prevState.isHeader
+        }))
     };
 
     onSubmit = e => {
@@ -59,7 +68,8 @@ class AddressForm extends Component {
                 addr_2: this.state.addr_2,
                 postcode: this.state.postcode,
                 city: this.state.city,
-                country: this.state.country
+                country: this.state.country,
+                isHeader: this.state.isHeader
             };
             this.props.addAddress({ address: newAddress }, this.props.history);
         } else {
@@ -71,7 +81,8 @@ class AddressForm extends Component {
                 addr_2: this.state.addr_2,
                 postcode: this.state.postcode,
                 city: this.state.city,
-                country: this.state.country
+                country: this.state.country,
+                isHeader: this.state.isHeader
             }
             this.props.updateAddress({ address: updatedAddress }, this.props.history)
         }
@@ -200,6 +211,19 @@ class AddressForm extends Component {
                         <Form.Control.Feedback type="invalid">
                             {errors.country}
                         </Form.Control.Feedback>
+                    </Form.Group>
+
+                    <Form.Group>
+                        <Form.Label>
+                            Utiliser cette adresse pour l'en-tête des fiches
+                        </Form.Label>
+                        <Form.Check
+                        custom
+                            id="isHeader"
+                            type="switch"
+                            checked={this.state.isHeader}
+                            onChange={this.onSwitchHeader}
+                        />
                     </Form.Group>
 
                     <Button className="float-right" type="submit">{this.state.new ? "Ajouter la nouvelle adresse" : "Modifier"}</Button>

@@ -9,7 +9,7 @@ import { clearErrors, clearSuccess } from "../../actions/utilActions"
 import { Container, CardColumns, Card, ListGroup, Row, Col, Alert } from 'react-bootstrap'
 import { Link } from "react-router-dom"
 import { IconButton } from '@material-ui/core';
-import { Delete, Edit, ArrowForwardIos, Add } from '@material-ui/icons'
+import { Delete, Edit, ArrowForwardIos, Add, Star } from '@material-ui/icons'
 
 
 class Account extends Component {
@@ -82,6 +82,11 @@ class Account extends Component {
                                                         <Row>{address.addr_comp} {address.addr_2}</Row>
                                                         <Row>{address.addr_1}, {address.postcode} {address.city}, {address.country}</Row></Col>
                                                     <Col className="d-flex justify-content-end">
+                                                        <div hidden={!address.isHeader}>
+                                                        <IconButton disabled>
+                                                            <Star/>
+                                                        </IconButton>
+                                                        </div>
                                                         <Link to={{
                                                             pathname: '/account/address',
                                                             state: {

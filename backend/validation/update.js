@@ -168,6 +168,22 @@ module.exports = {
             errors,
             isValid: isEmpty(errors)
         };
+    },
+
+    validateUpdateHeaderAddressInput: function (data) {
+        let errors = {};
+
+        // Convert empty fields to an empty string so we can use validator functions
+        data.headerAddress = !isEmpty(data.headerAddress) ? data.headerAddress : "";
+
+        if (Validator.isEmpty(data.headerAddress)) {
+            errors.headerAddress = "Veuillez renseigner une référence d'addresse";
+        }
+
+        return {
+            errors,
+            isValid: isEmpty(errors)
+        };
     }
 
 }

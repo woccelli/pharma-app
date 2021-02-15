@@ -8,7 +8,8 @@ const AddressSchema = new Schema({
     addr_comp: { type: String },
     postcode: { type: String },
     city: { type: String },
-    country: { type: String }
+    country: { type: String },
+    isHeader: {type: Boolean, default: false}
 })
 
 module.exports = AddressSchema

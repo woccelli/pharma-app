@@ -11,7 +11,7 @@ const passport = require("passport");
 const validateRegisterInput = require("../../validation/register");
 const validateLoginInput = require("../../validation/login");
 const validateAddInput = require("../../validation/add")
-const { validateUpdateNameInput, validateUpdateEmailInput, validateAddressInput, validateForgotPasswordInput, validateResetPasswordInput, validateSubInput, validateUpdatePasswordInput } = require("../../validation/update");
+const { validateUpdateNameInput, validateUpdateEmailInput, validateAddressInput, validateForgotPasswordInput, validateResetPasswordInput, validateSubInput, validateUpdatePasswordInput,validateUpdateHeaderAddressInput } = require("../../validation/update");
 
 // Load models
 const User = require("../../models/User");
@@ -410,6 +410,29 @@ router.post('/password-reset', (req, res) => {
     })
 })
 
+router.post('/update-header-address', passport.authenticate('user', { session: false }), (req, res) => { 
+    // Form validation
+    const { errors, isValid } = validateUpdateHeaderAddressInput(req.body);
+    // Check validation
+    if (!isValid) {
+        return res.status(400).json(errors);
+    }
+
+    const user = req.user;
+    const headerAddress = req.body.headerAddress;
+
+    User.findByIdAndUpdate(user._id, { headerAddress: headerAddress }, { useFindAndModify: false, new: true }, (err, result) => {
+        if (result) {
+            // result = updated user
+            signUserJwtToken(result, res)
+        }
+        if (err) {
+            console.log(err)
+            return res.status(400).json(err);
+        }
+    })
+})
+
 // @route GET api/users/all
 // @desc get all existing users
 // @access Protected - admin only
@@ -513,6 +536,7 @@ const signUserJwtToken = (user, res) => {
         name: user.name,
         email: user.email,
         addresses: user.addresses,
+        headerAddress: user.headerAddress,
         role: user.role,
         subuntil: user.subuntil
     };
