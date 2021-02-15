@@ -29,7 +29,7 @@ class Sections extends PureComponent {
         const { setState, state } = this.props
         const num = state.sheet.sections.length + 1
         let newSection = {
-            _id: `newsection#${Date.now()}`,
+            _id: `${Date.now().toString(12)}`,
             title: `Section ${num}`,
             text: ""
         }

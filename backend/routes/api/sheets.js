@@ -95,8 +95,8 @@ function createSheet(data) {
     const newSheet = {
         name: data.name,
         definition: data.definition,
-        synonyms: data.synonyms,
-        description: data.description
+        sections: data.sections,
+        advices: data.advices,
     };
     return newSheet
 }

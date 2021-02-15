@@ -44,59 +44,9 @@ class SheetForm extends Component {
           country: 'France'
         },
         definition: "",
-        description: "",
         advices: [
-          {
-            _id: "1",
-            icon: '/imgs/icons/weight-scale.png',
-            text: 'J’arrête de fumer et ne m’expose pas au tabagisme passif en cas de consommation de tabac.'
-          },
-          {
-            _id: "2",
-            icon: '/imgs/icons/weight-scale.png',
-            text: 'Je ne mange pas trop.'
-          },
-          {
-            _id: "3",
-            icon: '/imgs/icons/weight-scale.png',
-            text: 'Je fais du sport toute la journée.'
-          },
-          {
-            _id: "4",
-            icon: '/imgs/icons/weight-scale.png',
-            text: 'J\'evite l\'alcool.'
-          },
         ],
-        sections: [{
-          _id: "1",
-          title: 'Causes',
-          text: 'Duis ex et aute amet ad id veniam. Dolore sit duis et quis anim enim dolor duis officia exercitation exercitation. Non exercitation labore dolor elit officia proident et dolore. Nisi in excepteur esse ea cupidatat duis non sunt culpa minim anim occaecat incididunt non. Irure anim consequat ullamco minim est fugiat id.Eu anim ex eu ipsum sunt ipsum excepteur id magna ad. Sunt ad nisi adipisicing Lorem aliquip et ullamco est consectetur non voluptate eu. Aute occaecat fugiat cupidatat commodo esse quis nostrud proident.'
-        },
-        {
-          _id: "2",
-          title: 'Conseils traitement',
-          text: 'Veniam consequat voluptate ea veniam aliquip aliquip nisi. Dolore tempor elit sint eiusmod dolore incididunt irure voluptate cupidatat non in. Nisi elit tempor laborum mollit dolore ullamco consequat culpa consectetur exercitation duis nisi velit. Occaecat labore aliquip eu laborum duis proident enim veniam Lorem.Fugiat pariatur laborum occaecat excepteur exercitation sit in dolor esse mollit sunt ea ipsum minim. Do elit nisi eu pariatur enim id cillum commodo consequat. Exercitation nostrud consectetur excepteur aliquip non laborum occaecat ullamco dolor quis minim enim.'
-        },
-        {
-          _id: "3",
-          title: 'Compléments alimentaires',
-          text: 'Incididunt eu id reprehenderit id pariatur. Irure ullamco proident fugiat laboris sint minim exercitation nostrud laborum. Esse sunt pariatur ullamco cillum laboris ullamco sint occaecat voluptate occaecat qui consectetur est. Qui sunt quis deserunt in laboris. Cupidatat adipisicing est consequat est ex. Consectetur labore ullamco magna pariatur laboris amet consequat occaecat in sunt labore enim irure consectetur. Labore tempor sunt aute pariatur sint.Laboris in commodo cillum reprehenderit in exercitation proident ullamco voluptate cupidatat anim magna. Ex cillum laborum pariatur adipisicing culpa exercitation in aliqua dolor pariatur. Est aliqua dolore nulla ad veniam cupidatat fugiat. Reprehenderit aliquip et est veniam commodo voluptate ut aliqua excepteur eiusmod commodo excepteur. Non proident ad anim proident sint consectetur in commodo pariatur esse eiusmod sint. Elit tempor et magna ipsum consectetur sit aliquip.'
-        },
-        {
-          _id: "4",
-          title: 'Plantes',
-          text: 'Id enim incididunt qui mollit sit aliquip reprehenderit. Magna aliquip consequat aute consectetur. Consequat id incididunt fugiat cillum excepteur magna dolore sint ea non dolor. Quis pariatur occaecat ea mollit pariatur.'
-        },
-        {
-          _id: "5",
-          title: 'Plantes',
-          text: 'Id enim incididunt qui mollit sit aliquip reprehenderit. Magna aliquip consequat aute consectetur. Consequat id incididunt fugiat cillum excepteur magna dolore sint ea non dolor. Quis pariatur occaecat ea mollit pariatur.'
-        },
-        {
-          _id: "6",
-          title: 'Plantes',
-          text: 'Id enim incididunt qui mollit sit aliquip reprehenderit. Magna aliquip consequat aute consectetur. Consequat id incididunt fugiat cillum excepteur magna dolore sint ea non dolor. Quis pariatur occaecat ea mollit pariatur.'
-        }]
+        sections: []
       }
       this.state = {
         sheet: mockSheet,
@@ -131,15 +81,13 @@ class SheetForm extends Component {
   onSubmit = e => {
     e.preventDefault();
     const { sheet } = this.state;
-    console.log(this.state)
+    this.props.addSheet(sheet, this.props.history)
     //TODO
   };
 
   handleSetState = getNewState => {
     const state = getNewState(this.state)
-    console.log("changed state", state)
     this.setState(state)
-    console.log("state", this.state)
   }
 
   render() {
@@ -148,7 +96,7 @@ class SheetForm extends Component {
       <FormLayout back="/admin/sheets">
         <Row>
           <Col>
-            <Form>
+            <Form onSubmit={this.onSubmit}>
               <General state={this.state} setState={this.handleSetState} />
               <Advices state={this.state} setState={this.handleSetState} />
               <Sections state={this.state} setState={this.handleSetState} />

@@ -29,7 +29,7 @@ class Advices extends PureComponent {
         const { setState, state } = this.props
         const num = state.sheet.advices.length+1
         let newAdvice = {
-            _id: `newAdvice#${Date.now()}`,
+            _id: `${Date.now().toString(12)}`,
             text: `Conseil ${num}`,
         }
         setState(prevState => ({

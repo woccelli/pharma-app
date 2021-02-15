@@ -1,5 +1,8 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
+const adviceSchema= require('./Advice')
+const sectionSchema = require('./Section')
+
 const SheetSchema = new Schema({
     name: {
         type: String,
@@ -9,14 +12,8 @@ const SheetSchema = new Schema({
         type: String,
         required: true
     },
-    synonyms: {
-        type: Array,
-        required: false
-    },
-    description: {
-        type: String,
-        default:""
-    },
+    advices: [adviceSchema],
+    sections: [sectionSchema],
     date: {
         type: Date,
         default: Date.now
