@@ -29,13 +29,28 @@ class SheetForm extends Component {
         this.state = {
           sheet: sheet,
           renderedSheet: sheet,
+          source: {
+            dest: 'Parmacie du Moulot',
+            addr_1: '13 rue de la Corvée',
+            addr_2: '',
+            postcode: '69100',
+            city: 'Villeurbanne',
+            country: 'France'
+          },
           new: false
         }
       }
     } else {
       const mockSheet = {
-        name: 'HYPERTENSION ARTÉRIELLE',
-        address: {
+        name: "",
+        definition: "",
+        advices: [],
+        sections: []
+      }
+      this.state = {
+        sheet: mockSheet,
+        renderedSheet: mockSheet,
+        source: {
           dest: 'Parmacie du Moulot',
           addr_1: '13 rue de la Corvée',
           addr_2: '',
@@ -43,14 +58,6 @@ class SheetForm extends Component {
           city: 'Villeurbanne',
           country: 'France'
         },
-        definition: "",
-        advices: [
-        ],
-        sections: []
-      }
-      this.state = {
-        sheet: mockSheet,
-        renderedSheet: mockSheet,
         new: true
       };
     }
@@ -59,8 +66,9 @@ class SheetForm extends Component {
 
   renderPdf = () => {
     const  sheet  = this.state.renderedSheet
+    const { source } = this.state
     const doc = (
-      <Sheet name={sheet.name} address={sheet.address} advices={sheet.advices} sections={sheet.sections} />
+      <Sheet name={sheet.name} address={source} advices={sheet.advices} sections={sheet.sections} />
     );
     return (
       <BlobProvider document={doc}>
@@ -81,8 +89,11 @@ class SheetForm extends Component {
   onSubmit = e => {
     e.preventDefault();
     const { sheet } = this.state;
-    this.props.addSheet(sheet, this.props.history)
-    //TODO
+    if(this.state.new) {
+      this.props.addSheet(sheet, this.props.history)
+    } else {
+      this.props.updateSheet(sheet, this.props.history)
+    }
   };
 
   handleSetState = getNewState => {
@@ -100,7 +111,7 @@ class SheetForm extends Component {
               <General state={this.state} setState={this.handleSetState} />
               <Advices state={this.state} setState={this.handleSetState} />
               <Sections state={this.state} setState={this.handleSetState} />
-              <Button type="submit">Valider</Button>
+              <Button type="submit" className="float-right">{this.state.new ? "Créer" : "Modifier"}</Button>
             </Form>
 
           </Col>

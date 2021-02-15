@@ -31,6 +31,7 @@ class General extends PureComponent {
                             defaultValue={name}
                             id="name"
                             type="text"
+                            required
                         />
                     </Form.Group>
                     <Form.Group>
@@ -40,6 +41,7 @@ class General extends PureComponent {
                             defaultValue={definition}
                             id="definition"
                             as="textarea"
+                            required
                         />
                     </Form.Group>
                 </Container>
