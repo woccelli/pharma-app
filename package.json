@@ -5,7 +5,6 @@
   "scripts": {
     "start": "npm start --prefix backend",
     "dev": "concurrently \"cd backend && npm run dev\" \"cd frontend && npm start\" ",
-    "postinstall": "concurrently \"cd backend && npm install\" \"cd frontend && npm install\" ",
     "backend": "nodemon backend/server.js",
     "frontend": "npm run start --prefix frontend",
     "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix backend && npm run build --prefix frontend"
