@@ -34,6 +34,13 @@ class SendSheet extends Component {
         }
     }
 
+    componentDidMount = () => {
+        if((new Date(this.props.auth.user.subuntil)) < Date.now()) {
+            alert("Vous devez être abonné.e pour accéder à ce contenu")
+            this.props.history.push("/dashboard")
+        }
+    }
+
 
     renderPdf = () => {
         const { sheet }  = this.state
