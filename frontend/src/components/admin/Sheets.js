@@ -12,7 +12,9 @@ import { Container, Button, Navbar, Alert } from 'react-bootstrap'
 import { Add, Delete, Edit } from '@material-ui/icons'
 import { Link } from 'react-router-dom'
 import { Line } from 'react-chartjs-2'
-import { IconButton } from '@material-ui/core';
+import { IconButton } from '@material-ui/core'
+import { confirmAlert } from 'react-confirm-alert';
+import 'react-confirm-alert/src/react-confirm-alert.css'; // Import css
 
 class Sheets extends Component {
 
@@ -21,7 +23,20 @@ class Sheets extends Component {
     }
 
     onDeleteSheet = sheet => {
-        this.props.deleteSheet(sheet)
+        confirmAlert({
+            title: 'Suppression',
+            message: `Voulez-vous vraiment supprimer la fiche: ${sheet.name}?`,
+            buttons: [
+              {
+                label: 'Oui',
+                onClick: () => this.props.deleteSheet(sheet)
+              },
+              {
+                label: 'Non',
+              }
+            ]
+          });
+        
     }
 
     componentWillUnmount = () => {
@@ -34,7 +49,7 @@ class Sheets extends Component {
         if (sheetLogs) {
             const logs = sheetLogs.sheetlogs
             const data = logs.map((log, _id) => {
-                const x = new Date(log._id.year, log._id.month-1, log._id.day) //js months start at 0
+                const x = new Date(log._id.year, log._id.month - 1, log._id.day) //js months start at 0
                 const y = log.count
                 return { x, y }
             })
@@ -107,7 +122,8 @@ class Sheets extends Component {
                         </Link>
                         <IconButton onClick={() => this.onDeleteSheet(sheet)}>
                             <Delete />
-                        </IconButton></div>
+                        </IconButton>
+                    </div>
             }
         ];
 

@@ -22,6 +22,7 @@
     "react-bootstrap": "^1.0.1",
     "react-bootstrap-date-picker": "^5.1.0",
     "react-chartjs-2": "^2.11.1",
+    "react-confirm-alert": "^2.7.0",
     "react-dom": "^16.13.1",
     "react-google-material-icons": "^1.0.4",
     "react-pdf": "^5.0.0",
