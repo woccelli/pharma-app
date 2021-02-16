@@ -49,8 +49,8 @@ app.use("/api/sheets", sheets)
 
 if(process.env.NODE_ENV === 'production') {
     // Express will surve up production assets
-    const publicPath = path.join(__dirname, '..', 'frontend', 'build')
-    app.use(express.static(publicPath));
+    const buildPath = path.join(__dirname, '..', 'frontend', 'build')
+    app.use(express.static(buildPath));
     // Express will serve up the index html file
     // if it doesn't recognise the file
     app.get('*', (req, res) => {

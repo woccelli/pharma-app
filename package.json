@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "MERN Web application for french medical workers to share simple information about common diseases",
   "scripts": {
-    "start": "npm start --prefix backend",
+    "start": "npm run start --prefix backend",
     "dev": "concurrently \"cd backend && npm run dev\" \"cd frontend && npm start\" ",
     "backend": "nodemon backend/server.js",
     "frontend": "npm run start --prefix frontend",
