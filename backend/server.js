@@ -25,8 +25,10 @@ app.use(express.json());
 
 
 // DB Config - Connect to MongoDB
-await mongoose.connect(db, { useNewUrlParser: true })
-   
+mongoose
+    .connect(db, { useNewUrlParser: true })
+    .then(() => console.log("MongoDB successfully connected"))
+    .catch(err => console.log(err));
 
 //Bodyparser middleware
 app.use(
