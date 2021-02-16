@@ -1,6 +1,7 @@
 // Server
 const express = require('express');
 const cors = require('cors');
+const path = require('path');
 const bodyParser = require('body-parser')
 // DB
 const mongoose = require('mongoose');
@@ -16,10 +17,12 @@ const sheets = require("./routes/api/sheets");
 //Config
 require('dotenv').config();
 
+
 //App setup
 const app = express();
 app.use(cors());
 app.use(express.json());
+
 
 // DB Config - Connect to MongoDB
 mongoose
@@ -43,6 +46,17 @@ require("./config/passport")(passport);
 // Routes
 app.use("/api/users", users);
 app.use("/api/sheets", sheets)
+
+if(process.env.NODE_ENV === 'production') {
+    // Express will surve up production assets
+    const publicPath = path.join(__dirname, '..', 'frontend', 'build')
+    app.use(express.static(publicPath));
+    // Express will serve up the index html file
+    // if it doesn't recognise the file
+    app.get('*', (req, res) => {
+        res.sendFile(path.resolve(__dirname, '..', 'frontend', 'build', 'index.html'));
+    });
+}
 
 //Port configuration
 const port = process.env.PORT || 5000;

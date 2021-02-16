@@ -4,7 +4,11 @@
   "description": "MERN Web application for french medical workers to share simple information about common diseases",
   "scripts": {
     "dev": "concurrently \"cd backend && npm run dev\" \"cd frontend && npm start\" ",
-    "postinstall": "concurrently \"cd backend && npm install\" \"cd frontend && npm install\" "
+    "postinstall": "concurrently \"cd backend && npm install\" \"cd frontend && npm install\" ",
+    "start": "node backend/server.js",
+    "backend": "nodemon backend/server.js",
+    "frontend": "npm run start --prefix frontend",
+    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix backend && npm run build --prefix frontend"
   },
   "repository": {
     "type": "git",
