@@ -7,6 +7,7 @@
     "dev": "concurrently \"cd backend && npm run dev\" \"cd frontend && npm start\" ",
     "backend": "nodemon backend/server.js",
     "frontend": "npm run start --prefix frontend",
+    "heroku-prebuild": "echo Adding bit.dev to npm registry && echo ${BIT_NODE_TOKEN} && npm config set @bit:registry https://node.bit.dev &&  npm config set //node.bit.dev/:_authToken ${BIT_NODE_TOKEN} && echo Completed adding bit.dev to npm registry",
     "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix backend && NPM_CONFIG_PRODUCTION=false npm install --prefix frontend && npm run build --prefix frontend"
   },
   "repository": {
