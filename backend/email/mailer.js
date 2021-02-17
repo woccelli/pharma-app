@@ -10,11 +10,13 @@ const transporter = nodemailer.createTransport({
     }
 });
 
+const fromAddress = '"Toposanté" <pharma@toposante.com>';
+
 module.exports = {
     sendSheetEmail: async (data, sender) => {
         // send mail with defined transport object
         await transporter.sendMail({
-            from: '"Toposanté" <pharma@toposante.com>', // sender address
+            from: fromAddress, // sender address
             to: data.sendtoemail, // list of receivers
             subject: data.name, // Subject line
             html: sendSheet(sender), // html body
@@ -28,7 +30,7 @@ module.exports = {
     },
     sendEmailReset: async (user, url) => {
         await transporter.sendMail({
-            from: '"Toposanté" <pharma@toposante.com>', // sender address
+            from: fromAddress, // sender address
             to: user.email, // list of receivers
             subject: 'Réinitialisation du mot de passe', // Subject line
             html: forgotPwd(user, url) // html body
@@ -36,7 +38,7 @@ module.exports = {
     },
     sendEmailAddUser: async (user, url) => {
         await transporter.sendMail({
-            from: '"Toposanté" <pharma@toposante.com>', // sender address
+            from: fromAddress, // sender address
             to: user.email, // list of receivers
             subject: 'Création de votre compte', // Subject line
             html: addUser(user, url)
@@ -44,7 +46,7 @@ module.exports = {
     },
     sendEmailRegisterUser: async (user) => {
         await transporter.sendMail({
-            from: '"Toposanté" <pharma@toposante.com>', // sender address
+            from: fromAddress, // sender address
             to: user.email, // list of receivers
             subject: 'Création de votre compte', // Subject line
             html: registerUser(user)
@@ -52,7 +54,7 @@ module.exports = {
     },
     sendEmailSubUser: async (user) => {
         await transporter.sendMail({
-            from: '"Toposanté" <pharma@toposante.com>', // sender address
+            from: fromAddress, // sender address
             to: user.email, // list of receivers
             subject: 'Abonnement de votre compte', // Subject line
             html: subUser(user)
@@ -60,7 +62,7 @@ module.exports = {
     },
     sendEmailDeleteUser: async (user) => {
         await transporter.sendMail({
-            from: '"Toposanté" <pharma@toposante.com>', // sender address
+            from: fromAddress, // sender address
             to: user.email, // list of receivers
             subject: 'Suppression de votre compte', // Subject line
             html: deleteUser(user)
@@ -68,13 +70,13 @@ module.exports = {
     },
     sendEmailUpdateEmail: async (userOld, userNew) => {
         await transporter.sendMail({
-            from: '"Toposanté" <pharma@toposante.com>', // sender address
+            from: fromAddress, // sender address
             to: userOld.email, // list of receivers
             subject: "Changement d'adresse mail", // Subject line
             html: updateEmailOld(userOld)
         });
         await transporter.sendMail({
-            from: '"Toposanté" <pharma@toposante.com>', // sender address
+            from: fromAddress, // sender address
             to: userNew.email, // list of receivers
             subject: "Changement d'adresse mail", // Subject line
             html: updateEmailNew(userNew)

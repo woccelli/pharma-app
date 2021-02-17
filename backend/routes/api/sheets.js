@@ -2,9 +2,10 @@ const express = require("express");
 const router = express.Router();
 
 // Load models
-const Log = require('../../models/Log')
+const Log = require('../../models/Log');
 const Sheet = require("../../models/Sheet");
-const mongoose = require('mongoose')
+const mongoose = require('mongoose');
+
 // Load input validation
 const { validateAddInput, validateSendInput, validateDeleteInput,validateUpdateInput } = require("../../validation/sheet");
 
@@ -13,6 +14,32 @@ const passport = require("passport");
 
 // Email sending
 const { sendSheetEmail }  = require("../../email/mailer");
+
+/* 
+    -- UTIL FUNCTIONS -- 
+*/
+// Create the Sheet Object that will be inserted in the Sheet DB Model
+function createSheet(data) {
+    const newSheet = {
+        name: data.name,
+        definition: data.definition,
+        sections: data.sections,
+        advices: data.advices,
+    };
+    return newSheet;
+}
+// Save a log in the DB
+function addLog(sheet, user){
+    const log = new Log({
+        _sheet: sheet._id,
+        _user: user._id
+    });
+    log.save();
+}
+
+/* 
+    -- ROUTES -- 
+*/
 
 // @route GET api/sheets/
 // @desc get all existing sheets
@@ -33,7 +60,6 @@ router.post("/add", passport.authenticate('admin', { session: false }), (req, re
     if (!isValid) {
         return res.status(400).json(errors);
     }
-
     Sheet.findOne({ name: req.body.name }).then(sheet => {
         if (sheet) {
             // Sheet already exists
@@ -48,8 +74,8 @@ router.post("/add", passport.authenticate('admin', { session: false }), (req, re
     });
 });
 
-// @route POST api/sheets/add
-// @desc add sheet
+// @route POST api/sheets/update
+// @desc update sheet
 // @access protected - admin only
 router.post("/update", passport.authenticate('admin', { session: false }), (req, res) => {
     // Form validation
@@ -58,11 +84,11 @@ router.post("/update", passport.authenticate('admin', { session: false }), (req,
     if (!isValid) {
         return res.status(400).json(errors);
     }
-    const newSheet = createSheet(req.body)
+    const newSheet = createSheet(req.body);
     Sheet.findByIdAndUpdate(req.body._id, newSheet, { useFindAndModify: false, new: true }, (err, result) => {
         if (result) {
             // result = updated sheet
-            res.send(result._id)
+            res.send(result._id);
         }
         if (err) {
             return res.status(400).json(err);
@@ -83,7 +109,7 @@ router.post("/delete", passport.authenticate('admin', { session: false }), (req,
     Sheet.findByIdAndDelete(req.body._id, { useFindAndModify: false }, (err, result) => {
         if (result) {
             // result = updated sheet
-            res.send(result._id)
+            res.send(result._id);
         }
         if (err) {
             return res.status(400).json(err);
@@ -91,23 +117,7 @@ router.post("/delete", passport.authenticate('admin', { session: false }), (req,
     })
 });
 
-function createSheet(data) {
-    const newSheet = {
-        name: data.name,
-        definition: data.definition,
-        sections: data.sections,
-        advices: data.advices,
-    };
-    return newSheet
-}
 
-function addLog(sheet, user){
-    const log = new Log({
-        _sheet: sheet._id,
-        _user: user._id
-    })
-    log.save()
-}
 
 // @route POST api/sheets/send
 // @desc send sheet
@@ -119,32 +129,33 @@ router.post("/send", passport.authenticate('subscriber', { session: false }), (r
     if (!isValid) {
         return res.status(400).json(errors);
     }
-
     Sheet.findOne({ name: req.body.name }).then(sheet => {
         if (sheet) {
             sendSheetEmail(req.body, req.user)
                 .then(() => {
-                    addLog(sheet, req.user)
+                    addLog(sheet, req.user);
                     return res.json({
                         emailsent: true
-                    })
+                    });
                 })
-                .catch(() => {
+                .catch(err => {
+                    console.log(err);
                     return res.status(400).json(
                         {
                             sendtoemail: "Une erreur s'est produite lors de l'envoi",
                             emailsent: false
                         }
-                    )
-                })
+                    );
+                });
         } else {
+            // Sheet doesn't exist in DB
             return res.status(400).json({ name: "La fiche demandée n'existe pas", emailsent: false });
         }
     });
 });
 
 // @route GET api/sheets/logs
-// @desc get logs of sheet
+// @desc get number of logs of a specific sheet - group by day
 // @access Protected - admin only
 router.get('/logs',  async (req, res) => {
     const docs = await Log.aggregate([
@@ -163,8 +174,8 @@ router.get('/logs',  async (req, res) => {
                 }
             },
         }
-    ])
-    res.send(docs)
+    ]);
+    res.send(docs);
 });
 
 module.exports = router;

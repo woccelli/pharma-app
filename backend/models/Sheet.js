@@ -1,7 +1,8 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
-const adviceSchema= require('./Advice')
-const sectionSchema = require('./Section')
+
+const adviceSchema= require('./Advice');
+const sectionSchema = require('./Section');
 
 const SheetSchema = new Schema({
     name: {
@@ -18,6 +19,6 @@ const SheetSchema = new Schema({
         type: Date,
         default: Date.now
     }
-    
+}); 
 
-}); module.exports = Sheet = mongoose.model("sheets", SheetSchema);
+module.exports = Sheet = mongoose.model("sheets", SheetSchema);

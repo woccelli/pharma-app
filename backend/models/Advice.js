@@ -1,9 +1,9 @@
-const mongoose = require('mongoose')
-const {Schema} = mongoose
+const mongoose = require('mongoose');
+const { Schema } = mongoose;
 
 const adviceSchema = new Schema({
     icon: String,
     text: String
-})
+});
 
-module.exports = adviceSchema
+module.exports = adviceSchema;

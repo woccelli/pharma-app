@@ -1,6 +1,8 @@
 const mongoose = require("mongoose");
-const AddressSchema = require("./Address");
 const Schema = mongoose.Schema;
+
+const AddressSchema = require("./Address");
+
 const UserSchema = new Schema({
     name: {
         type: String,
@@ -14,10 +16,10 @@ const UserSchema = new Schema({
         type: String,
         required: true
     },
-    addresses: 
-        [AddressSchema],
+    addresses: {
+        type: [AddressSchema],
         default: []
-    ,
+    },
     role: {
         type: String,
         default: "BASIC"
@@ -30,5 +32,6 @@ const UserSchema = new Schema({
         type: Date,
         default: Date.now
     },
+}); 
 
-}); module.exports = User = mongoose.model("users", UserSchema);
+module.exports = User = mongoose.model("users", UserSchema);

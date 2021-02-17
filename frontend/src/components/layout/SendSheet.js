@@ -43,11 +43,7 @@ class SendSheet extends Component {
 
 
     renderPdf = () => {
-        const { sheet }  = this.state
-        const source = this.getSource()
-        const doc = (
-            <Sheet name={sheet.name} address={source} advices={sheet.advices} sections={sheet.sections} />
-          )
+        const doc = this.getSheetComponent()
         return (
             <BlobProvider document={doc}>
                 {({ blob, url, loading, error }) => {
@@ -73,6 +69,14 @@ class SendSheet extends Component {
             }
         }
         
+    }
+
+    getSheetComponent = () => {
+        const { sheet }  = this.state;
+        const source = this.getSource();
+        return (
+            <Sheet name={sheet.name} address={source} advices={sheet.advices} sections={sheet.sections} />
+        );
     }
 
     onChange = e => {

@@ -62,14 +62,14 @@ module.exports = passport => {
         })
     );
 
-    //authorization for users routes
+    //return DB user and browser token of the user - is used to check if DB token != browser token
     passport.use(
         'check-token',
         new JwtStrategy(opts, (jwt_payload, done) => {
             User.findById(jwt_payload.id)
                 .then(user => {
                     if (user) {
-                        return done(null, {dbUser: user,jwtUser :jwt_payload});
+                        return done(null, {dbUser: user, jwtUser :jwt_payload});
                     }
                     return done(null, false);
                 })

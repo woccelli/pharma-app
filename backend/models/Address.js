@@ -1,5 +1,5 @@
-const mongoose = require('mongoose')
-const { Schema } = mongoose
+const mongoose = require('mongoose');
+const { Schema } = mongoose;
 
 const AddressSchema = new Schema({
     dest: { type: String },
@@ -9,7 +9,7 @@ const AddressSchema = new Schema({
     postcode: { type: String },
     city: { type: String },
     country: { type: String },
-    isHeader: {type: Boolean, default: false}
-})
+    isHeader: {type: Boolean, default: false} //true if the address is used in the sheets' header
+});
 
-module.exports = AddressSchema
+module.exports = AddressSchema;
