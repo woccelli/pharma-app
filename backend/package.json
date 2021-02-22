@@ -22,9 +22,11 @@
     "express": "^4.17.1",
     "is-empty": "^1.2.0",
     "jsonwebtoken": "^8.5.1",
-    "mquery": "^3.2.3",
+    "mailgun-js": "^0.22.0",
     "mongoose": "^5.9.15",
+    "mquery": "^3.2.3",
     "nodemailer": "^6.4.16",
+    "nodemailer-mailgun-transport": "^2.0.2",
     "passport": "^0.4.1",
     "passport-jwt": "^4.0.0",
     "validator": "^13.0.0"

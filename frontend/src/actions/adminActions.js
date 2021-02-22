@@ -2,7 +2,7 @@ import axios from "axios";
 import { clearErrors } from "./utilActions"
 import { getSheets } from "./sheetsActions"
 import {
-    SET_USERS,
+    GET_USERS,
     GET_ERRORS,
     GET_SUCCESS,
     GET_USER_LOGS,
@@ -12,20 +12,16 @@ import {
 } from "./types";
 
 
-export const setUsers = data => {
-    return {
-        type: SET_USERS,
-        payload: data
-    };
-};
-
 // Get DB users
 export const getUsers = () => dispatch => {
     axios
         .get("/api/users/all")
         .then(res => {
             // Dispatch returned users in store
-            dispatch(setUsers(res.data))
+            dispatch({
+                type: GET_USERS,
+                payload: res.data
+            })
         })
         .catch(err =>
             dispatch({

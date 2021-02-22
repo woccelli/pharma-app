@@ -1,19 +1,23 @@
 const nodemailer = require("nodemailer");
 const keys = require('../config/keys');
-const { sendSheet, addUser, forgotPwd, registerUser, subUser, deleteUser,updateEmailOld, updateEmailNew } = require("./content/htmlbodies");
+const { sendSheet, addUser, forgotPwd, registerUser, subUser, deleteUser, updateEmailOld, updateEmailNew } = require("./content/htmlbodies");
+const mg = require('nodemailer-mailgun-transport');
 
-const transporter = nodemailer.createTransport({
-    service: 'gmail',
+// This is your API key that you retrieve from www.mailgun.com/cp (free up to 10K monthly emails)
+const auth = {
+    host: keys.mailgunHost,
     auth: {
-        user: 'email.smtp.test.pharma@gmail.com',
-        pass: keys.gmailPass
-    }
-});
+        api_key: keys.mailgunKey,
+        domain: keys.mailgunDomain
+    },
+}
 
+const transporter = nodemailer.createTransport(mg(auth));
 const fromAddress = '"Toposanté" <pharma@toposante.com>';
 
 module.exports = {
     sendSheetEmail: async (data, sender) => {
+        console.log()
         // send mail with defined transport object
         await transporter.sendMail({
             from: fromAddress, // sender address

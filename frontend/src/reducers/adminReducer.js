@@ -1,5 +1,5 @@
 import {
-  SET_USERS,
+  GET_USERS,
   SET_ADDED_USER,
   GET_USER_LOGS,
   CLEAR_USER_LOGS,
@@ -16,7 +16,7 @@ const initialState = {
 
 export default function (state = initialState, action) {
   switch (action.type) {
-    case SET_USERS:
+    case GET_USERS:
       return {
         ...state,
         users: action.payload
