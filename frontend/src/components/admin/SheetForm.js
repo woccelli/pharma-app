@@ -11,11 +11,12 @@ import FormLayout from "../layout/modules/FormLayout"
 import General from './sheetFormComponents/General'
 import Sections from "./sheetFormComponents/Sections"
 import Advices from "./sheetFormComponents/Advices"
+import Help from "./sheetFormComponents/Help"
 // Components
-import { Form, Button, Row, Col } from "react-bootstrap"
+import { Form, Button, Row, Col, Modal } from "react-bootstrap"
 import { BlobProvider } from '@react-pdf/renderer'
 import { Fab } from "@material-ui/core"
-import { Refresh } from "@material-ui/icons"
+import { Refresh, HelpOutline } from "@material-ui/icons"
 
 
 class SheetForm extends Component {
@@ -37,7 +38,8 @@ class SheetForm extends Component {
             city: 'Villeurbanne',
             country: 'France'
           },
-          new: false
+          new: false,
+          showHelp: false
         }
       }
     } else {
@@ -58,14 +60,15 @@ class SheetForm extends Component {
           city: 'Villeurbanne',
           country: 'France'
         },
-        new: true
+        new: true,
+        showHelp: false
       };
     }
   }
 
 
   renderPdf = () => {
-    const  sheet  = this.state.renderedSheet
+    const sheet = this.state.renderedSheet
     const { source } = this.state
     const doc = (
       <Sheet name={sheet.name} address={source} advices={sheet.advices} sections={sheet.sections} />
@@ -80,16 +83,28 @@ class SheetForm extends Component {
     )
   }
 
-  refreshPdfRender= () => {
+  refreshPdfRender = () => {
     this.setState(prevState => ({
       renderedSheet: prevState.sheet
     }))
   }
 
+  handleCloseHelp = () => {
+    this.setState({
+      showHelp: false
+    })
+  }
+
+  handleShowHelp = () => {
+    this.setState({
+      showHelp: true
+    })
+  }
+
   onSubmit = e => {
     e.preventDefault();
     const { sheet } = this.state;
-    if(this.state.new) {
+    if (this.state.new) {
       this.props.addSheet(sheet, this.props.history)
     } else {
       this.props.updateSheet(sheet, this.props.history)
@@ -105,9 +120,26 @@ class SheetForm extends Component {
     const { errors } = this.props;
     return (
       <FormLayout back="/admin/sheets">
+        <Modal show={this.state.showHelp} onHide={this.handleCloseHelp}>
+          <Modal.Header closeButton>
+            <Modal.Title>Aide</Modal.Title>
+          </Modal.Header>
+          <Modal.Body><Help></Help></Modal.Body>
+          <Modal.Footer>
+            <Button onClick={this.handleCloseHelp}>
+              Fermer
+          </Button>
+          </Modal.Footer>
+        </Modal>
         <Row>
           <Col>
             <Form onSubmit={this.onSubmit}>
+              <Fab style={{
+                left: "90%",
+              }} size="small" variant="extended" onClick={this.handleShowHelp}>
+                <HelpOutline />
+                 
+              </Fab>
               <General state={this.state} setState={this.handleSetState} />
               <Advices state={this.state} setState={this.handleSetState} />
               <Sections state={this.state} setState={this.handleSetState} />
@@ -119,6 +151,7 @@ class SheetForm extends Component {
             {this.renderPdf()}
           </Col>
         </Row>
+
         <Fab style={{
           margin: 0,
           top: 'auto',
