@@ -8,7 +8,6 @@ import { logoutUser } from "../../../actions/authActions";
 import Navbar from 'react-bootstrap/Navbar'
 import Nav from 'react-bootstrap/Nav'
 import { Link } from 'react-router-dom'
-import { ThreeSixty } from "@material-ui/icons";
 
 class Header extends Component {
 
@@ -43,8 +42,8 @@ class Header extends Component {
 
     render() {
         return (
-            <Navbar bg="dark" sticky="top" className="border-bottom border-gray bg-white">
-                <Navbar.Brand as={Link} to="/">Toposanté</Navbar.Brand>
+            <Navbar sticky="top" className="border-bottom border-gray">
+                <Navbar.Brand as={Link} to="/"><h3>Toposanté</h3></Navbar.Brand>
                 <this.adminBoard></this.adminBoard>
                 <Nav className="mr-auto"></Nav>
                 <this.userBoard></this.userBoard>

@@ -1,19 +1,26 @@
-.card-img-top {
-  width: 100%;
-  height: 20vh;
-  object-fit: cover;
+.btn-primary {
+  background-color: #dbe7ff;
+  color: #30475e;
+  border: #dbe7ff;
+}
+.btn-primary:hover {
+  background-color: #c8e8e4;
+  color: #30475e;
+  border: #dbe7ff;
+}
+.btn-primary:active {
+  background-color: #30475e;
+  color: #30475e;
+  border: #dbe7ff;
 }
 
-.inactive {
-  text-decoration: none;
+body {
+  color: #30475e;
+  background-color: #e8fcff;
 }
 
-.modal-body {
-  overflow:auto;
-  background:transparent;
-  border: none;
+h3 {
+  color: #30475e;
 }
 
-.modal-content {
-  background-color: transparent;
-}
+/*# sourceMappingURL=App.css.map */

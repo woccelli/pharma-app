@@ -5,6 +5,8 @@ import jwt_decode from "jwt-decode";
 // Local
 import setAuthToken from "./utils/setAuthToken";
 import { setCurrentUser, logoutUser } from "./actions/authActions";
+// Importing the Bootstrap CSS
+import 'bootstrap/dist/css/bootstrap.css';
 import "./App.css"
 // Redux
 import { Provider } from "react-redux";
