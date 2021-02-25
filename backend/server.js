@@ -23,7 +23,6 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-console.log(db)
 // DB Config - Connect to MongoDB
 mongoose
     .connect(db, { useNewUrlParser: true })

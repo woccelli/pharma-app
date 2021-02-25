@@ -42,7 +42,7 @@ class Header extends Component {
 
     render() {
         return (
-            <Navbar sticky="top" className="border-bottom border-gray">
+            <Navbar sticky="top" className="headernav">
                 <Navbar.Brand as={Link} to="/"><h3>Toposanté</h3></Navbar.Brand>
                 <this.adminBoard></this.adminBoard>
                 <Nav className="mr-auto"></Nav>

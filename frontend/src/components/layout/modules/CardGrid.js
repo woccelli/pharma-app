@@ -59,7 +59,7 @@ class CardGrid extends Component {
                     sheetId: sheet._id
                   }
                 }} style={{ textDecoration: 'none', color: 'inherit' }}>
-                  <Card tag="a" style={{ cursor: "pointer" }}>
+                  <Card tag="a" style={{ cursor: "pointer" }} className="sheetcard">
                     <Card.Body >
                       <Card.Title><h3>{sheet.name}</h3></Card.Title>
                       <Card.Text>

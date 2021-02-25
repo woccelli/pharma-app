@@ -16,11 +16,24 @@
 
 body {
   color: #30475e;
-  background-color: #e8fcff;
 }
 
 h3 {
   color: #30475e;
+}
+
+.sheetcard {
+  background-color: #e8fcff;
+  border-width: 3px;
+  border-color: #c8dbe8;
+}
+
+.headernav {
+  border-bottom: 3px solid #c8dbe8;
+}
+
+.jumbotron {
+  background-color: #e8fcff;
 }
 
 /*# sourceMappingURL=App.css.map */
