@@ -11,21 +11,20 @@ import { Container, Form } from "react-bootstrap"
 class Section extends PureComponent {
 
     render() {
-        const { section, state, setState } = this.props
-        const { title, text } = state.sheet.sections.find(sec => sec._id === section._id)
+        const { title, text } = this.props.state.sheet.sections.find(sec => sec._id === this.props.section._id)
         return (
             <Container>
                 <Form.Group>
                     <Form.Control
                         onChange={(event) => {
-                            let sections = [...state.sheet.sections]
+                            let sections = [...this.props.state.sheet.sections]
                             let item = {
-                                ...sections.find(sec => sec._id === section._id),
+                                ...sections.find(sec => sec._id === this.props.section._id),
                                 [event.target.id]: event.target.value
                             }
-                            const index = sections.findIndex(sec => sec._id === section._id)
+                            const index = sections.findIndex(sec => sec._id === this.props.section._id)
                             sections[index] = item
-                            setState(prevState => ({
+                            this.props.setState(prevState => ({
                                 ...prevState,
                                 sheet: {
                                     ...prevState.sheet,
@@ -40,14 +39,14 @@ class Section extends PureComponent {
                     />
                     <Form.Control
                         onChange={(event) => {
-                            let sections = [...state.sheet.sections]
+                            let sections = [...this.props.state.sheet.sections]
                             let item = {
-                                ...sections.find(sec => sec._id === section._id),
+                                ...sections.find(sec => sec._id === this.props.section._id),
                                 [event.target.id]: event.target.value
                             }
-                            const index = sections.findIndex(sec => sec._id === section._id)
+                            const index = sections.findIndex(sec => sec._id === this.props.section._id)
                             sections[index] = item
-                            setState(prevState => ({
+                            this.props.setState(prevState => ({
                                 ...prevState,
                                 sheet: {
                                     ...prevState.sheet,

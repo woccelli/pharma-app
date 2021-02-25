@@ -22,18 +22,16 @@ class Sections extends PureComponent {
                 sections: newSections
             }
         }))
-        console.log(newSections)
     }
 
     addSection = () => {
-        const { setState, state } = this.props
-        const num = state.sheet.sections.length + 1
+        const num = this.props.state.sheet.sections.length + 1
         let newSection = {
             _id: `${Date.now().toString(12)}`,
             title: `Section ${num}`,
             text: ""
         }
-        setState(prevState => ({
+        this.props.setState(prevState => ({
             ...prevState,
             sheet: {
                 ...prevState.sheet,
@@ -61,14 +59,11 @@ class Sections extends PureComponent {
                     </div>
             }
         ];
-        const { sections } = this.props.state.sheet
-        const { state, setState } = this.props
-
         return (
             <div style={{ display: "flex", flexDirection: "column" }}>
                 <MaterialTable
                     columns={columns}
-                    data={sections}
+                    data={this.props.state.sheet.sections}
                     title="Sections"
                     options={{
                         sorting: true,
@@ -76,7 +71,7 @@ class Sections extends PureComponent {
                         search: false,
                         defaultExpanded: true
                     }}
-                    detailPanel={rowData => <Section key={rowData._id} state={state} setState={setState} section={rowData} />}
+                    detailPanel={rowData => <Section key={rowData._id} state={this.props.state} setState={this.props.setState} section={rowData} />}
 
                 />
                 <IconButton style={{ marginLeft: "auto" }} onClick={this.addSection}><Add /></IconButton>

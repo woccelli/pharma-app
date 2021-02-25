@@ -29,6 +29,7 @@ h3 {
 }
 
 .headernav {
+  position: static;
   border-bottom: 3px solid #c8dbe8;
 }
 

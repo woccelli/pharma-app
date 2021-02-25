@@ -3,6 +3,7 @@ const { Schema } = mongoose;
 
 const adviceSchema = new Schema({
     icon: String,
+    title: String,
     text: String
 });
 

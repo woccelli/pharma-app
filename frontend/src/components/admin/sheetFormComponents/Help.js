@@ -31,6 +31,8 @@ const Help = () => {
                     </tr>
                 </tbody>
             </Table>
+            <h6>Choix des icônes</h6>
+            <a href="https://materialdesignicons.com/" target="_blank" rel="noopener noreferrer">https://materialdesignicons.com/</a>
         </div>
     )
 }

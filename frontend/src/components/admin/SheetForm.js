@@ -113,7 +113,9 @@ class SheetForm extends Component {
 
   handleSetState = getNewState => {
     const state = getNewState(this.state)
-    this.setState(state)
+    console.log("state avant", this.state)
+    console.log("state reçu", state)
+    this.setState(prevState => state)
   }
 
   render() {

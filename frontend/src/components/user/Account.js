@@ -36,7 +36,7 @@ class Account extends Component {
         const { addresses } = this.props.auth.user
 
         return (
-            <Container fluid>
+            <Container fluid style={{marginTop: "10px"}}>
                 <Card>
                     <Card.Header>
                         <Row>

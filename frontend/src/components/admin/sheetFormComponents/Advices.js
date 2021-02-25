@@ -22,17 +22,17 @@ class Advices extends PureComponent {
                 advices: newAdvices 
             }
         }))
-        console.log(newAdvices)
     }
 
     addAdvice = () => {
-        const { setState, state } = this.props
-        const num = state.sheet.advices.length+1
+        const num = this.props.state.sheet.advices.length+1
         let newAdvice = {
             _id: `${Date.now().toString(12)}`,
-            text: `Conseil ${num}`,
+            title: `Conseil ${num}`,
+            text: "",
+            icon: ""
         }
-        setState(prevState => ({
+        this.props.setState(prevState => ({
             ...prevState,
             sheet: {
                 ...prevState.sheet,
@@ -48,26 +48,23 @@ class Advices extends PureComponent {
         const columns = [
             {
                 title: 'Conseil',
-                field: 'text',
+                field: 'title',
             },
             {
                 title: '',
                 render: advice =>
                     <div className="float-right">
-                        <IconButton onClick={() => this.onDeleteAdvice(Advice)}>
+                        <IconButton onClick={() => this.onDeleteAdvice(advice)}>
                             <Delete />
                         </IconButton>
                     </div>
             }
         ];
-        const { advices } = this.props.state.sheet
-        const { state, setState } = this.props
-
         return (
                 <div style={{ display: "flex", flexDirection: "column"}}>
                 <MaterialTable
                     columns={columns}
-                    data={advices}
+                    data={this.props.state.sheet.advices}
                     title="Conseils"
                     options={{
                         sorting: true,
@@ -75,7 +72,7 @@ class Advices extends PureComponent {
                         search: false,
                         defaultExpanded: true
                     }}
-                    detailPanel={rowData => <Advice key={rowData._id} state={state} setState={setState} advice={rowData}/>}
+                    detailPanel={rowData => <Advice key={rowData._id} state={this.props.state} setState={this.props.setState} advice={rowData}/>}
                     
                 />
                 <IconButton style={{ marginLeft: "auto" }} onClick={this.addAdvice}><Add/></IconButton>
