@@ -6,7 +6,7 @@ import { withRouter } from "react-router-dom";
 // Local
 import { addSheet, updateSheet } from "../../actions/adminActions"
 //import Sheet from "../layout/modules/Sheet"
-import Sheet from '@bit/toposante.sheet.sheet'
+import Sheet from '../sheet/Sheet'
 import FormLayout from "../layout/modules/FormLayout"
 import General from './sheetFormComponents/General'
 import Sections from "./sheetFormComponents/Sections"
@@ -71,7 +71,7 @@ class SheetForm extends Component {
     const sheet = this.state.renderedSheet
     const { source } = this.state
     const doc = (
-      <Sheet name={sheet.name} address={source} advices={sheet.advices} sections={sheet.sections} />
+      <Sheet name={sheet.name} address={source} definition={sheet.definition} advices={sheet.advices} sections={sheet.sections} />
     );
     return (
       <BlobProvider document={doc}>
