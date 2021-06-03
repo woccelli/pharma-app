@@ -2,6 +2,10 @@ import React from 'react';
 import { Page, Text, View, Document, Image, Font } from '@react-pdf/renderer';
 import ReactMarkdown from 'react-markdown'
 
+import latoRegular from './fonts/Lato/Lato-Regular.ttf'
+import latoBold from './fonts/Lato/Lato-Bold.ttf'
+import latoItalic from './fonts/Lato/Lato-Italic.ttf'
+import robotoSlab from './fonts/Roboto_Slab/RobotoSlab-Medium.ttf'
 import styles from './style'
 
 export default class Sheet extends React.Component {
@@ -10,14 +14,14 @@ export default class Sheet extends React.Component {
     Font.register({ family: "Lato", 
         fonts: [
             {
-              src: "fonts/Lato/Lato-Regular.ttf" 
+              src: latoRegular 
             },
             {
-              src: "fonts/Lato/Lato-Bold.ttf",
+              src: latoBold,
               fontWeight: 'bold'
             },
             {
-              src: "fonts/Lato/Lato-Italic.ttf",
+              src: latoItalic,
               fontStyle: 'italic'
             }
         ]
@@ -25,7 +29,7 @@ export default class Sheet extends React.Component {
 
     Font.register({
         family: "RobotoSlab", 
-        src: "fonts/Roboto_Slab/RobotoSlab-Medium.ttf"
+        src: robotoSlab
     })
 
     const rcolors = ['#E2F2F1', '#FCF4F1', '#DEEBEA', '#E7F0F4', '#DEEBEA', '#E7F0F4']
