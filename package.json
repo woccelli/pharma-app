@@ -1,6 +1,6 @@
 {
   "name": "pharma-app",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "MERN Web application for french medical workers to share simple information about common diseases",
   "scripts": {
     "start": "npm run start --prefix backend",
