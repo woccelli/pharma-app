@@ -30,7 +30,7 @@ class Advices extends PureComponent {
             _id: `${Date.now().toString(12)}`,
             title: `Conseil ${num}`,
             text: "",
-            icon: ""
+            icon: require('@mdi/js')["mdiCigarOff"]
         }
         this.props.setState(prevState => ({
             ...prevState,

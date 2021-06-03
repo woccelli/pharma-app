@@ -75,7 +75,7 @@ class SendSheet extends Component {
         const { sheet }  = this.state;
         const source = this.getSource();
         return (
-            <Sheet name={sheet.name} address={source} definition={sheet.defintion} advices={sheet.advices} sections={sheet.sections} />
+            <Sheet name={sheet.name} address={source} definition={sheet.definition} advices={sheet.advices} sections={sheet.sections} />
         );
     }
 
