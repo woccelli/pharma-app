@@ -5,11 +5,10 @@ import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 // Local
 import { sendSheet } from "../../actions/sheetsActions"
-//import Sheet from "./modules/Sheet"
 import Sheet from '../sheet/Sheet'
 // Components
 import { Form, Button, Row, Col, Spinner } from "react-bootstrap"
-import { BlobProvider, pdf } from '@react-pdf/renderer';
+import { BlobProvider, pdf, PDFViewer } from '@react-pdf/renderer';
 import FormLayout from "./modules/FormLayout"
 
 class SendSheet extends Component {
@@ -35,7 +34,7 @@ class SendSheet extends Component {
     }
 
     componentDidMount = () => {
-        if((new Date(this.props.auth.user.subuntil)) < Date.now()) {
+        if ((new Date(this.props.auth.user.subuntil)) < Date.now()) {
             alert("Vous devez être abonné.e pour accéder à ce contenu")
             this.props.history.push("/dashboard")
         }
@@ -48,7 +47,7 @@ class SendSheet extends Component {
             <BlobProvider document={doc}>
                 {({ blob, url, loading, error }) => {
                     // Do whatever you need with blob here
-                    return <embed src={url} type="application/pdf" height={550} width={400} title={this.state.sheet.name}/>
+                    return <embed src={url} type="application/pdf" height={550} width={400} title={this.state.sheet.name} />
                 }}
             </BlobProvider>
         )
@@ -57,7 +56,7 @@ class SendSheet extends Component {
     getSource = () => {
         const { addresses } = this.props.auth.user
         const headerAddress = addresses.find(item => item.isHeader === true)
-        if(headerAddress) {
+        if (headerAddress) {
             return headerAddress
         } else {
             return {
@@ -65,14 +64,14 @@ class SendSheet extends Component {
                 addr_1: "",
                 addr_2: "",
                 postcode: "",
-                city :""
+                city: ""
             }
         }
-        
+
     }
 
     getSheetComponent = () => {
-        const { sheet }  = this.state;
+        const { sheet } = this.state;
         const source = this.getSource();
         return (
             <Sheet name={sheet.name} address={source} definition={sheet.definition} advices={sheet.advices} sections={sheet.sections} />
@@ -113,44 +112,44 @@ class SendSheet extends Component {
 
         return (
             <FormLayout back="/dashboard">
-                    <Row>
-                        <Col>
-                            <Form noValidate onSubmit={this.onSubmit}>
-                                <Form.Group>
-                                    <Form.Label>Envoyer à l'adresse mail :</Form.Label>
-                                    <Form.Control
-                                        required
-                                        placeholder="exemple@mail.com"
-                                        onChange={this.onChange}
-                                        value={this.state.sendtoemail}
-                                        error={errors.sendtoemail}
-                                        id="sendtoemail"
-                                        type="email"
-                                        isInvalid={errors.sendtoemail}
-                                    />
-                                    <Form.Text className="text-muted">
-                                        Cet email n'est pas conservé
+                <Row>
+                    <Col>
+                        <Form noValidate onSubmit={this.onSubmit}>
+                            <Form.Group>
+                                <Form.Label>Envoyer à l'adresse mail :</Form.Label>
+                                <Form.Control
+                                    required
+                                    placeholder="exemple@mail.com"
+                                    onChange={this.onChange}
+                                    value={this.state.sendtoemail}
+                                    error={errors.sendtoemail}
+                                    id="sendtoemail"
+                                    type="email"
+                                    isInvalid={errors.sendtoemail}
+                                />
+                                <Form.Text className="text-muted">
+                                    Cet email n'est pas conservé
                       </Form.Text>
-                                    <Form.Control.Feedback type="invalid">
-                                        {errors.sendtoemail}
-                                    </Form.Control.Feedback>
-                                </Form.Group>
-                                <Form.Group className="float-right">
-                                    <Button
-                                        type="submit"
-                                        variant="success"
-                                        disabled={!/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(this.state.sendtoemail)}
-                                    >
-                                        {this.props.success.loading ? <Spinner animation="border" role="status" /> : 'Envoyer'}
-                      </Button>
-                                </Form.Group>
-                            </Form>
-                        </Col>
-                        <Col>
-                            {this.renderPdf()}
-                        </Col>
-                    </Row>
-                </FormLayout>
+                                <Form.Control.Feedback type="invalid">
+                                    {errors.sendtoemail}
+                                </Form.Control.Feedback>
+                            </Form.Group>
+                            <Form.Group className="float-right">
+                                <Button
+                                    type="submit"
+                                    variant="success"
+                                    disabled={!/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(this.state.sendtoemail)}
+                                >
+                                    {this.props.success.loading ? <Spinner animation="border" role="status" /> : 'Envoyer'}
+                                </Button>
+                            </Form.Group>
+                        </Form>
+                    </Col>
+                    <Col>
+                        {this.renderPdf()}
+                    </Col>
+                </Row>
+            </FormLayout>
         );
     }
 }

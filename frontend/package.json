@@ -9,7 +9,7 @@
     "@mdi/font": "^5.9.55",
     "@mdi/js": "^5.9.55",
     "@mdi/react": "^1.4.0",
-    "@react-pdf/renderer": "^1.6.12",
+    "@react-pdf/renderer": "^2.0.15",
     "axios": "^0.21.1",
     "bootstrap": "^4.5.0",
     "chart.js": "^2.9.4",

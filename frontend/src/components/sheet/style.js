@@ -178,7 +178,7 @@ var normalPageFooter = {
         left: "5mm",
         bottom:"5mm",
         fontFamily: "Lato",
-        fontWeight: "lighter"
+        fontWeight: "light"
     },
     numPage: {
         position: "absolute",
@@ -199,4 +199,4 @@ var styles = StyleSheet.create({...globalStyle,
     ...normalPageHeader, 
     ...normalPageFooter})
 
-export default styles
+export {styles, colors}

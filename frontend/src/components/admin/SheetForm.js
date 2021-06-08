@@ -5,8 +5,7 @@ import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 // Local
 import { addSheet, updateSheet } from "../../actions/adminActions"
-//import Sheet from "../layout/modules/Sheet"
-import Sheet from '../sheet/Sheet'
+import { SheetPdf } from "../sheet/SheetPdf";
 import FormLayout from "../layout/modules/FormLayout"
 import General from './sheetFormComponents/General'
 import Sections from "./sheetFormComponents/Sections"
@@ -14,7 +13,6 @@ import Advices from "./sheetFormComponents/Advices"
 import Help from "./sheetFormComponents/Help"
 // Components
 import { Form, Button, Row, Col, Modal } from "react-bootstrap"
-import { BlobProvider } from '@react-pdf/renderer'
 import { Fab } from "@material-ui/core"
 import { Refresh, HelpOutline } from "@material-ui/icons"
 
@@ -39,7 +37,7 @@ class SheetForm extends Component {
             country: 'France'
           },
           new: false,
-          showHelp: false
+          showHelp: false,
         }
       }
     } else {
@@ -61,26 +59,9 @@ class SheetForm extends Component {
           country: 'France'
         },
         new: true,
-        showHelp: false
+        showHelp: false,
       };
     }
-  }
-
-
-  renderPdf = () => {
-    const sheet = this.state.renderedSheet
-    const { source } = this.state
-    const doc = (
-      <Sheet name={sheet.name} address={source} definition={sheet.definition} advices={sheet.advices} sections={sheet.sections} />
-    );
-    return (
-      <BlobProvider document={doc}>
-        {({ blob, url, loading, error }) => {
-          // Do whatever you need with blob here
-          return <embed src={url} type="application/pdf" width="100%" height="100%" />
-        }}
-      </BlobProvider>
-    )
   }
 
   refreshPdfRender = () => {
@@ -113,9 +94,7 @@ class SheetForm extends Component {
 
   handleSetState = getNewState => {
     const state = getNewState(this.state)
-    console.log("state avant", this.state)
-    console.log("state reçu", state)
-    this.setState(prevState => state)
+    this.setState({sheet: state.sheet})
   }
 
   render() {
@@ -150,7 +129,7 @@ class SheetForm extends Component {
 
           </Col>
           <Col>
-            {this.renderPdf()}
+            <SheetPdf sheet={this.state.renderedSheet} source={this.state.source}></SheetPdf>
           </Col>
         </Row>
 

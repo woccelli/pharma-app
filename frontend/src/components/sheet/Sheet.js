@@ -1,30 +1,36 @@
 import React from 'react';
-import { Page, Text, View, Document, Image, Font } from '@react-pdf/renderer';
+import { Page, Text, View, Document, Font, Svg, Path } from '@react-pdf/renderer';
 import ReactMarkdown from 'react-markdown'
 
 import latoRegular from './fonts/Lato/Lato-Regular.ttf'
 import latoBold from './fonts/Lato/Lato-Bold.ttf'
 import latoItalic from './fonts/Lato/Lato-Italic.ttf'
+import latoLight from './fonts/Lato/Lato-Light.ttf'
 import robotoSlab from './fonts/Roboto_Slab/RobotoSlab-Medium.ttf'
-import styles from './style'
+import {styles, colors} from './style'
 
 export default class Sheet extends React.Component {
   // Create Document Component
   render() {
-    Font.register({ family: "Lato", 
-        fonts: [
-            {
-              src: latoRegular 
-            },
-            {
-              src: latoBold,
-              fontWeight: 'bold'
-            },
-            {
-              src: latoItalic,
-              fontStyle: 'italic'
-            }
-        ]
+    Font.register({
+      family: "Lato", 
+      fonts: [
+        {
+          src: latoRegular
+        },
+        {
+          src: latoLight,
+          fontWeight: "light"
+        },
+        {
+          src: latoBold,
+          fontWeight: 'bold'
+        },
+        {
+          src: latoItalic,
+          fontStyle: 'italic'
+        }
+      ]
     })
 
     Font.register({
@@ -72,7 +78,9 @@ export default class Sheet extends React.Component {
                   this.props.advices.map((advice, index) => (
                     <View style={[styles.advice, {backgroundColor: rcolors[index % rcolors.length]}]} key={index}>
                       <View style={styles.advicePictoZone}>
-                        <Image style={styles.adviceImage} src={advice.icon}/> 
+                        <Svg style={styles.adviceImage}>
+                          <Path d={advice.icon} stroke={colors.dark3}/>
+                        </Svg> 
                       </View>
                       <View style={styles.adviceText}>
                         <Text>{advice.text}</Text>
