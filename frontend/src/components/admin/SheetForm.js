@@ -39,6 +39,8 @@ class SheetForm extends Component {
           new: false,
           showHelp: false,
         }
+      } else {
+        this.props.history.push("/dashboard")
       }
     } else {
       const mockSheet = {

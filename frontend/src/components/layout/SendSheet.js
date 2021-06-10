@@ -27,6 +27,8 @@ class SendSheet extends Component {
                     sheet: sheet,
                     sendtoemail: ""
                 }
+            } else {
+                this.props.history.push("/dashboard")
             }
         } else {
             this.props.history.push("/dashboard")

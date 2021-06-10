@@ -75,7 +75,7 @@ export default class Sheet extends React.Component {
               </View>
               <View style={styles.adviceFlexContainer}>
                 {
-                  this.props.advices.map((advice, index) => (
+                  this.props.advices?.map((advice, index) => (
                     <View style={[styles.advice, {backgroundColor: rcolors[index % rcolors.length]}]} key={index}>
                       <View style={styles.advicePictoZone}>
                         <Svg viewBox={"0 0 30 30"} style={styles.adviceImage}>
@@ -112,7 +112,7 @@ export default class Sheet extends React.Component {
           
           <View style={styles.centralSection}>
           {
-            this.props.sections.map((section, index) => (
+            this.props.sections?.map((section, index) => (
               <View style={{marginBottom: "5mm"}} key={index}>
                 <Text style={styles.subtitle}>{section.title}</Text>
                 <View style={styles.hrline}></View>
