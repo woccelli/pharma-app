@@ -78,8 +78,8 @@ export default class Sheet extends React.Component {
                   this.props.advices.map((advice, index) => (
                     <View style={[styles.advice, {backgroundColor: rcolors[index % rcolors.length]}]} key={index}>
                       <View style={styles.advicePictoZone}>
-                        <Svg style={styles.adviceImage}>
-                          <Path d={advice.icon} stroke={colors.dark3}/>
+                        <Svg viewBox={"0 0 30 30"} style={styles.adviceImage}>
+                          <Path d={advice.icon} fill={colors.dark3}/>
                         </Svg> 
                       </View>
                       <View style={styles.adviceText}>

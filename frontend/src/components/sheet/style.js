@@ -116,13 +116,12 @@ var titlePageStyle = {
         padding: "5mm"
     },
     advicePictoZone: {
-        width: "15mm",
-        height: "15mm",
+        width: "30mm",
+        height: "30mm",
         float: "left",
     },
     adviceImage: {
-        width: "15mm",
-        height: "15mm"
+        top: "3mm",
     },
     adviceText: {
         width: "80mm",
