@@ -6,9 +6,10 @@ import { withRouter } from "react-router-dom";
 // Local
 import { sendSheet } from "../../actions/sheetsActions"
 import Sheet from '../sheet/Sheet'
+import { SheetPdf } from '../sheet/SheetPdf'
 // Components
 import { Form, Button, Row, Col, Spinner } from "react-bootstrap"
-import { BlobProvider, pdf, PDFViewer } from '@react-pdf/renderer';
+import { BlobProvider, pdf } from '@react-pdf/renderer';
 import FormLayout from "./modules/FormLayout"
 
 class SendSheet extends Component {
@@ -111,6 +112,8 @@ class SendSheet extends Component {
 
     render() {
         const { errors } = this.props;
+        const { sheet } = this.state;
+        const source = this.getSource();
 
         return (
             <FormLayout back="/dashboard">
@@ -147,8 +150,8 @@ class SendSheet extends Component {
                             </Form.Group>
                         </Form>
                     </Col>
-                    <Col>
-                        {this.renderPdf()}
+                    <Col style={{minHeight: "500px"}}>
+                        <SheetPdf sheet={sheet} source={source}></SheetPdf>
                     </Col>
                 </Row>
             </FormLayout>
