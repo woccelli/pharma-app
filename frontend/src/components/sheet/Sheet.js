@@ -10,6 +10,7 @@ import robotoSlab from './fonts/Roboto_Slab/RobotoSlab-Medium.ttf'
 import {styles, colors} from './style'
 
 export default class Sheet extends React.Component {
+
   // Create Document Component
   render() {
     Font.register({
@@ -42,6 +43,25 @@ export default class Sheet extends React.Component {
 
     const currDate = new Date()
 
+    function markdownText(text) {
+      return (
+        <ReactMarkdown
+          components={{
+            p: ({node, ...props}) => <Text {...props}/>,
+            em: ({node, ...props}) => <Text style={styles.italicText} {...props}/>,
+            strong: ({node, ...props}) => <Text style={styles.boldText} {...props}/>,
+            li: ({node, ...props}) => <Text>• {props.children[0]}</Text>,
+            ul: ({node, ...props}) => <Text {...props}/>,
+            br: ({node, ...props}) => <Text>{"\n"}</Text>, 
+            ol: ({node, ...props}) => <Text {...props}/>,
+            code: ({node, ...props}) => {<Text {...props}/>},
+            pre: ({node, ...props}) => <Text {...props}/>
+          }}
+          children={text}
+        />
+      )
+    }
+
     return (
       <Document>
         <Page size="A4" style={[styles.page, styles.titlePageBody]}>
@@ -64,7 +84,7 @@ export default class Sheet extends React.Component {
                 <Text style={styles.subtitle}>Définition</Text>
                 <View style={styles.hrline}></View>
                 <Text>
-                  {this.props.definition}
+                  {markdownText(this.props.definition)}
                 </Text>
             </View>
 
@@ -83,7 +103,9 @@ export default class Sheet extends React.Component {
                         </Svg> 
                       </View>
                       <View style={styles.adviceText}>
-                        <Text>{advice.text}</Text>
+                        <Text>
+                          {markdownText(advice.text)}
+                        </Text>
                       </View>
                     </View>
                   ))
@@ -117,21 +139,7 @@ export default class Sheet extends React.Component {
                 <Text style={styles.subtitle}>{section.title}</Text>
                 <View style={styles.hrline}></View>
                 <Text>
-                  <ReactMarkdown
-                    components={{
-                      p: ({node, ...props}) => <Text {...props}/>,
-                      em: ({node, ...props}) => <Text style={styles.italicText} {...props}/>,
-                      strong: ({node, ...props}) => <Text style={styles.boldText} {...props}/>,
-                      li: ({node, ...props}) => <Text>• {props.children[0]}</Text>,
-                      ul: ({node, ...props}) => <Text {...props}/>,
-                      br: ({node, ...props}) => <Text>{"\n"}</Text>, 
-                      
-                      ol: ({node, ...props}) => <Text {...props}/>,
-                      code: ({node, ...props}) => {<Text {...props}/>},
-                      pre: ({node, ...props}) => <Text {...props}/>
-                    }}
-                    children={section.text}
-                  />
+                  {markdownText(section.text)}
                 </Text>
               </View>
               
