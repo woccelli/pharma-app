@@ -14,7 +14,7 @@ import Help from "./sheetFormComponents/Help"
 // Components
 import { Form, Button, Row, Col, Modal } from "react-bootstrap"
 import { Fab } from "@material-ui/core"
-import { Refresh, HelpOutline } from "@material-ui/icons"
+import { Refresh, HelpOutline, Save } from "@material-ui/icons"
 
 
 class SheetForm extends Component {
@@ -96,7 +96,7 @@ class SheetForm extends Component {
 
   handleSetState = getNewState => {
     const state = getNewState(this.state)
-    this.setState({sheet: state.sheet})
+    this.setState({ sheet: state.sheet })
   }
 
   render() {
@@ -111,7 +111,7 @@ class SheetForm extends Component {
           <Modal.Footer>
             <Button onClick={this.handleCloseHelp}>
               Fermer
-          </Button>
+            </Button>
           </Modal.Footer>
         </Modal>
         <Row>
@@ -121,12 +121,23 @@ class SheetForm extends Component {
                 left: "90%",
               }} size="small" variant="extended" onClick={this.handleShowHelp}>
                 <HelpOutline />
-                 
+
               </Fab>
               <General state={this.state} setState={this.handleSetState} />
               <Advices state={this.state} setState={this.handleSetState} />
               <Sections state={this.state} setState={this.handleSetState} />
-              <Button type="submit" className="float-right">{this.state.new ? "Créer" : "Modifier"}</Button>
+              <Fab style={{
+                margin: 0,
+                top: 'auto',
+                right: "50px",
+                bottom: 30,
+                left: 'auto',
+                position: 'fixed',
+                zIndex: 999,
+              }} size="small" variant="extended" type="submit">
+                <Save/>
+                {this.state.new ? "Créer" : "Modifier"}
+              </Fab>
             </Form>
 
           </Col>
@@ -138,14 +149,14 @@ class SheetForm extends Component {
         <Fab style={{
           margin: 0,
           top: 'auto',
-          right: "5%",
+          right: "170px",
           bottom: 30,
           left: 'auto',
           position: 'fixed',
         }} size="small" variant="extended" onClick={this.refreshPdfRender}>
           <Refresh />
-                 Rafraîchir le visuel
-              </Fab>
+          Rafraîchir le visuel
+        </Fab>
       </FormLayout>
     );
   }
