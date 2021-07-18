@@ -1,4 +1,4 @@
-import {StyleSheet} from '@react-pdf/renderer';
+import { StyleSheet } from '@react-pdf/renderer';
 
 const colors = {
     light1: '#648AC0',
@@ -9,7 +9,7 @@ const colors = {
     dark3: '#2E5573',
 }
 
-const A4 ={
+const A4 = {
     width: 210,
     height: 297
 }
@@ -30,8 +30,8 @@ var globalStyle = {
         marginBottom: "3mm"
     },
     subtitle: {
-        fontFamily: "RobotoSlab", 
-        fontSize:"16pt"
+        fontFamily: "RobotoSlab",
+        fontSize: "16pt"
     },
     boldText: {
         fontFamily: "Lato",
@@ -45,8 +45,8 @@ var globalStyle = {
 
 var titlePageStyle = {
     titlePageHeader: {
-        width: A4.width+"mm", 
-        height: "60mm", 
+        width: A4.width + "mm",
+        height: "60mm",
         backgroundColor: "white",
         color: colors.dark3,
         position: "absolute",
@@ -54,8 +54,8 @@ var titlePageStyle = {
         left: 0
     },
     titlePageHeaderText: {
-        position: "absolute", 
-        bottom: "10mm", 
+        position: "absolute",
+        bottom: "10mm",
         left: "10mm",
         fontSize: '16pt'
     },
@@ -71,7 +71,7 @@ var titlePageStyle = {
         top: "5mm",
         left: "-5mm",
         textAlign: "right",
-        fontSize:"16pt"
+        fontSize: "16pt"
     },
     titlePageBody: {
         paddingTop: "55mm",
@@ -81,47 +81,46 @@ var titlePageStyle = {
         // backgroundColor:"green"
     },
     definition: {
-        width:'200mm', 
-        height:"50mm", 
-        backgroundColor: colors.dark1, 
-        borderLeft: "6mm solid "+colors.dark3,
+        width: '200mm',
+        height: "50mm",
+        backgroundColor: colors.dark1,
+        borderLeft: "6mm solid " + colors.dark3,
         padding: "5mm",
         marginBottom: "5mm",
         marginLeft: "5mm",
         marginRight: "5mm",
     },
     adviceSection: {
-        width:"100%",
+        width: "100%",
         // backgroundColor:"gray"
     },
     adviceFlexContainer: {
-        display: "flex", 
-        flexDirection: "column", 
-        justifyContent: "flex-start", 
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "flex-start",
         flexWrap: "wrap",
-        height:"145mm",
+        height: "145mm",
         width: "100%",
         marginLeft: "auto",
         marginRight: "auto",
         // backgroundColor:"brown"
     },
     advice: {
-        boxSizing: "borderBox", 
+        boxSizing: "borderBox",
         width: "50%",
         // backgroundColor: "yellow",
-        minHeight: "30mm",
+        height: "45mm",
         display: "flex",
         flexDirection: "row",
         margin: "1mm",
         padding: "5mm"
     },
     advicePictoZone: {
-        width: "30mm",
-        height: "30mm",
+        width: "10mm",
         float: "left",
     },
     adviceImage: {
-        top: "3mm",
+        top: "10mm"
     },
     adviceText: {
         width: "80mm",
@@ -147,8 +146,8 @@ var normalPageStyle = {
 
 var normalPageHeader = {
     header: {
-        width: A4.width+"mm", 
-        height: "15mm", 
+        width: A4.width + "mm",
+        height: "15mm",
         backgroundColor: colors.dark3,
         color: "white",
         marginBottom: "5mm",
@@ -159,43 +158,45 @@ var normalPageHeader = {
     headerText: {
         position: "absolute",
         left: "10mm",
-        top:"4mm"
+        top: "4mm"
     }
 }
 
 var normalPageFooter = {
     footer: {
-        width: A4.width+"mm", 
+        width: A4.width + "mm",
         height: "15mm",
         position: "absolute",
-        bottom:0,
+        bottom: 0,
         left: 0,
         // backgroundColor: "red",
     },
     footerNote: {
         position: "absolute",
         left: "5mm",
-        bottom:"5mm",
+        bottom: "5mm",
         fontFamily: "Lato",
         fontWeight: "light"
     },
     numPage: {
         position: "absolute",
         right: "5mm",
-        bottom:"5mm",
-        color:"white",
-        paddingLeft:"1mm",
-        paddingRight:"1mm",
-        fontFamily: "RobotoSlab", 
-        fontSize:"16pt",
+        bottom: "5mm",
+        color: "white",
+        paddingLeft: "1mm",
+        paddingRight: "1mm",
+        fontFamily: "RobotoSlab",
+        fontSize: "16pt",
         backgroundColor: colors.dark3
     }
 }
 
-var styles = StyleSheet.create({...globalStyle, 
+var styles = StyleSheet.create({
+    ...globalStyle,
     ...titlePageStyle,
-    ...normalPageStyle, 
-    ...normalPageHeader, 
-    ...normalPageFooter})
+    ...normalPageStyle,
+    ...normalPageHeader,
+    ...normalPageFooter
+})
 
-export {styles, colors}
+export { styles, colors }
