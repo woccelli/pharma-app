@@ -41,7 +41,7 @@ const {
 */
 // TODO : dynamic URL for production environment
 const getPasswordResetURL = (user, token) => {
-    return `http://localhost:3000/password-reset/${user._id}/${token}`;
+    return `${keys.frontendUrl}/password-reset/${user._id}/${token}`;
 }
 
 // Returns secret used for token generation based on the user's password hash

@@ -3,5 +3,6 @@ module.exports = {
     secretOrKey:  process.env.SECRET,
     mailgunKey: process.env.MAILGUN_KEY,
     mailgunDomain: process.env.MAILGUN_DOMAIN,
-    mailgunHost: process.env.MAILGUN_HOST
+    mailgunHost: process.env.MAILGUN_HOST,
+    frontendUrl: process.env.FRONTEND_URL
 };
