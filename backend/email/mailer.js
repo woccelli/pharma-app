@@ -13,7 +13,7 @@ const auth = {
 }
 
 const transporter = nodemailer.createTransport(mg(auth));
-const fromAddress = '"Toposanté" <pharma@toposante.com>';
+const fromAddress = '"Toposanté" <pharma@toposante.fr>';
 
 module.exports = {
     sendSheetEmail: async (data, sender) => {
