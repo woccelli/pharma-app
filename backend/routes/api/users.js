@@ -12,6 +12,7 @@ const validateRegisterInput = require("../../validation/register");
 const validateLoginInput = require("../../validation/login");
 const validateAddInput = require("../../validation/add");
 const {
+    validateUpdateCommandNumberInput,
     validateUpdateNameInput,
     validateUpdateEmailInput,
     validateAddressInput,
@@ -39,7 +40,6 @@ const {
 /*
     -- UTIL FUNCTIONS --
 */
-// TODO : dynamic URL for production environment
 const getPasswordResetURL = (user, token) => {
     return `${keys.frontendUrl}/password-reset/${user._id}/${token}`;
 }
@@ -71,6 +71,7 @@ const signUserJwtToken = (user, res) => {
         id: user.id,
         name: user.name,
         email: user.email,
+        commandNumber: user.commandNumber,
         addresses: user.addresses,
         headerAddress: user.headerAddress,
         role: user.role,
@@ -204,7 +205,8 @@ router.post("/register", (req, res) => {
             const newUser = new User({
                 name: req.body.name,
                 email: req.body.email,
-                password: req.body.password
+                password: req.body.password,
+                commandNumber: req.body.commandNumber
             });
 
             // Hash password before saving in database
@@ -278,7 +280,8 @@ router.post("/add", passport.authenticate('admin', { session: false }), (req, re
             const newUser = new User({
                 name: req.body.name,
                 email: req.body.email,
-                password: Date.now().toString()
+                password: Date.now().toString(),
+                commandNumber: req.body.commandNumber
             });
             // Hash password before saving in database
             bcrypt.genSalt(10, (err, salt) => {
@@ -319,6 +322,31 @@ router.post("/update-name", passport.authenticate('user', { session: false }), (
     const name = req.body.name; // new name
 
     User.findByIdAndUpdate(user._id, { name: name }, { useFindAndModify: false, new: true }, (err, result) => {
+        if (result) {
+            // result = updated user
+            signUserJwtToken(result, res);
+        }
+        if (err) {
+            return res.status(400).json(err);
+        }
+    })
+});
+
+// @route POST api/users/update-command-number
+// @desc Update user command number - Send new token
+// @access Protected - user only
+router.post("/update-command-number", passport.authenticate('user', { session: false }), (req, res) => {
+    // Form validation
+    const { errors, isValid } = validateUpdateCommandNumberInput(req.body);
+    // Check validation
+    if (!isValid) {
+        return res.status(400).json(errors);
+    }
+
+    const user = req.user;
+    const commandNumber = req.body.commandNumber; // new command number
+
+    User.findByIdAndUpdate(user._id, { commandNumber: commandNumber }, { useFindAndModify: false, new: true }, (err, result) => {
         if (result) {
             // result = updated user
             signUserJwtToken(result, res);

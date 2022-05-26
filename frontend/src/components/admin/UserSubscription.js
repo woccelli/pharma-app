@@ -63,6 +63,7 @@ class UserSubscription extends Component {
                             <tr>
                                 <th>Nom</th>
                                 <th>Email</th>
+                                <th>Numéro de commande</th>
                                 <th>Abonné</th>
                                 <th>Date de fin d'abonnement</th>
                             </tr>
@@ -71,6 +72,7 @@ class UserSubscription extends Component {
                             <tr>
                                 <td>{this.state.user.name}</td>
                                 <td>{this.state.user.email}</td>
+                                <td>{this.state.user.commandNumber}</td>
                                 <td>{(new Date(this.state.user.subuntil)) > Date.now() ? 'Oui' : 'Non'}</td>
                                 <td>{(new Date(this.state.user.subuntil)).toLocaleDateString()}</td>
                             </tr>

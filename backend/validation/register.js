@@ -9,6 +9,7 @@ module.exports = function validateRegisterInput(data) {
     data.email = !isEmpty(data.email) ? data.email : "";
     data.password = !isEmpty(data.password) ? data.password : "";
     data.password2 = !isEmpty(data.password2) ? data.password2 : "";
+    data.commandNumber = !isEmpty(data.commandNumber) ? data.commandNumber : "";
 
     // Name checks
     if (Validator.isEmpty(data.name)) {
@@ -34,6 +35,11 @@ module.exports = function validateRegisterInput(data) {
     }
     if (!Validator.equals(data.password, data.password2)) {
         errors.password2 = "Les mots de passe doivent correspondre";
+    }
+
+    // Command number check
+    if (Validator.isEmpty(data.commandNumber)) {
+        errors.commandNumber = "Veuillez renseigner un numéro de commande valide"
     }
 
     return {

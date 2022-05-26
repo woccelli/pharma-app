@@ -30,8 +30,8 @@ class Landing extends Component {
                L’application qui vous permet d’envoyer à vos patients des fiches de conseils claires sur leur pathologie 
             </p>
             <div  style={{verticalAlign: "middle"}}>
-          <Button type="button" as={Link} to="/register" className="btn btn-secondary btn-lg ">S'inscrire</Button>
-          <Button type="button" as={Link} to="/login" className="btn btn-primary btn-lg" >Se connecter</Button>
+          <Button type="button" as={Link} to="/register" className="btn btn-secondary btn-lg mr-1">S'inscrire</Button>
+          <Button type="button" as={Link} to="/login" className="btn btn-primary btn-lg ml-1" >Se connecter</Button>
           </div>
 
       </Container>

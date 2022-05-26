@@ -30,6 +30,28 @@ export const updateName = (data, history) => dispatch => {
         
 };
 
+// Update user command number - get updated user token
+export const updateCommandNumber = (data, history) => dispatch => {
+    axios
+        .post("/api/users/update-command-number", data)
+        .then(res => {
+            dispatch(clearErrors())
+            dispatch({
+                type: GET_SUCCESS,
+                payload: { updatedUser: true}
+            })
+            dispatch(updateAuthToken(res.data))
+            history.push("/account")
+        })
+        .catch(err =>
+            dispatch({
+                type: GET_ERRORS,
+                payload: err.response.data
+            })
+        );
+
+};
+
 // Update user - get updated user token
 export const updateEmail = (data, history) => dispatch => {
     axios

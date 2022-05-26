@@ -36,6 +36,7 @@ import PwdForm from "./components/user/PwdForm"
 import ResetPwd from "./components/auth/ResetPwd"
 import ForgottenPwd from "./components/auth/ForgottenPwd"
 import SendSheet from "./components/layout/SendSheet";
+import CommandNumberForm from "./components/user/CommandNumberForm";
 // Check for token to keep user logged in
 if (localStorage.jwtToken) {
   // Set auth token header auth
@@ -75,6 +76,7 @@ class App extends Component {
               <PrivateRoute exact path="/account/email" component={EmailForm} />
               <PrivateRoute exact path="/account/address" component={AddressForm} />
               <PrivateRoute exact path="/account/password" component={PwdForm} />
+              <PrivateRoute exact path="/account/command-number" component={CommandNumberForm} />
               <PrivateRoute exact path="/account/delete" component={DeleteForm} />
             </Switch>
             <AdminRoute exact path="/admin/sheets" component={Sheets} />

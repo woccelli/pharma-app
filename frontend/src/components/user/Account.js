@@ -38,7 +38,7 @@ class Account extends Component {
         return (
             <Container fluid style={{marginTop: "10px"}}>
                 <Card>
-                    <Card.Header>
+                    <Card.Header className={"account-info-header"}>
                         <Row>
                             <Col><h4>Informations du compte</h4></Col>
                             <Col>{this.props.success.updatedUser && <Alert variant="success" className="float-right">Modification effectuée</Alert>}</Col>
@@ -64,6 +64,13 @@ class Account extends Component {
                                 <Row>
                                     <Col>Mot de passe</Col>
                                     <Col>**********</Col>
+                                    <Col className="d-flex justify-content-end" xs="2"><ArrowForwardIos /></Col>
+                                </Row>
+                            </ListGroup.Item>
+                            <ListGroup.Item action as={Link} to="/account/command-number">
+                                <Row>
+                                    <Col>Numéro de commande</Col>
+                                    <Col>{this.props.auth.user.commandNumber}</Col>
                                     <Col className="d-flex justify-content-end" xs="2"><ArrowForwardIos /></Col>
                                 </Row>
                             </ListGroup.Item>

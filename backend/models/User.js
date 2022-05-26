@@ -20,6 +20,10 @@ const UserSchema = new Schema({
         type: [AddressSchema],
         default: []
     },
+    commandNumber: {
+        type: String,
+        required: true
+    },
     role: {
         type: String,
         default: "BASIC"
