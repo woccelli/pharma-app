@@ -50,9 +50,12 @@ h3 {
   color: #344560 !important;
 }
 
-.jumbotron {
- background: linear-gradient(270deg, rgba(150, 178, 50, 0.3) 0%, rgba(251, 199, 32, 0.1) 100%);
+.account-info-header {
+  background: linear-gradient(270deg, rgba(150, 178, 50, 0.1) 0%, rgba(251, 199, 32, 0.1) 100%);
+}
 
+.jumbotron {
+ background: linear-gradient(270deg, rgba(150, 178, 50, 0.1) 0%, rgba(251, 199, 32, 0.1) 100%);
 }
 
 .header-logo {

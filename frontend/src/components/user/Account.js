@@ -38,7 +38,7 @@ class Account extends Component {
         return (
             <Container fluid style={{marginTop: "10px"}}>
                 <Card>
-                    <Card.Header>
+                    <Card.Header className={"account-info-header"}>
                         <Row>
                             <Col><h4>Informations du compte</h4></Col>
                             <Col>{this.props.success.updatedUser && <Alert variant="success" className="float-right">Modification effectuée</Alert>}</Col>
