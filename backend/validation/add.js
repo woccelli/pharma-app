@@ -7,6 +7,7 @@ module.exports = function validateAddInput(data) {
     // Convert empty fields to an empty string so we can use validator functions
     data.name = !isEmpty(data.name) ? data.name : "";
     data.email = !isEmpty(data.email) ? data.email : "";
+    data.commandNumber = !isEmpty(data.commandNumber) ? data.commandNumber : "";
 
     // Name checks
     if (Validator.isEmpty(data.name)) {
@@ -18,6 +19,11 @@ module.exports = function validateAddInput(data) {
         errors.email = "Veuillez renseigner une adresse e-mail";
     } else if (!Validator.isEmail(data.email)) {
         errors.email = "L'adresse e-mail renseignée est invalide";
+    }
+
+    // Command number check
+    if (Validator.isEmpty(data.email)) {
+        errors.commandNumber = "Veuillez renseigner un numéro de commande valide"
     }
 
     return {

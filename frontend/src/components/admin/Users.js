@@ -86,8 +86,8 @@ class Users extends Component {
                 field: 'email',
             },
             {
-                title: 'Role',
-                field: 'role',
+                title: 'Numéro de commande',
+                field: 'commandNumber',
             },
             {
                 title: 'Abonné',

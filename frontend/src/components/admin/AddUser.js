@@ -1,14 +1,13 @@
 // General
-import React, { Component } from 'react'
+import React, {Component} from 'react'
 import PropTypes from "prop-types";
-import { connect } from 'react-redux'
-import { withRouter } from "react-router-dom";
+import {connect} from 'react-redux'
+import {withRouter} from "react-router-dom";
 // Local
-import { addUser } from '../../actions/adminActions'
+import {addUser} from '../../actions/adminActions'
 import FormLayout from "../layout/modules/FormLayout"
 // Components
-import { Form, Button } from "react-bootstrap"
-
+import {Button, Form} from "react-bootstrap"
 
 
 class AddUser extends Component {
@@ -17,7 +16,8 @@ class AddUser extends Component {
         super(props);
         this.state = {
             name: "",
-            email: ""
+            email: "",
+            commandNumber: ""
         };
     }
 
@@ -26,26 +26,27 @@ class AddUser extends Component {
     }
 
     onChange = e => {
-        this.setState({ [e.target.id]: e.target.value });
+        this.setState({[e.target.id]: e.target.value});
     }
 
     onSubmit = e => {
         e.preventDefault()
         const newUser = {
             name: this.state.name,
-            email: this.state.email
+            email: this.state.email,
+            commandNumber: this.state.commandNumber
         }
         this.props.addUser(newUser, this.props.history);
     }
 
     render() {
 
-        const { errors } = this.props;
+        const {errors} = this.props;
 
         return (
             <FormLayout back="/admin/users">
                 <Form noValidate onSubmit={this.onSubmit} class="row align-items-center">
-                    <Form.Label> <h2>Ajouter un utilisateur</h2> </Form.Label>
+                    <Form.Label><h2>Ajouter un utilisateur</h2></Form.Label>
                     <Form.Group>
                         <Form.Label> Dénomination sociale </Form.Label>
                         <Form.Control
@@ -79,9 +80,25 @@ class AddUser extends Component {
                     </Form.Group>
 
                     <Form.Group>
+                        <Form.Label> Numéro de commande </Form.Label>
+                        <Form.Control
+                            required
+                            onChange={this.onChange}
+                            value={this.state.commandNumber}
+                            error={errors.commandNumber}
+                            id="commandNumber"
+                            type="text"
+                            isInvalid={errors.commandNumber}
+                        />
+                        <Form.Control.Feedback type="invalid">
+                            {errors.commandNumber}
+                        </Form.Control.Feedback>
+                    </Form.Group>
+
+                    <Form.Group>
                         <Button className="float-right" type="submit">
                             Ajouter l'utilisateur
-                </Button>
+                        </Button>
                     </Form.Group>
 
                 </Form>
@@ -104,5 +121,5 @@ const mapStateToProps = state => ({
 
 export default connect(
     mapStateToProps,
-    { addUser }
+    {addUser}
 )(withRouter(AddUser)); 

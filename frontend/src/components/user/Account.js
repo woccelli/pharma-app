@@ -67,6 +67,13 @@ class Account extends Component {
                                     <Col className="d-flex justify-content-end" xs="2"><ArrowForwardIos /></Col>
                                 </Row>
                             </ListGroup.Item>
+                            <ListGroup.Item action as={Link} to="/account/command-number">
+                                <Row>
+                                    <Col>Numéro de commande</Col>
+                                    <Col>{this.props.auth.user.commandNumber}</Col>
+                                    <Col className="d-flex justify-content-end" xs="2"><ArrowForwardIos /></Col>
+                                </Row>
+                            </ListGroup.Item>
                             <ListGroup.Item>
                                 <Row >
                                     <Col>Adresses</Col>

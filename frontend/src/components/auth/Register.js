@@ -8,6 +8,7 @@ import { registerUser } from "../../actions/authActions";
 // Components
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
+import {Typography} from "@material-ui/core";
 
 class Register extends Component {
   constructor() {
@@ -16,7 +17,8 @@ class Register extends Component {
       name: "",
       email: "",
       password: "",
-      password2: ""
+      password2: "",
+      commandNumber: "",
     };
   }
 
@@ -38,7 +40,8 @@ class Register extends Component {
       name: this.state.name,
       email: this.state.email,
       password: this.state.password,
-      password2: this.state.password2
+      password2: this.state.password2,
+      commandNumber: this.state.commandNumber
     };
 
     this.props.registerUser(newUser, this.props.history);
@@ -115,6 +118,27 @@ class Register extends Component {
               {errors.password2}
             </Form.Control.Feedback>
           </Form.Group>
+
+          <Form.Group>
+            <Form.Label> Numéro de commande </Form.Label>
+            <Form.Control
+                required
+                onChange={this.onChange}
+                value={this.state.commandNumber}
+                error={errors.commandNumber}
+                id="commandNumber"
+                type="text"
+                isInvalid={errors.commandNumber}
+            />
+            <Typography variant={"caption"}>
+              Veuillez indiquer le numéro de commande que vous avez obtenu lors de de votre abonnement sur: &nbsp;
+              <a href={"https://www.toposante.fr/application/"} target="_blank">https://www.toposante.fr/application</a>
+            </Typography>
+            <Form.Control.Feedback type="invalid">
+              {errors.commandNumber}
+            </Form.Control.Feedback>
+          </Form.Group>
+
           <Form.Group>
             <Button type="submit">
               S'inscrire

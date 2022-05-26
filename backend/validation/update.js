@@ -20,6 +20,22 @@ module.exports = {
         };
     },
 
+    validateUpdateCommandNumberInput: function (data) {
+        let errors = {};
+
+        data.commandNumber = !isEmpty(data.commandNumber) ? data.commandNumber : "";
+
+        // Command number checks
+        if (Validator.isEmpty(data.commandNumber)) {
+            errors.name = "Veuillez renseigner un numéro de commande valide.";
+        }
+
+        return {
+            errors,
+            isValid: isEmpty(errors)
+        };
+    },
+
     validateUpdateEmailInput: function (data) {
         let errors = {};
 
