@@ -22,10 +22,15 @@ h3 {
   color: #30475e;
 }
 
+.sheetcard-wrapper {
+  border-radius: 5px;
+  background: linear-gradient(270deg, #96b232 0%, #fbc720 100%);
+  padding: 3px;
+}
+
 .sheetcard {
-  background-color: #e8fcff;
-  border-width: 3px;
-  border-color: #c8dbe8;
+  background-color: #edf8d0;
+  border-radius: 5px;
 }
 
 .headernav {
