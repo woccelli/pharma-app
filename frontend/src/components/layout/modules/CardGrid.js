@@ -64,7 +64,7 @@ class CardGrid extends Component {
                                                 <Card.Body className={"sheetcard"}>
                                                     <Card.Title><h3>{sheet.name}</h3></Card.Title>
                                                     <Card.Text>
-                                                        {sheet.definition}
+                                                        {sheet.definition.replace(/[\*_]+/g, '')}
                                                     </Card.Text>
                                                 </Card.Body>
                                             </Card>
