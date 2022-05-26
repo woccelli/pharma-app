@@ -37,4 +37,9 @@ h3 {
   background-color: #e8fcff;
 }
 
+.header-logo {
+  max-width: 60px;
+  max-height: 60px;
+}
+
 /*# sourceMappingURL=App.css.map */
