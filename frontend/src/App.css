@@ -1,17 +1,25 @@
 .btn-primary {
-  background-color: #dbe7ff;
-  color: #30475e;
-  border: #dbe7ff;
+  background-color: #30475e;
+  color: #dbe7ff;
+  border: #30475e;
 }
 .btn-primary:hover {
-  background-color: #c8e8e4;
-  color: #30475e;
-  border: #dbe7ff;
+  background-color: rgba(48, 71, 94, 0.9);
+  color: #dbe7ff;
+  border: #30475e;
 }
+
 .btn-primary:active {
   background-color: #30475e;
   color: #30475e;
   border: #dbe7ff;
+}
+
+.btn-primary:disabled {
+  background-color: #30475e;
+  color: #dbe7ff;
+  border: #30475e;
+  opacity: 0.5;
 }
 
 body {
@@ -23,13 +31,13 @@ h3 {
 }
 
 .sheetcard-wrapper {
-  border-radius: 5px;
-  background: linear-gradient(270deg, #96b232 0%, #fbc720 100%);
+  border: none;
+  box-shadow: 5px 2px 2px rgba(0, 0, 0, 0.1);
+  background: linear-gradient(270deg, rgba(150, 178, 50, 0.1) 70%, rgba(251, 199, 32, 0.1) 100%);
   padding: 3px;
 }
 
 .sheetcard {
-  background-color: #edf8d0;
   border-radius: 5px;
 }
 
@@ -43,7 +51,8 @@ h3 {
 }
 
 .jumbotron {
-  background-color: #e8fcff;
+ background: linear-gradient(270deg, rgba(150, 178, 50, 0.3) 0%, rgba(251, 199, 32, 0.1) 100%);
+
 }
 
 .header-logo {

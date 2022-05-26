@@ -142,7 +142,7 @@ class SendSheet extends Component {
                             <Form.Group className="float-right">
                                 <Button
                                     type="submit"
-                                    variant="success"
+                                    variant="primary"
                                     disabled={!/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(this.state.sendtoemail)}
                                 >
                                     {this.props.success.loading ? <Spinner animation="border" role="status" /> : 'Envoyer'}
