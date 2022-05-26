@@ -35,7 +35,11 @@ h3 {
 
 .headernav {
   position: static;
-  border-bottom: 3px solid #c8dbe8;
+  border-bottom: 3px solid #edf8d0;
+}
+
+.header-link {
+  color: #344560 !important;
 }
 
 .jumbotron {

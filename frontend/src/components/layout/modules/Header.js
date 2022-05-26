@@ -21,8 +21,8 @@ class Header extends Component {
         if (this.props.auth.isAuthenticated) {
             return (
                 <Nav>
-                    <Nav.Link as={Link} to="/account">Mon compte</Nav.Link>
-                    <Nav.Link onClick={this.onLogoutClick}>Se déconnecter</Nav.Link>
+                    <Nav.Link as={Link} to="/account" className={"header-link"}>Mon compte</Nav.Link>
+                    <Nav.Link onClick={this.onLogoutClick} className={"header-link"}>Se déconnecter</Nav.Link>
                 </Nav>)
         } else {
             return (<div></div>)
@@ -33,8 +33,8 @@ class Header extends Component {
         if (this.props.auth.isAuthenticated && this.props.auth.user.role === "ADMIN") {
         return (
             <Nav>
-                <Nav.Link as={Link} to="/admin/users">Utilisateurs</Nav.Link>
-                <Nav.Link as={Link} to="/admin/sheets">Fiches</Nav.Link>
+                <Nav.Link as={Link} to="/admin/users" className={"header-link"}>Utilisateurs</Nav.Link>
+                <Nav.Link as={Link} to="/admin/sheets" className={"header-link"}>Fiches</Nav.Link>
             </Nav>
         )} else {
             return (<div></div>)
