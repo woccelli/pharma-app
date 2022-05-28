@@ -68,11 +68,7 @@ class CommandNumberForm extends Component {
                             </Form.Control.Feedback>
                         </Col>
                     </Form.Group>
-
-
-                    <Button classCommandNumber="float-right" type="submit">Valider la modification</Button>
-
-
+                    <Button className="float-right" type="submit">Valider la modification</Button>
                 </Form>
             </FormLayout>
         )
