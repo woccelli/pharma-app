@@ -22,7 +22,7 @@ module.exports = function validateAddInput(data) {
     }
 
     // Command number check
-    if (Validator.isEmpty(data.email)) {
+    if (Validator.isEmpty(data.commandNumber)) {
         errors.commandNumber = "Veuillez renseigner un numéro de commande valide"
     }
 
