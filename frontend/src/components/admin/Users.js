@@ -25,7 +25,6 @@ class Users extends Component {
     }
 
     renderUserDetails = user => {
-        console.log(user)
         const userLogs = this.props.admin.userLogs.find(log => log.userId === user._id)
         if (userLogs) {
             const logs = userLogs.userlogs
