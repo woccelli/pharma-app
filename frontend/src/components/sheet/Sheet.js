@@ -116,7 +116,7 @@ export default class Sheet extends React.Component {
           </View>
 
           <View style={styles.footer} fixed>
-            <Text style={styles.footerNote}>Fiche générée le {currDate.getDate().toString().padStart(2, "0")}/{(currDate.getMonth()+1).toString().padStart(2, "0")}/{currDate.getFullYear()}</Text>
+            <Text style={styles.footerNote}>Fiche révisée par un professionnel de santé et générée le {currDate.getDate().toString().padStart(2, "0")}/{(currDate.getMonth()+1).toString().padStart(2, "0")}/{currDate.getFullYear()}</Text>
             <Text style={styles.numPage} render={({ pageNumber, totalPages }) => (
               `${pageNumber}/${totalPages}`
             )} fixed />
@@ -148,7 +148,7 @@ export default class Sheet extends React.Component {
           </View>
 
           <View style={styles.footer} fixed>
-            <Text style={styles.footerNote}>Fiche générée le {currDate.getDate().toString().padStart(2, "0")}/{(currDate.getMonth()+1).toString().padStart(2, "0")}/{currDate.getFullYear()}</Text>
+            <Text style={styles.footerNote}>Fiche révisée par un professionnel de santé et générée le {currDate.getDate().toString().padStart(2, "0")}/{(currDate.getMonth()+1).toString().padStart(2, "0")}/{currDate.getFullYear()}</Text>
             <Text style={styles.numPage} render={({ pageNumber, totalPages }) => (
               `${pageNumber}/${totalPages}`
             )} fixed />
