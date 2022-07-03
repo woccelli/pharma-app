@@ -37,11 +37,6 @@ module.exports = function validateRegisterInput(data) {
         errors.password2 = "Les mots de passe doivent correspondre";
     }
 
-    // Command number check
-    if (Validator.isEmpty(data.commandNumber)) {
-        errors.commandNumber = "Veuillez renseigner un numéro de commande valide"
-    }
-
     return {
         errors,
         isValid: isEmpty(errors)

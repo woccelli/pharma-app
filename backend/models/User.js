@@ -22,7 +22,7 @@ const UserSchema = new Schema({
     },
     commandNumber: {
         type: String,
-        required: true
+        default: ""
     },
     role: {
         type: String,
