@@ -120,9 +120,8 @@ class Register extends Component {
           </Form.Group>
 
           <Form.Group>
-            <Form.Label> Numéro de commande </Form.Label>
+            <Form.Label> Numéro de commande (facultatif, excepté pour les groupements de pharmacies) </Form.Label>
             <Form.Control
-                required
                 onChange={this.onChange}
                 value={this.state.commandNumber}
                 error={errors.commandNumber}

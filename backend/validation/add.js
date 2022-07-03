@@ -21,11 +21,6 @@ module.exports = function validateAddInput(data) {
         errors.email = "L'adresse e-mail renseignée est invalide";
     }
 
-    // Command number check
-    if (Validator.isEmpty(data.commandNumber)) {
-        errors.commandNumber = "Veuillez renseigner un numéro de commande valide"
-    }
-
     return {
         errors,
         isValid: isEmpty(errors)
