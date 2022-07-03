@@ -28,7 +28,7 @@ class CardGrid extends Component {
     }
 
     render() {
-        const {sheets} = this.props.sheets;
+        const sheets = this.props.sheets.sheets.sort((sheetA, sheetB) => sheetA.name.localeCompare(sheetB.name));
 
         return (
             <div>

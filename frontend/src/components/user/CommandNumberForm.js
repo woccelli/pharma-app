@@ -57,7 +57,6 @@ class CommandNumberForm extends Component {
                                 onChange={this.onChange}
                                 error={errors.commandNumber}
                                 isInvalid={errors.commandNumber}
-                                required
                             />
                             <Typography variant={"caption"}>
                                 Veuillez indiquer le numéro de commande que vous avez obtenu lors de de votre abonnement sur: &nbsp;
