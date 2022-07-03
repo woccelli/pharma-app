@@ -5,7 +5,7 @@ module.exports = {
             `
             <div>
                 <p>Bonjour,</p>
-                <p>Votre professionnel de santé <b>${sender.name}</b> vous fait parvenir la fiche de conseils concernant votre pathologie que vous trouverez en pièce jointe.</p>
+                <p><b>${sender.name}</b> vous fait parvenir la fiche de conseils concernant votre pathologie, rédigée par des professionnels de santé. Vous la trouverez en pièce jointe.</p>
                 <p><b>${sender.name}</b> vous accompagne pour la prise en charge de votre pathologie.</p>
             </div>
             `
